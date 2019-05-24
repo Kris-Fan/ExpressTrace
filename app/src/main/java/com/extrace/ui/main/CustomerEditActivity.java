@@ -27,6 +27,9 @@ import java.util.List;
 
 import static com.extrace.net.OkHttpClientManager.BASE_URL;
 
+/**
+ * 新建客户信息页
+ */
 public class CustomerEditActivity extends AppCompatActivity {
     String name,tel,addr,dpt,postcode;
     private EditText unedtaddr;
