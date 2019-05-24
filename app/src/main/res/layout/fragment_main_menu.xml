@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@+id/appbar"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+        <LinearLayout
+            android:paddingTop="@dimen/size_16sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary">
+            <TextView
+                android:gravity="center"
+                android:textAlignment="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textSize="@dimen/size_18sp"
+                android:text="@string/app_name"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingBottom="5dp"
+            android:layout_gravity="center_vertical"
+            android:gravity="bottom"
+            android:background="@color/colorPrimary">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                style="@style/menu_tab_style"
+                android:layout_height="wrap_content"
+                android:id="@+id/ly_tab_menu1"
+                android:orientation="vertical">
+                <ImageView
+                    style="@style/ic_me_page"
+                    android:src="@mipmap/icon_search"/>
+                <TextView
+                    style="@style/my_main_function"
+                    android:textColor="@color/white"
+                    android:text="@string/action_search" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:id="@+id/ly_tab_menu3"
+                style="@style/menu_tab_style"
+                android:orientation="vertical">
+                <ImageView
+                    style="@style/ic_me_page"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
+                    android:src="@mipmap/icon_scan_bar_white"/>
+                <TextView
+                    style="@style/my_main_function"
+                    android:textColor="@color/white"
+                    android:text="@string/scan_gun" />
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:id="@+id/ly_tab_menu2"
+                style="@style/menu_tab_style"
+                android:orientation="vertical">
+                <ImageView
+                    style="@style/ic_me_page"
+                    android:src="@mipmap/icon_add_customer"/>
+                <TextView
+                    style="@style/my_main_function"
+                    android:textColor="@color/white"
+                    android:text="添加客户" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                style="@style/menu_function_style"
+                android:layout_height="wrap_content"
+                android:id="@+id/ly_function1"
+                android:orientation="vertical">
+                <ImageView
+                    style="@style/ic_me_page"
+                    android:src="@mipmap/icon_phone"/>
+                <TextView
+                    style="@style/my_main_function"
+                    android:text="拨号" />
+                <TextView
+                    style="@style/my_main_function"
+                    android:textColor="@color/colorGray"
+                    android:textSize="12dp"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:id="@+id/ly_function2"
+                style="@style/menu_function_style"
+                android:orientation="vertical">
+                <ImageView
+                    style="@style/ic_me_page"
+                    android:src="@drawable/menu_dispatch"/>
+                <TextView
+                    style="@style/my_main_function"
+                    android:text="@string/title_section2" />
+                <TextView
+                    style="@style/my_main_function"
+                    android:textColor="@color/colorGray"
+                    android:textSize="12dp"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:id="@+id/ly_function3"
+                style="@style/menu_function_style"
+                android:orientation="vertical">
+                <ImageView
+                    style="@style/ic_me_page"
+                    android:src="@mipmap/icon_search_ex"/>
+                <TextView
+                    style="@style/my_main_function"
+                    android:text="查快递" />
+                <TextView
+                    style="@style/my_main_function"
+                    android:textColor="@color/colorGray"
+                    android:textSize="12dp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                style="@style/menu_function_style"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/ly_function4">
+                <ImageView
+                    style="@style/ic_me_page"
+                    android:src="@mipmap/icon_message"/>
+                <TextView
+                    style="@style/my_main_function"
+                    android:text="消息" />
+                <TextView
+                    style="@style/my_main_function"
+                    android:textColor="@color/colorGray"
+                    android:textSize="12dp"/>
+
+            </LinearLayout>
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                style="@style/menu_function_style"
+                android:id="@+id/rl_function5"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:orientation="vertical">
+                    <ImageView
+                        style="@style/ic_me_page"
+                        android:src="@mipmap/icon_customer_mg"/>
+                    <TextView
+                        style="@style/my_main_function"
+                        android:text="客户管理" />
+                    <TextView
+                        style="@style/my_main_function"
+                        android:textColor="@color/colorGray"
+                        android:textSize="12dp" />
+                </LinearLayout>
+                <TextView
+                    android:layout_width="40dp"
+                    android:layout_height="12dp"
+                    android:layout_marginLeft="46dp"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:textSize="8sp" />
+
+            </RelativeLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                style="@style/menu_function_style"
+                android:id="@+id/ly_function6"
+                android:orientation="vertical">
+                <ImageView
+                    style="@style/ic_me_page"
+                    android:src="@mipmap/icon_more"/>
+                <TextView
+                    style="@style/my_main_function"
+                    android:text="@string/title_section2" />
+                <TextView
+                    style="@style/my_main_function"
+                    android:textColor="@color/colorGray"
+                    android:textSize="12dp" />
+            </LinearLayout>
+ 
+        </LinearLayout>
+
+        <include layout="@layout/activity_scan_barcode"></include>
+
+
+
+    </LinearLayout>
+
+
+</ScrollView>

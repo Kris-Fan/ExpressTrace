@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".main.ScanBarcodeActivity"
+    android:background="@color/bg_gray">
+    <com.extrace.util.TitleLayout
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></com.extrace.util.TitleLayout>
+    <LinearLayout
+        android:layout_below="@+id/title"
+        android:id="@+id/ly_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="@color/white"
+        android:padding="10dp"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="快递员"
+                android:textSize="@dimen/size_18sp"/>
+            <TextView
+                android:paddingLeft="10dp"
+                android:id="@+id/tv_courier_name"
+                android:textSize="@dimen/size_16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tv_tel_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/size_16sp"
+                android:text="手机号码"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/tv_tel_tag"
+                android:textSize="@dimen/size_16sp"
+                android:id="@+id/tv_tel"
+                android:paddingLeft="10dp"
+                android:text="111111"/>
+            <TextView
+                android:id="@+id/tv_equip_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_tel_tag"
+                android:textSize="@dimen/size_16sp"
+                android:text="设备 I D"/>
+            <TextView
+                android:id="@+id/tv_equip_id"
+                android:layout_below="@+id/tv_tel"
+                android:layout_toRightOf="@id/tv_equip_tag"
+                android:paddingLeft="10dp"
+                android:layout_width="wrap_content"
+                android:textSize="@dimen/size_16sp"
+                android:layout_height="wrap_content"
+                android:text="scan_gun"/>\
+            <TextView
+                android:id="@+id/tv_site_tag"
+                android:layout_below="@+id/tv_equip_tag"
+                android:textSize="@dimen/size_16sp"
+                android:text="所在网点"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:paddingLeft="10dp"
+                android:layout_below="@+id/tv_equip_id"
+                android:layout_toRightOf="@+id/tv_site_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/size_16sp"
+                android:id="@+id/tv_site"
+                android:text="zzu"/>
+        </RelativeLayout>
+    </LinearLayout>
+    <ScrollView
+        android:layout_below="@+id/ly_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    style="@style/menu_function_style"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ly_function1"
+                    android:orientation="vertical">
+                    <ImageView
+                        style="@style/ic_me_page"
+                        android:src="@mipmap/icon_express_receive"/>
+                    <TextView
+                        style="@style/my_main_function"
+                        android:text="收件扫描" />
+                    <TextView
+                        style="@style/my_main_function"
+                        android:textColor="@color/colorGray"
+                        android:textSize="12dp"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ly_function2"
+                    style="@style/menu_function_style"
+                    android:orientation="vertical">
+                    <ImageView
+                        style="@style/ic_me_page"
+                        android:src="@mipmap/icon_express_send_dabao_green"/>
+                    <TextView
+                        style="@style/my_main_function"
+                        android:text="包裹打包" />
+                    <TextView
+                        style="@style/my_main_function"
+                        android:textColor="@color/colorGray"
+                        android:textSize="12dp"
+                        android:text=""/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ly_function3"
+                    style="@style/menu_function_style"
+                    android:orientation="vertical">
+                    <ImageView
+                        style="@style/ic_me_page"
+                        android:src="@mipmap/icon_express_send_zhuangche_blue"/>
+                    <TextView
+                        style="@style/my_main_function"
+                        android:text="装货扫描" />
+                    <TextView
+                        style="@style/my_main_function"
+                        android:textColor="@color/colorGray"
+                        android:textSize="12dp"
+                        android:text="发件扫描"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    style="@style/menu_function_style"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:id="@+id/ly_function4">
+                    <ImageView
+                        style="@style/ic_me_page"
+                        android:src="@drawable/menu_dispatch"/>
+                    <TextView
+                        style="@style/my_main_function"
+                        android:text="包裹拆包"/>
+                    <TextView
+                        style="@style/my_main_function"
+                        android:textColor="@color/colorGray"
+                        android:text="到件扫描"
+                        android:textSize="12dp"/>
+
+                </LinearLayout>
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    style="@style/menu_function_style"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/ly_function5"
+                        android:orientation="vertical">
+                        <ImageView
+                            style="@style/ic_me_page"
+                            android:src="@mipmap/icon_express_arrve"/>
+                        <TextView
+                            style="@style/my_main_function"
+                            android:text="派送扫描" />
+                        <TextView
+                            style="@style/my_main_function"
+                            android:textColor="@color/colorGray"
+                            android:text="快件派送"
+                            android:textSize="12dp" />
+                    </LinearLayout>
+                    <TextView
+                        android:layout_width="40dp"
+                        android:layout_height="12dp"
+                        android:layout_marginLeft="46dp"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:textSize="8sp" />
+
+                </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    style="@style/menu_function_style"
+                    android:id="@+id/ly_function6"
+                    android:orientation="vertical">
+                    <ImageView
+                        style="@style/ic_me_page"
+                        android:src="@mipmap/icon_sign"/>
+                    <TextView
+                        style="@style/my_main_function"
+                        android:text="签收扫描" />
+                    <TextView
+                        style="@style/my_main_function"
+                        android:textColor="@color/colorGray"
+                        android:textSize="12dp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    style="@style/menu_function_style"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:id="@+id/ly_function7">
+                    <ImageView
+                        style="@style/ic_me_page"
+                        android:src="@mipmap/icon_express_record"/>
+                    <TextView
+                        style="@style/my_main_function"
+                        android:text="扫描历史" />
+                    <TextView
+                        style="@style/my_main_function"
+                        android:textColor="@color/colorGray"
+                        android:textSize="12dp"/>
+
+                </LinearLayout>
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    style="@style/menu_function_style"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/ly_function8"
+                        android:orientation="vertical">
+                        <ImageView
+                            style="@style/ic_me_page"
+                            android:src="@mipmap/icon_more"/>
+                        <TextView
+                            style="@style/my_main_function"
+                            android:text="@string/title_section1" />
+                        <TextView
+                            style="@style/my_main_function"
+                            android:textColor="@color/colorGray"
+                            android:textSize="12dp" />
+                    </LinearLayout>
+                    <TextView
+                        android:layout_width="40dp"
+                        android:layout_height="12dp"
+                        android:layout_marginLeft="46dp"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:textSize="8sp" />
+
+                </RelativeLayout>
+                <LinearLayout
+                    android:visibility="invisible"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    style="@style/menu_function_style"
+                    android:id="@+id/ly_function9"
+                    android:orientation="vertical">
+                    <ImageView
+                        style="@style/ic_me_page"
+                        android:src="@mipmap/icon_more"/>
+                    <TextView
+                        style="@style/my_main_function"
+                        android:text="@string/title_section2" />
+                    <TextView
+                        style="@style/my_main_function"
+                        android:textColor="@color/colorGray"
+                        android:textSize="12dp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+
+
+        </LinearLayout>
+
+
+
+    </ScrollView>
+
+</RelativeLayout>

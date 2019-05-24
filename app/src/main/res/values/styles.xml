@@ -1,0 +1,153 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppThemeNoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="OnClick">
+        <item name="android:clickable">true</item>
+        <item name="android:onClick">OnClick</item>
+    </style>
+
+    <style name="default_button">
+        <item name="android:background">@drawable/btn_selector</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">18dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:radius">15dip</item>
+    </style>
+    <!--我的页面-->
+    <style name="menu_style">
+        <item name="android:textSize">@dimen/size_16sp</item>
+        <item name="android:background">@drawable/menu_selector</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_marginTop">0dp</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">15dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+    </style>
+    <!--我的页面-->
+    <style name="menu_style_no_bg">
+        <item name="android:textSize">@dimen/size_16sp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_marginTop">0dp</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+    </style>
+
+    <style name="menu_function_style">
+        <item name="android:background">@drawable/main_function_bg_selector</item>
+        <item name="android:paddingTop">20dp</item>
+        <item name="android:paddingBottom">20dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingLeft">10dp</item>
+    </style>
+
+    <style name="menu_tab_style">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:paddingTop">20dp</item>
+        <item name="android:paddingBottom">20dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="tab_menu_text">
+        <item name="android:layout_marginTop">0dp</item>
+        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_height">43dp</item>
+        <item name="android:layout_centerInParent">true</item>
+        <item name="android:textSize">12dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@drawable/tab_menu_text</item>
+    </style>
+
+    <style name="tab_menu_bgnum">
+        <item name="android:layout_width">20dp</item>
+        <item name="android:layout_height">20dp</item>
+        <item name="android:background">@mipmap/bg_num</item>
+        <item name="android:layout_marginLeft">-10dp</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="tab_bar_size">
+        <item name="android:textSize">15dp</item>
+    </style>
+
+    <style name="tab_bar_style">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!--首页字体-->
+    <style name="my_main_function">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <!--首页、扫描页图标，九宫格-->
+    <style name="ic_me_page">
+        <item name="android:layout_width">36dp</item>
+        <item name="android:layout_height">36dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <!--自定义dialog背景全透明无边框theme -->
+    <style name="Dialog_Msg" parent="android:style/Theme.Dialog">
+        <!--背景颜色及和透明程度-->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!--是否去除标题 -->
+        <item name="android:windowNoTitle">true</item>
+        <!--是否去除边框-->
+        <item name="android:windowFrame">@null</item>
+        <!--是否浮现在activity之上-->
+        <item name="android:windowIsFloating">true</item>
+        <!--是否模糊-->
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+    <style name="express_edit_ablayoutstyle" parent="Base.Widget.Design.TabLayout">
+        <item name="tabBackground">@color/bg_gray</item>
+        <item name="tabIndicatorColor">@color/colorPrimary</item>
+        <item name="tabIndicatorHeight">2dp</item>
+        <item name="tabSelectedTextColor">@color/colorPrimary</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/colorPrimaryLight</item>
+    </style>
+
+    <style name="my_base_top_tool_bar_style">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+</resources>

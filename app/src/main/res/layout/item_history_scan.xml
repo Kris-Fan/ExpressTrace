@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/size_14sp"
+    android:background="@drawable/main_function_bg_selector">
+
+    <TextView
+        android:id="@+id/note_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"/>
+    <TextView
+        android:id="@+id/note_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/size_18sp"
+        android:layout_toRightOf="@+id/note_id"
+        android:textStyle="bold"/>
+    <TextView
+        android:id="@+id/history_time"
+        android:layout_alignParentRight="true"
+        android:textColor="@color/colorGray"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/history_content"
+        android:layout_below="@+id/note_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</RelativeLayout>

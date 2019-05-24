@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/nestScroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:orientation="vertical">
+            <com.baidu.mapapi.map.MapView
+                android:id="@+id/bmapView"
+                android:layout_width="match_parent"
+                android:layout_height="630dp"></com.baidu.mapapi.map.MapView>
+            <!--<View-->
+                <!--android:clickable="false"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="300dp"></View>-->
+            <android.support.v7.widget.RecyclerView
+                android:background="@drawable/bg_round_normal"
+                android:layout_marginTop="300dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:paddingTop="@dimen/size_16sp"
+                android:paddingBottom="@dimen/size_16sp"
+                android:nestedScrollingEnabled="false"
+                android:id="@+id/rv_trace"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+    <com.extrace.util.EmptyView
+        android:id="@+id/empty"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"></com.extrace.util.EmptyView>
+    <com.extrace.util.TitleLayout
+        android:layout_marginTop="@dimen/size_16sp"
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></com.extrace.util.TitleLayout>
+
+
+    <com.extrace.util.layout.ClearEditText
+        android:layout_marginTop="@dimen/size_14sp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="@dimen/size_14sp"
+        android:id="@+id/filter_edit"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:paddingLeft="@dimen/size_14sp"
+        android:paddingRight="@dimen/size_14sp"
+        android:inputType="number"
+        android:background="@drawable/bg_round_normal_trans"
+        android:drawableLeft="@mipmap/ic_search_green"
+        android:singleLine="true"
+        android:hint=" 输入准确快递单号查询"
+        android:maxLines="1"
+        android:textSize="15dp" />
+</RelativeLayout>

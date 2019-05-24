@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_gray">
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/size_14sp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingRight="@dimen/size_14sp"
+        android:background="@drawable/menu_selector"
+        android:textSize="@dimen/size_18sp"
+        android:text="备注："/>
+    <EditText
+        android:id="@+id/more_detail"
+        android:layout_below="@+id/textView2"
+        android:lines="5"
+        android:scrollbars="vertical"
+        android:maxLength="300"
+        android:cursorVisible="true"
+        android:gravity="top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:layout_marginRight="@dimen/size_14sp"
+        android:layout_marginLeft="@dimen/size_14sp"
+        android:padding="6dp"
+        android:background="@drawable/tab_background_selected"/>
+    <LinearLayout
+        android:layout_below="@+id/more_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/menu_selector"
+        android:layout_marginTop="@dimen/size_16sp"
+        android:paddingLeft="15dip"
+        android:paddingRight="15dip">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="8dip"
+            android:paddingTop="8dip"
+            android:background="@drawable/menu_selector">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="6dp"
+                android:gravity="center"
+                android:text="收件时间："
+                android:textColor="@color/colorBlack"
+                android:textSize="16dip" />
+
+            <TextView
+                android:id="@+id/expressAccTime"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="8dp"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:textColor="@color/colorGray"
+                android:textSize="16dip" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="8dip"
+            android:paddingTop="8dip"
+            android:background="@drawable/menu_selector">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="6dp"
+                android:gravity="center"
+                android:text="交付时间："
+                android:textColor="@color/colorBlack"
+                android:textSize="16dip" />
+
+            <TextView
+                android:id="@+id/expressDlvTime"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="8dp"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:hint="无"
+                android:textColor="@color/colorGray"
+                android:textSize="16dip" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="8dip"
+            android:paddingTop="8dip"
+            android:background="@drawable/menu_selector">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="6dp"
+                android:gravity="center"
+                android:text="运单状态："
+                android:textColor="@color/colorBlack"
+                android:textSize="16dip" />
+
+            <TextView
+                android:id="@+id/expressStatus"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="8dp"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:textColor="@color/colorGray"
+                android:text="订单揽收中"
+                android:textSize="16dip" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+</RelativeLayout>

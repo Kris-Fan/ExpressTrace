@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!--<include layout="@layout/capture"/>-->
+    <SurfaceView
+        android:id="@+id/preview_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <com.king.zxing.ViewfinderView
+
+        android:id="@+id/viewfinder_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cornerColor="@color/colorPrimaryDark"
+        app:frameColor="@color/colorPrimary"
+        app:frameHeight="120dp"
+        app:frameWidth="330dp"
+        app:labelText="@string/tips_scan_code"
+        app:labelTextLocation="bottom"
+        app:laserColor="@color/colorPrimary"
+        app:showResultPoint="true"
+        app:maskColor="@color/greenPrimaryLight"/>
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar_capture"/>
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="45dp"
+    android:id="@+id/ly_bg"
+    android:background="@color/colorPrimary"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
+    <!--这是一个通用的顶部栏actionBar 可以自定义标题，事件等-->
+    <TextView
+        android:id="@+id/title_back"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+        android:textColor="@color/white"
+        android:paddingLeft="@dimen/size_16sp"
+        android:background="@color/transparent"
+        android:text="返回"/>
+    <TextView
+        android:id="@+id/title_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:text="Title Text"/>
+    <TextView
+        android:id="@+id/title_edit"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_centerVertical="true"
+        android:textColor="@color/white"
+        android:paddingRight="@dimen/size_14sp"
+        android:background="@color/transparent"
+        android:text="Add"/>
+</RelativeLayout>

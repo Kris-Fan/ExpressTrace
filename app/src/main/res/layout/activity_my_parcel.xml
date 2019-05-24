@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".main.MyParcelActivity">
+
+    <LinearLayout
+        android:id="@+id/top_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/size_14sp"
+        android:paddingRight="@dimen/size_14sp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:orientation="horizontal">
+        <com.extrace.util.layout.ClearEditText
+            android:id="@+id/filter_edit"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:paddingLeft="@dimen/size_14sp"
+            android:paddingRight="@dimen/size_14sp"
+            android:background="@drawable/bg_round_normal"
+            android:drawableLeft="@mipmap/ic_search_green"
+            android:singleLine="true"
+            android:hint=" 请输入客户姓名"
+            android:maxLines="1"
+            android:textSize="15dp" />
+    </LinearLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recy"
+        android:layout_below="@id/top_search"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </android.support.v7.widget.RecyclerView>
+    <com.extrace.util.EmptyView
+        android:id="@+id/empty"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"></com.extrace.util.EmptyView>
+</RelativeLayout>

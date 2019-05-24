@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/item_ly"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+    <RelativeLayout
+        android:id="@+id/rlTimeline"
+        android:layout_width="32dp"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tvTopLine"
+            android:layout_width="0.5dp"
+            android:layout_height="12dp"
+            android:layout_centerHorizontal="true"
+            android:background="@color/colorGray" />
+
+        <TextView
+            android:id="@+id/tvDot"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_below="@id/tvTopLine"
+            android:layout_centerHorizontal="true"
+            android:background="@mipmap/icon_timeliness_unselected" />
+
+        <TextView
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:layout_below="@id/tvDot"
+            android:layout_centerHorizontal="true"
+            android:background="@color/colorGray" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlCenter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="6dp"
+        android:paddingRight="10dp"
+        android:paddingTop="6dp">
+
+        <TextView
+            android:id="@+id/tvAcceptTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2014/06/24 20:55:28"
+            android:textColor="#999"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tvAcceptStation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvAcceptTime"
+            android:layout_marginTop="5dp"
+            android:text="快件在 深圳 ,准备送往下一站 深圳集散中心 [深圳市]"
+            android:textColor="#999"
+            android:textSize="12sp" />
+    </RelativeLayout>
+</LinearLayout>
+
+    <!--作者：独毒火-->
+    <!--链接：https://www.jianshu.com/p/d03f994b6c44-->
+    <!--来源：简书-->
+    <!--简书著作权归作者所有，任何形式的转载都请联系作者获得授权并注明出处。-->

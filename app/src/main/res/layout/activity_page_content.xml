@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="@dimen/size_14sp"
+    tools:context=".main.PageContentActivity">
+
+
+    <!--<TextView-->
+        <!--android:id="@+id/title1"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="快递单号:"-->
+        <!--android:textColor="@color/colorGray"-->
+        <!--android:textSize="@dimen/size_18sp" />-->
+    <!--<TextView-->
+        <!--android:layout_toRightOf="@+id/title1"-->
+        <!--android:id="@+id/title"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textColor="@color/colorGray"-->
+        <!--android:textSize="@dimen/size_18sp" />-->
+
+    <!--<ImageView-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:id="@+id/action_ex_capture_icon"-->
+        <!--android:layout_width="30dp"-->
+        <!--android:layout_height="30dp"-->
+        <!--android:scaleType="fitCenter"-->
+        <!--android:src="@mipmap/icon_express_receive" />-->
+
+    <!--<TextView-->
+        <!--android:layout_marginTop="@dimen/size_14sp"-->
+        <!--android:layout_below="@+id/title"-->
+        <!--android:id="@+id/rev_addr"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="收件人地址："-->
+        <!--android:textColor="@color/colorGray"-->
+        <!--android:textSize="@dimen/size_18sp" />-->
+    <android.support.v7.widget.RecyclerView
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:dividerHeight="10dp"
+        android:divider="#FFFF0000"
+        android:id="@+id/package_content_recy"/>
+</RelativeLayout>

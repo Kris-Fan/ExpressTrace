@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_gray">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="8dip"
+            android:paddingLeft="15dip"
+            android:paddingRight="15dip"
+            android:paddingTop="8dip"
+            android:background="@drawable/menu_selector">
+
+            <LinearLayout
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:gravity="center"
+                    android:text="运单编号"
+                    android:textColor="@color/colorGray"
+                    android:textSize="@dimen/size_14sp" />
+
+                <TextView
+                    android:id="@+id/expressId"
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginLeft="8dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/size_14sp"
+                    android:visibility="invisible"/>
+
+                <ImageView
+                    android:id="@+id/action_ex_capture_icon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/icon_express_receive" />
+            </LinearLayout>
+            <ImageView
+                android:id="@+id/ivCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </ImageView>
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_16sp"
+            android:orientation="vertical"
+            android:paddingLeft="10dip"
+            android:paddingRight="15dip"
+            android:background="@drawable/menu_selector">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/menu_selector"
+                android:paddingBottom="8dip"
+                android:paddingTop="8dip" >
+                <ImageView
+                    style="@style/tab_menu_text"
+                    android:src="@mipmap/ic_receiver"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:gravity="center_vertical"
+                    android:text="收件人"
+                    android:textStyle="bold"
+                    android:textSize="16dip" />
+
+                <TextView
+                    android:id="@+id/expressRcvName"
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginLeft="8dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/colorBlack"
+                    android:hint="@string/title_name"
+                    android:textSize="@dimen/size_16sp"/>
+
+                <TextView
+                    android:id="@+id/expressRcvTel"
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginLeft="2dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/colorBlack"
+                    android:hint="@string/title_tel_code"
+                    android:textSize="@dimen/size_14sp"/>
+
+                <ImageView
+                    android:id="@+id/action_ex_rcv_icon"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/anonymous" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="5dip"
+                android:paddingTop="5dip" >
+
+                <TextView
+                    android:id="@+id/expressRcvDpt"
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/colorGray"
+                    android:background="@drawable/menu_selector"
+                    android:textSize="16dip"
+                    android:text="详细地址"/>
+
+                <TextView
+                    android:id="@+id/expressRcvAddr"
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:background="@drawable/menu_selector"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/colorGray"
+                    android:textSize="16dip"
+                    android:text="地址"/>
+
+                <TextView
+                    android:id="@+id/expressRcvRegion"
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/colorGray"
+                    android:background="@drawable/menu_selector"
+                    android:textSize="16dip"
+                    android:hint="地区邮编"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/menu_selector"
+            android:layout_marginTop="@dimen/size_16sp"
+            android:paddingLeft="10dip"
+            android:paddingRight="15dip"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingBottom="8dip"
+                android:paddingTop="8dip"
+                android:background="@drawable/menu_selector">
+
+                <ImageView
+                    style="@style/tab_menu_text"
+                    android:src="@mipmap/ic_sender"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="发件人"
+                    android:textStyle="bold"
+                    android:textSize="16dip" />
+
+                <TextView
+                    android:id="@+id/expressSndName"
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginLeft="8dp"
+                    android:layout_weight="1"
+                    android:textColor="@color/colorBlack"
+                    android:gravity="center_vertical"
+                    android:hint="@string/title_name"
+                    android:textSize="@dimen/size_14sp" />
+
+                <TextView
+                    android:id="@+id/expressSndTel"
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginLeft="2dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:hint="@string/title_tel_code"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/size_14sp" />
+
+                <ImageView
+                    android:id="@+id/action_ex_snd_icon"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/anonymous" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="5dip"
+                android:paddingTop="5dip" >
+
+                <TextView
+                    android:id="@+id/expressSndDpt"
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:textColor="@color/colorGray"
+                    android:hint="详细地址"
+                    android:textSize="@dimen/size_16sp" />
+
+                <TextView
+                    android:id="@+id/expressSndAddr"
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:textColor="@color/colorGray"
+                    android:hint="住址"
+                    android:textSize="@dimen/size_16sp" />
+
+                <TextView
+                    android:id="@+id/expressSndRegion"
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:hint="地区邮编"
+                    android:textColor="@color/colorGray"
+                    android:textSize="@dimen/size_16sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/menu_selector"
+            android:layout_marginTop="@dimen/size_16sp"
+            android:paddingLeft="10dip"
+            android:paddingRight="15dip"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingBottom="8dip"
+                    android:paddingTop="8dip">
+
+                    <ImageView
+                        android:layout_width="38dp"
+                        android:layout_marginLeft="5dp"
+                        style="@style/tab_menu_text"
+                        android:src="@mipmap/ic_ex_info"/>
+
+                    <EditText
+                        android:id="@+id/expressType"
+                        android:layout_width="match_parent"
+                        android:layout_height="fill_parent"
+                        android:background="@drawable/menu_selector"
+                        android:textColor="@color/colorBlack"
+                        android:gravity="center_vertical"
+                        android:hint="点击选择物品类型"
+                        android:textSize="@dimen/size_14sp" />
+
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="5dip"
+                    android:paddingLeft="10dip"
+                    android:paddingRight="10dip"
+                    android:paddingTop="5dip" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="物品重量"
+                        android:textColor="@color/colorGray"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/size_16sp" />
+
+                    <EditText
+                        android:id="@+id/expressWeight"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/menu_selector"
+                        android:inputType="numberDecimal"
+                        android:layout_marginLeft="8dp"
+                        android:textColor="@color/colorGray"
+                        android:gravity="center_vertical"
+
+                        android:textSize="@dimen/size_16sp" />
+                    <TextView
+                        android:layout_width="50dp"
+                        android:layout_height="match_parent"
+                        android:gravity="right"
+                        android:text="kg"
+                        android:textColor="@color/colorGray"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/size_16sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="8dip"
+                    android:paddingLeft="10dip"
+                    android:paddingRight="10dip"
+                    android:paddingTop="8dip" >
+                    <ImageView
+                        android:layout_width="38dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_alignParentLeft="true"
+                        android:visibility="invisible"
+                        style="@style/tab_menu_text"
+                        android:src="@mipmap/ic_ex_info"/>
+                    <TextView
+                        android:id="@+id/express_fee_tag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:layout_centerVertical="true"
+                        android:text="快递费"
+                        android:textColor="@color/colorGray"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/size_16sp" />
+
+                    <EditText
+                        android:layout_toRightOf="@+id/express_fee_tag"
+                        android:id="@+id/expressFee"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/menu_selector"
+                        android:layout_marginLeft="8dp"
+                        android:inputType="numberDecimal"
+                        android:textColor="@color/colorGray"
+                        android:gravity="center_vertical"
+                        android:textSize="@dimen/size_16sp" />
+                    <TextView
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:text="RMB"
+                        android:textColor="@color/colorGray"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/size_16sp" />
+                </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="5dip"
+                    android:paddingLeft="10dip"
+                    android:paddingRight="10dip"
+                    android:paddingTop="5dip" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/colorGray"
+                        android:text="保险费"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/size_16sp" />
+
+                    <EditText
+                        android:id="@+id/expressInsureFee"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/menu_selector"
+                        android:inputType="numberDecimal"
+                        android:layout_marginLeft="8dp"
+                        android:textColor="@color/colorGray"
+                        android:gravity="center_vertical"
+                        android:textSize="@dimen/size_16sp" />
+                    <TextView
+                        android:layout_width="50dp"
+                        android:layout_height="match_parent"
+                        android:gravity="right"
+                        android:text="RMB"
+                        android:textColor="@color/colorGray"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/size_16sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="60dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible">
+            <TextView
+                android:id="@+id/expressSndID"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="8dp"
+                android:layout_weight="1" />
+            <TextView
+                android:id="@+id/expressRcvID"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="8dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>
