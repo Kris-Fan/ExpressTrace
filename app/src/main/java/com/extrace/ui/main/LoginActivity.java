@@ -101,10 +101,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         setContentView(R.layout.activity_login);
         ActivityCollector.addActivity(this);
         // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+        mEmailView = findViewById(R.id.email);
         populateAutoComplete();
 
-        mPasswordView = (EditText) findViewById(R.id.password);
+        mPasswordView = findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -116,7 +116,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+        Button mEmailSignInButton = findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -138,9 +138,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         });
         //显示用户此前录入的数据
         SharedPreferences sPreferences=getSharedPreferences("USER_INFO", MODE_PRIVATE);
-        String username=sPreferences.getString("username", "");
+        String username=sPreferences.getString("telcode", "");
         String password =sPreferences.getString("password", "");
-        Boolean ch =sPreferences.getBoolean("or", false);
+        boolean ch =sPreferences.getBoolean("or", false);
         mEmailView.setText(username);
         mPasswordView.setText(password);
         checkBox.setChecked(ch);

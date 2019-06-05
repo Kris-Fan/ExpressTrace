@@ -41,7 +41,9 @@ import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.map.Overlay;
 import com.baidu.mapapi.map.OverlayOptions;
+import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.extrace.net.OkHttpClientManager;
 import com.extrace.net.json.MyJsonManager;
@@ -52,6 +54,8 @@ import com.extrace.ui.entity.Trace;
 import com.extrace.util.EmptyView;
 import com.extrace.util.TitleLayout;
 import com.extrace.util.layout.ClearEditText;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
@@ -60,6 +64,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.extrace.net.OkHttpClientManager.BASE_URL;
+import static com.extrace.ui.service.LocationInfoShared.getLatLngInfo;
+import static com.extrace.ui.service.LocationInfoShared.saveLatLngInfo;
 
 public class ExpressSearchActivity extends AppCompatActivity implements View.OnKeyListener {
 //    RecyclerViewAdapter mAdapter;
@@ -68,10 +74,7 @@ public class ExpressSearchActivity extends AppCompatActivity implements View.OnK
     private static final String TAG = "ExpressSearchActivity";
     private MapView mMapView;
     private BaiduMap mBaiduMap;
-    public LocationClient mLocationClient;
-    public BDAbstractLocationListener myListener = new ExpressSearchActivity.MyLocationListener();
     private LatLng latLng;
-    private boolean isFirstLoc = true; // 是否首次定位
     
     private NestedScrollView nestedScrollView;
     private EmptyView emptyView;
@@ -110,10 +113,10 @@ public class ExpressSearchActivity extends AppCompatActivity implements View.OnK
     private int screenWidth,screenHeight;
     private void findView() {
         clearEditText = findViewById(R.id.filter_edit);
-        rvTrace = (RecyclerView) findViewById(R.id.rv_trace);
+        rvTrace = findViewById(R.id.rv_trace);
         emptyView = findViewById(R.id.empty);
         emptyView.setErrorType(EmptyView.HIDE_LAYOUT);
-        mMapView = (MapView) findViewById(R.id.bmapView);
+        mMapView = findViewById(R.id.bmapView);
         nestedScrollView = findViewById(R.id.nestScroll);
 
         rvTrace.setVisibility(View.INVISIBLE);
@@ -320,15 +323,8 @@ public class ExpressSearchActivity extends AppCompatActivity implements View.OnK
 
         // 开启定位图层
         mBaiduMap.setMyLocationEnabled(true);
-        mLocationClient = new LocationClient(getApplicationContext());     //声明LocationClient类
-        //配置定位SDK参数
-
         initLocation();
-        mLocationClient.registerLocationListener(myListener);    //注册监听函数
-        //开启定位
-        mLocationClient.start();
-        //图片点击事件，回到定位点
-        mLocationClient.requestLocation();
+
     }
     //配置定位SDK参数
     private void initLocation() {
@@ -350,56 +346,44 @@ public class ExpressSearchActivity extends AppCompatActivity implements View.OnK
         //可选，默认true，定位SDK内部是一个SERVICE，并放到了独立进程，设置是否在stop的时候杀死这个进程，默认不杀死
         option.SetIgnoreCacheException(false);//可选，默认false，设置是否收集CRASH信息，默认收集
         option.setEnableSimulateGps(false);//可选，默认false，设置是否需要过滤GPS仿真结果，默认需要
-        mLocationClient.setLocOption(option);
+
+        navigateTo();
     }
-
-    //实现BDLocationListener接口,BDLocationListener为结果监听接口，异步获取定位结果
-    public class MyLocationListener extends BDAbstractLocationListener {
-
-        @Override
-        public void onReceiveLocation(BDLocation location) {
-            latLng = new LatLng(location.getLatitude(), location.getLongitude());
-            // 构造定位数据
-            MyLocationData locData = new MyLocationData.Builder()
-                    .accuracy(location.getRadius())
-                    // 此处设置开发者获取到的方向信息，顺时针0-360
-                    .direction(100).latitude(location.getLatitude())
-                    .longitude(location.getLongitude()).build();
-            // 设置定位数据
-            mBaiduMap.setMyLocationData(locData);
-            // 当不需要定位图层时关闭定位图层
-            //mBaiduMap.setMyLocationEnabled(false);
-            if (isFirstLoc) {
-                isFirstLoc = false;
-                LatLng ll = new LatLng(location.getLatitude(),
-                        location.getLongitude());
-                //设置地图的缩放级别：
-                MapStatus.Builder builder = new MapStatus.Builder();
-                builder.target(ll).zoom(17.0f);
-                mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
-
-
-                if (location.getLocType() == BDLocation.TypeGpsLocation) {
-                    // GPS定位结果
-                    Toast.makeText(ExpressSearchActivity.this, location.getAddrStr(), Toast.LENGTH_SHORT).show();
-                    //showAddr.setText("你的位置："+location.getAddrStr());
-                } else if (location.getLocType() == BDLocation.TypeNetWorkLocation) {
-                    // 网络定位结果
-                    Toast.makeText(ExpressSearchActivity.this, location.getAddrStr(), Toast.LENGTH_SHORT).show();
-                    //showAddr.setText("你的位置："+location.getAddrStr());
-                } else if (location.getLocType() == BDLocation.TypeOffLineLocation) {
-                    // 离线定位结果
-                    Toast.makeText(ExpressSearchActivity.this, "启动离线定位", Toast.LENGTH_SHORT).show();
-                    //showAddr.setText("你的位置："+location.getAddrStr());
-                } else if (location.getLocType() == BDLocation.TypeServerError) {
-                    Toast.makeText(ExpressSearchActivity.this, "服务器错误，请检查", Toast.LENGTH_SHORT).show();
-                } else if (location.getLocType() == BDLocation.TypeNetWorkException) {
-                    Toast.makeText(ExpressSearchActivity.this, "网络错误，请检查", Toast.LENGTH_SHORT).show();
-                } else if (location.getLocType() == BDLocation.TypeCriteriaException) {
-                    Toast.makeText(ExpressSearchActivity.this, "手机模式错误，请检查是否飞行", Toast.LENGTH_SHORT).show();
-                }
+    private void navigateTo() {
+        Log.d(TAG, "navigateTo: ");
+        String latStr = getLatLngInfo(getApplicationContext());
+        if (!"".equals(latStr)){
+            Gson gson = new Gson();
+            List<LatLng> latLngList = gson.fromJson(latStr,new TypeToken<List<LatLng>>(){}.getType());
+            if (latLngList != null){
+                points.addAll(latLngList);
+                Log.e(TAG, "navigateTo: "+points.toString() );
             }
         }
+        if (points != null) { //坐标点列表-不为空时移动至此
+            int index = points.size()-1;
+            LatLng ll = new LatLng(points.get(index).latitude,
+                    points.get(index).longitude);
+            //设置地图的缩放级别：
+            MapStatus.Builder builder = new MapStatus.Builder();
+            builder.target(ll).zoom(17.0f);
+            mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
+            drawLineOnMap(points);
+        }
     }
+    /**
+     * 在地图上划线，轨迹！
+     */
+    private List<LatLng> points = new ArrayList<>();
+    private void drawLineOnMap(List<LatLng> points) {
 
+        //设置折线的属性
+        OverlayOptions mOverlayOptions = new PolylineOptions()
+                .width(10)
+                .color(getResources().getColor(R.color.colorAccent))
+                .points(points);
+        //在地图上绘制折线
+        //mPloyline 折线对象
+        Overlay mPolyline = mBaiduMap.addOverlay(mOverlayOptions);
+    }
 }

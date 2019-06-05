@@ -8,6 +8,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -31,9 +32,14 @@ import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.extrace.ui.R;
 import com.extrace.util.TitleLayout;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.extrace.ui.service.LocationInfoShared.getLatLngInfo;
+import static com.extrace.ui.service.LocationInfoShared.saveLatLngInfo;
 
 public class MyLocationActivity extends AppCompatActivity implements View.OnClickListener {
     private MapView mMapView;
@@ -45,7 +51,7 @@ public class MyLocationActivity extends AppCompatActivity implements View.OnClic
     private TextView buttons;
     private LatLng latLng;
     private boolean isFirstLoc = true; // 是否首次定位
-
+    private static final String TAG = "MyLocationActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +69,15 @@ public class MyLocationActivity extends AppCompatActivity implements View.OnClic
         titleLayout.hideTitleEdit();
 
         initView();
-
+        String latStr = getLatLngInfo(getApplicationContext());
+        if (!"".equals(latStr)){
+            Gson gson = new Gson();
+            List<LatLng> latLngList = gson.fromJson(latStr,new TypeToken<List<LatLng>>(){}.getType());
+            if (latLngList != null){
+                points.addAll(latLngList);
+                Log.e(TAG, "onCreate: "+points.toString());
+            }
+        }
         initMap();
         if (ContextCompat.checkSelfPermission(MyLocationActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED){
@@ -169,8 +183,14 @@ public class MyLocationActivity extends AppCompatActivity implements View.OnClic
     /**
      * 在地图上划线，轨迹！
      */
-    private List<LatLng> points = new ArrayList<LatLng>();
+    private List<LatLng> points = new ArrayList<>();
     private void drawLineOnMap(List<LatLng> points) {
+
+        Gson gson = new Gson();
+        String jsonObject = gson.toJson(points);
+        Log.d(TAG, "drawLineOnMap: "+jsonObject);
+        saveLatLngInfo(getApplicationContext(),jsonObject);
+
         //设置折线的属性
         OverlayOptions mOverlayOptions = new PolylineOptions()
                 .width(10)
@@ -226,7 +246,7 @@ public class MyLocationActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void initView() {
-        mMapView = (MapView) findViewById(R.id.bmapView);
+        mMapView = findViewById(R.id.bmapView);
         bt =  findViewById(R.id.bt);
         bt.setOnClickListener(this);
         button =  findViewById(R.id.button);
