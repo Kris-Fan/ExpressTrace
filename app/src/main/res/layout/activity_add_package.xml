@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_gray">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/menu_bg_normal"
+        android:paddingLeft="@dimen/size_18sp"
+        android:paddingRight="@dimen/size_18sp"
+        android:paddingTop="@dimen/size_18sp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/title1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="快递员编号:"
+            android:textColor="@color/colorGray"
+            android:textSize="@dimen/size_18sp" />
+        <TextView
+            android:layout_toRightOf="@+id/title1"
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorGray"
+            android:textSize="@dimen/size_18sp" />
+
+        <EditText
+            android:id="@+id/next_node"
+            android:layout_below="@+id/title1"
+            android:layout_width="match_parent"
+            android:layout_marginTop="8dp"
+            android:hint="点击选择网点"
+            android:textColor="@color/colorGray"
+            android:textSize="@dimen/size_18sp"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:layout_marginTop="10dp"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/title1"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:scaleType="fitCenter"
+            android:src="@mipmap/icon_express_send" />
+        <TextView
+            android:id="@+id/next_node_code"
+            android:layout_width="wrap_content"
+            android:visibility="gone"
+            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_below="@id/next_node"
+            android:paddingBottom="8dip"
+            android:paddingLeft="15dip"
+            android:paddingRight="15dip"
+            android:layout_marginTop="8dip"
+            android:background="@drawable/menu_selector">
+
+            <LinearLayout
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/package_barcode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:gravity="center"
+                    android:visibility="invisible"
+                    android:text="包裹编号"
+                    android:textColor="@color/colorGray"
+                    android:textSize="@dimen/size_18sp" />
+
+                <TextView
+                    android:id="@+id/expressId"
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginLeft="8dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/size_14sp"
+                    android:visibility="invisible"/>
+            </LinearLayout>
+            <ImageView
+                android:id="@+id/ivCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </ImageView>
+        </LinearLayout>
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ly_save"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:gravity="center_horizontal"
+        android:background="@drawable/tab_background">
+        <ImageView
+            android:gravity="center_vertical"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="@dimen/size_18sp"
+            android:src="@mipmap/icon_upload"/>
+        <TextView
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimaryLight"
+            android:textSize="20dp"
+            android:text="@string/action_ok" />
+    </LinearLayout>
+</RelativeLayout>

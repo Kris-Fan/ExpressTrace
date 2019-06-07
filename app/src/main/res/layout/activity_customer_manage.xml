@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -24,9 +23,9 @@
             android:background="@drawable/bg_round_normal"
             android:drawableLeft="@mipmap/ic_search_green"
             android:singleLine="true"
-            android:hint=" 请输入客户姓名"
+            android:hint="@string/hint_enter_customer_name"
             android:maxLines="1"
-            android:textSize="15dp" />
+            android:textSize="15sp" />
     </LinearLayout>
 
     <FrameLayout
@@ -42,11 +41,10 @@
             android:id="@+id/sideBar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/filter_edit"
             app:chooseTextColor="@android:color/white"
             app:textColor="#969696"
             app:backgroundColor="@color/colorAccent"
-            app:textSize="10sp"
+            app:textSize="@dimen/size_10sp"
             app:hintTextSize="32sp"
             app:radius="20dp"
             app:circleRadius="24dp"/>
@@ -64,8 +62,9 @@
         android:layout_gravity="center"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:src="@mipmap/add"
+        android:src="@mipmap/icon_add_white_no_border"
         android:layout_marginBottom="25dp"
-        android:background="@drawable/bg_round_normal_green">
+        android:background="@drawable/bg_round_normal_green"
+        android:contentDescription="@string/action_new">
     </ImageView>
 </RelativeLayout>

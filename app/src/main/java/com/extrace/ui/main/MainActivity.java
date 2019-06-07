@@ -1,6 +1,8 @@
 package com.extrace.ui.main;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -35,6 +37,7 @@ import com.extrace.ui.fragment.MainMenuFragment;
 import com.extrace.ui.fragment.MainOrderFragment;
 import com.extrace.ui.fragment.MePageFragment;
 import com.extrace.ui.service.ActivityCollector;
+import com.extrace.ui.service.LoginService;
 import com.extrace.util.UriUtils;
 import com.king.zxing.Intents;
 import com.king.zxing.util.CodeUtils;
@@ -138,15 +141,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
             case R.id.ly_tab_menu_poi:
-                setSelected();
-                mTextView2.setSelected(true);
-                mTextNum2.setVisibility(View.INVISIBLE);
-                Log.e("zhn","llllll---");
-                if(fg2==null){
-                    fg2 = new MainOrderFragment();
-                    transaction.add(R.id.fragment_container,fg2);
+                if (LoginService.isLogined(this)) {
+                    setSelected();
+                    mTextView2.setSelected(true);
+                    mTextNum2.setVisibility(View.INVISIBLE);
+                    if (fg2 == null) {
+                        fg2 = new MainOrderFragment();
+                        transaction.add(R.id.fragment_container, fg2);
+                    } else {
+                        transaction.show(fg2);
+                    }
                 }else{
-                    transaction.show(fg2);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setTitle("请先登录！");
+                    builder.setMessage("访问受限，点击确认立即登录");
+                    builder.setPositiveButton(getResources().getString(R.string.confirm), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                            startActivityForResult(intent, 666);
+                        }
+                    });
+                    builder.setNegativeButton(getResources().getString(R.string.cancel),null);
+                    builder.show();
                 }
                 break;
             case R.id.ly_tab_menu_user:
@@ -231,10 +248,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private boolean mIsExit;
-    @Override
+
     /**
-     * 双击返回键退出
+     * 双击返回
+     * @param keyCode
+     * @param event
+     * @return
      */
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
         if (keyCode == KeyEvent.KEYCODE_BACK) {

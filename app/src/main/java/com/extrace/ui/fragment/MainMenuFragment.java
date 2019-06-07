@@ -1,6 +1,8 @@
 package com.extrace.ui.fragment;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -23,7 +25,9 @@ import com.extrace.ui.main.CallActivity;
 import com.extrace.ui.main.CustomerEditActivity;
 import com.extrace.ui.main.CustomerManageActivity;
 import com.extrace.ui.main.ExpressSearchActivity;
+import com.extrace.ui.main.LoginActivity;
 import com.extrace.ui.main.ScanBarcodeActivity;
+import com.extrace.ui.service.LoginService;
 import com.extrace.util.UriUtils;
 import com.king.zxing.util.CodeUtils;
 
@@ -109,49 +113,69 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         Intent intent;
-        switch (v.getId()){
-            case R.id.ly_tab_menu1:
-                intent = new Intent(getContext(), ExpressSearchActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.ly_tab_menu2:
-                intent = new Intent(getContext(), CustomerEditActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.ly_tab_menu3:
-                intent = new Intent(getContext(), ScanBarcodeActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.ly_function1:
-                intent = new Intent(getContext(), CallActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.ly_function2:   //default
+        if (LoginService.isLogined(getContext())) {
+            switch (v.getId()) {
+                case R.id.ly_tab_menu1:
+                    intent = new Intent(getContext(), ExpressSearchActivity.class);
+                    startActivity(intent);
+                    break;
+                case R.id.ly_tab_menu2:
+                    intent = new Intent(getContext(), CustomerEditActivity.class);
+                    startActivity(intent);
+                    break;
+                case R.id.ly_tab_menu3:
+                    intent = new Intent(getContext(), ScanBarcodeActivity.class);
+                    startActivity(intent);
+                    break;
+                case R.id.ly_function1:
+                    intent = new Intent(getContext(), CallActivity.class);
+                    startActivity(intent);
+                    break;
+                case R.id.ly_function2:   //default
 //                this.cls = CaptureActivity.class;
 //                this.title = "";//((TextView)v).getText().toString();
 //
 //                startScan(cls,title);
-                break;
-            case R.id.ly_function3:   //连续扫，+自定义高级界面
+                    break;
+                case R.id.ly_function3:   //连续扫，+自定义高级界面
 //                this.cls = CustomCaptureActivity.class;
 //                this.title = "";//this.getText().toString();
 //                isContinuousScan = true;
 //                startScan(cls,title);
-                intent = new Intent(getContext(), ExpressSearchActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.ly_function4:
-                break;
-            case R.id.rl_function5:
-                intent = new Intent(getContext(), CustomerManageActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.ly_function6:   //自定义一般界面
+                    intent = new Intent(getContext(), ExpressSearchActivity.class);
+                    startActivity(intent);
+                    break;
+                case R.id.ly_function4:
+                    break;
+                case R.id.rl_function5:
+                    intent = new Intent(getContext(), CustomerManageActivity.class);
+                    startActivity(intent);
+                    break;
+                case R.id.ly_function6:   //自定义一般界面
 //                this.cls = EasyCaptureActivity.class;
 //                this.title = "";//((TextView)v).getText().toString();
 //
 //                startScan(cls,title);
-                break;
+                    break;
+            }
+        }else { //未登录状态将不可访问除搜索外的所有功能，并提示
+            if (v.getId() == R.id.ly_tab_menu1){
+                intent = new Intent(getContext(), ExpressSearchActivity.class);
+                startActivity(intent);
+            }else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("请先登录！");
+                builder.setMessage("功能受限，点击确认立即登录");
+                builder.setPositiveButton(getResources().getString(R.string.confirm), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(getActivity(), LoginActivity.class);
+                        startActivityForResult(intent, 666);
+                    }
+                });
+                builder.setNegativeButton(getResources().getString(R.string.cancel), null);
+                builder.show();
+            }
         }
 
     }

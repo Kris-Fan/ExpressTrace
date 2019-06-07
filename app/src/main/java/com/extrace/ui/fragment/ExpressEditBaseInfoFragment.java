@@ -300,9 +300,15 @@ public class ExpressEditBaseInfoFragment extends Fragment implements View.OnClic
     }
 
     private void getCardData() {
-        for (int i = 0; i < 5; i++) {
-            cardItem.add("物品类型"+i);
-        }
+        cardItem.add("0、液体类物品");
+        cardItem.add("1、服饰，毛线，布匹等");
+        cardItem.add("2、易碎物品（陶瓷，玻璃等）");
+        cardItem.add("3、文件，画册等");
+        cardItem.add("4、五金配件，纽扣等易散落物品");
+        cardItem.add("5、时令特产，果蔬等");
+        cardItem.add("6、精密仪器，贵重类");
+        cardItem.add("7、不规则、超大超长类");
+
 
     }
     private void showEditDialog(final int i, String title, String hint) {
@@ -319,7 +325,7 @@ public class ExpressEditBaseInfoFragment extends Fragment implements View.OnClic
                     Toast.makeText(getContext(), "不可为空", Toast.LENGTH_SHORT).show();
                 } else {
 //                    createBarCode(phone);
-                    expressType.setText(cardItem.size()+""+phone);
+                    expressType.setText(cardItem.size()+"、"+phone);
                     //cardItem.add(cardItem.size()+""+phone);
                     editDialog.dismiss();
                     //让软键盘隐藏

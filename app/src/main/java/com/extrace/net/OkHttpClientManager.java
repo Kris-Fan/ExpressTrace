@@ -39,7 +39,7 @@ import java.util.Set;
  */
 public class OkHttpClientManager
 {
-    public static String BASE_URL="http://192.168.43.162:8080"; //此处存储基本的url"http://192.168.3.172:8080";//
+    public static String BASE_URL="http://zhn.alief.top:53071";//"http://192.168.43.162:8080"; //此处存储基本的url
     private static OkHttpClientManager mInstance;
     private OkHttpClient mOkHttpClient;
     private Handler mDelivery;

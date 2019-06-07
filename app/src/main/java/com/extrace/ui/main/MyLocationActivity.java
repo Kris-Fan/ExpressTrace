@@ -30,6 +30,7 @@ import com.baidu.mapapi.map.Overlay;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.utils.DistanceUtil;
 import com.extrace.ui.R;
 import com.extrace.util.TitleLayout;
 import com.google.gson.Gson;
@@ -45,7 +46,7 @@ public class MyLocationActivity extends AppCompatActivity implements View.OnClic
     private MapView mMapView;
     private BaiduMap mBaiduMap;
     public LocationClient mLocationClient;
-    public BDAbstractLocationListener myListener = new MyLocationListener();
+    public BDLocationListener myListener = new MyLocationListener();
     private TextView bt,showAddr;
     private TextView button;
     private TextView buttons;
@@ -122,8 +123,8 @@ public class MyLocationActivity extends AppCompatActivity implements View.OnClic
         option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy
         );//可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
         option.setCoorType("bd09ll");//可选，默认gcj02，设置返回的定位结果坐标系
-        int span = 1000;
-        option.setScanSpan(span);//可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
+        int span = 5*1000;
+        option.setScanSpan(5000);//可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
         option.setIsNeedAddress(true);//可选，设置是否需要地址信息，默认不需要
         option.setOpenGps(true);//可选，默认false,设置是否使用gps
         option.setLocationNotify(true);//可选，默认false，设置是否当GPS有效时按照1S/1次频率输出GPS结果
@@ -131,7 +132,8 @@ public class MyLocationActivity extends AppCompatActivity implements View.OnClic
         // .getLocationDescribe里得到，结果类似于“在北京天安门附近”
         option.setIsNeedLocationPoiList(true);//可选，默认false，设置是否需要POI结果，可以在BDLocation.getPoiList里得到
         option.setIgnoreKillProcess(false);
-        option.setOpenGps(true); // 打开gps
+        option.setWifiCacheTimeOut(5*60*1000);//可选，V7.2版本新增能力
+        //如果设置了该接口，首次启动定位时，会先判断当前Wi-Fi是否超出有效期，若超出有效期，会先重新扫描Wi-Fi，然后定位
 
         //可选，默认true，定位SDK内部是一个SERVICE，并放到了独立进程，设置是否在stop的时候杀死这个进程，默认不杀死
         option.SetIgnoreCacheException(false);//可选，默认false，设置是否收集CRASH信息，默认收集
@@ -140,7 +142,7 @@ public class MyLocationActivity extends AppCompatActivity implements View.OnClic
     }
 
     //实现BDLocationListener接口,BDLocationListener为结果监听接口，异步获取定位结果
-    public class MyLocationListener extends BDAbstractLocationListener {
+    public class MyLocationListener implements BDLocationListener {
 
         @Override
         public void onReceiveLocation(BDLocation location) {
@@ -152,9 +154,22 @@ public class MyLocationActivity extends AppCompatActivity implements View.OnClic
             currentPosition.append(" 区：").append(location.getDistrict());
             currentPosition.append(" 街道：").append(location.getStreet()).append("\n");
             LatLng p1 = new LatLng(location.getLatitude(), location.getLongitude());
+            int oldLen = points.size();
             points.add(p1);
-            if (points.size() > 1){
-                drawLineOnMap(points);
+            int len = points.size();
+            if ( len>= 2){
+                double x = points.get(len-2).latitude;
+                double y = points.get(len-2).longitude;
+                double gapX = Math.abs(x-p1.latitude);
+                double gapY = Math.abs(y-p1.longitude);
+                double dis = DistanceUtil.getDistance(p1, points.get(len-2));
+                if (gapX < 0.0002 && gapY < 0.0002 || dis<=10.0 || dis >= 180.0){
+                    Log.d(TAG, "onReceiveLocation: 不格数据 移除原因： gap:"+gapX+"\t"+gapY+"\tdistance="+dis);
+                    points.remove(len-1);
+                }
+                if (oldLen != points.size()) {
+                    drawLineOnMap(points);
+                }
             }
             if(location.getLocType() == BDLocation.TypeGpsLocation){
                 if (isFirstLoc){Toast.makeText(MyLocationActivity.this, "GSP定位中", Toast.LENGTH_SHORT).show();}

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_gray"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragment.PackageTransTaskFragment">
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_marginTop="30sp"
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutManager="LinearLayoutManager"
+        android:background="@color/bg_gray"/>
+    <LinearLayout
+        android:id="@+id/switchbutton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        android:paddingTop="3dp"
+        android:paddingLeft="@dimen/size_18sp"
+        android:paddingRight="@dimen/size_18sp">
+        <Button
+            android:id="@+id/unfinished"
+            android:text="未处理"
+            android:layout_width="0dp"
+            android:layout_height="38dp"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:background="@drawable/bg_round_left_green"/>
+        <Button
+            android:id="@+id/finished"
+            android:text="已处理"
+            android:layout_width="0dp"
+            android:layout_height="38dp"
+            android:layout_weight="1"
+            android:textColor="@color/colorPrimary"
+            android:background="@drawable/bg_round_right_trans"/>
+    </LinearLayout>
+
+    <Button
+        android:layout_alignParentBottom="true"
+        android:visibility="gone"
+        style="@style/default_button"
+        android:id="@+id/button1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Send Request" />
+    <com.extrace.util.EmptyView
+        android:id="@+id/empty"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </com.extrace.util.EmptyView>
+
+
+
+</RelativeLayout>

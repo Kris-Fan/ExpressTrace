@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/bg_gray"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/size_16sp"
+    android:paddingBottom="4sp"
+    android:paddingRight="@dimen/size_10sp"
+    android:paddingLeft="@dimen/size_10sp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@drawable/bg_round_normal">
+
+
+    <TextView
+        android:id="@+id/top"
+        android:layout_width="wrap_content"
+        android:layout_marginLeft="2dp"
+        android:paddingLeft="@dimen/size_10sp"
+        android:paddingRight="@dimen/size_10sp"
+        android:layout_height="25dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/bg_round_normal_green"
+        android:gravity="center_vertical"
+        android:text="200个包裹"
+        android:textSize="15dp"
+        android:textColor="@color/white"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/rltip"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:background="@color/white">
+
+            <TextView
+                android:id="@+id/from"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_centerHorizontal="true"
+                android:text="来自"
+                android:textColor="@color/colorRed"
+                android:textSize="15dip" />
+
+            <TextView
+                android:id="@+id/tvLine1"
+                android:layout_width="0dp"
+                android:layout_height="39dp"
+                android:layout_below="@id/from"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:id="@+id/to"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_below="@+id/tvLine1"
+                android:layout_centerHorizontal="true"
+                android:text="运往"
+                android:textColor="@color/colorPrimaryLight"
+                android:textSize="15dip" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/rlTimeline"
+            android:layout_width="32dp"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvDot"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_below="@id/tvTopLine"
+                android:layout_centerHorizontal="true"
+                android:background="@mipmap/icon_point_red" />
+
+            <TextView
+                android:id="@+id/tvLine"
+                android:layout_width="1dp"
+                android:layout_height="50dp"
+                android:layout_below="@id/tvDot"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/bg_me_gradient"
+                android:layerType="software" />
+
+            <TextView
+                android:id="@+id/tv2Dot"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_below="@id/tvLine"
+                android:layout_centerHorizontal="true"
+                android:background="@mipmap/icon_timeliness_selected"
+                android:paddingBottom="20dp" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="80dp"
+            android:layout_marginBottom="5dp"
+            android:background="@color/white">
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="2dip"
+                android:singleLine="true"
+                android:text="上一网点"
+                android:textSize="18dip" />
+
+            <TextView
+                android:id="@+id/addr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="55dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="2dip"
+                android:singleLine="true"
+                android:text="下一网点"
+                android:textSize="18dip" />
+        </RelativeLayout>
+    </LinearLayout>
+
+
+
+        <View
+            android:id="@+id/v2"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:background="@color/bg_gray" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:paddingLeft="@dimen/size_14sp"
+            android:paddingRight="@dimen/size_14sp"
+            android:paddingTop="@dimen/size_10sp"
+            android:paddingBottom="@dimen/size_10sp"
+            android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/callprevious"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:background="@color/white"
+                    android:clickable="true"
+                    android:text="联系上一网点"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="18dp" />
+
+                <View
+                    android:id="@+id/v1"
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/bg_gray" />
+
+                <TextView
+                    android:id="@+id/callnext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:background="@color/white"
+                    android:clickable="true"
+                    android:text="联系下一网点"
+                    android:textColor="@color/colorPrimaryLight"
+                    android:textSize="18dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

@@ -155,4 +155,32 @@ public class MyJsonManager {
 
         return traceList;
     }
+
+    /**
+     * 派送列表json解析
+     * @param data
+     * @return
+     */
+    public List<Map<String, Object>> PaisongJsonJXData(String data) {
+        List<Map<String, Object>> list = new ArrayList<>();
+        if (data != null) {
+            try {
+                JSONArray jsonArrayInfo = new JSONArray(data);
+
+                for (int i = 0; i < jsonArrayInfo.length(); i++) {
+                    JSONObject object = jsonArrayInfo.getJSONObject(i);
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("name", object.getString("name"));
+                    map.put("telcode", object.getString("telcode"));
+                    map.put("address", object.getString("address"));
+                    list.add(map);
+                }
+            } catch (JSONException e) {
+                Log.e("customerinfojson", "异常：jsonJXDate");
+                e.printStackTrace();
+            }
+
+        }
+        return list;
+    }
 }

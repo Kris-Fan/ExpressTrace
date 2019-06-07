@@ -2,84 +2,24 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingTop="@dimen/size_10sp"
+    android:paddingLeft="@dimen/size_10sp"
+    android:paddingRight="@dimen/size_10sp"
     android:orientation="horizontal" >
 
-    <RelativeLayout
-        android:id="@+id/rlTimeline"
-        android:layout_width="32dp"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:id="@+id/tvTopLine"
-            android:layout_width="0.5dp"
-            android:layout_height="12dp"
-            android:layout_centerHorizontal="true"
-            android:background="@color/colorGray" />
-
-        <TextView
-            android:id="@+id/tvDot"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:layout_below="@id/tvTopLine"
-            android:layout_centerHorizontal="true"
-            android:background="@mipmap/icon_timeliness_unselected" />
-
-        <TextView
-            android:layout_width="0.5dp"
-            android:layout_height="match_parent"
-            android:layout_below="@id/tvDot"
-            android:layout_centerHorizontal="true"
-            android:background="@color/colorGray" />
-    </RelativeLayout>
 
     <RelativeLayout
         android:padding="5dip"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@drawable/bg_round_normal"
         android:layout_marginBottom="@dimen/size_16sp"
         >
-        <LinearLayout
-            android:id="@+id/l2"
-            android:layout_alignParentRight="true"
-            android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            >
-            <TextView
-                android:id="@+id/time"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:padding="2dip"
-                android:layout_weight="1"
-                android:layout_marginLeft="6dp"
-                android:textSize="15dip"
-                android:gravity="center"
-                android:singleLine="true"
-                android:textColor="@color/colorGray"
-                />
-            <TextView
-                android:id="@+id/st"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"
-                android:layout_marginLeft="6dp"
-                android:padding="2dip"
-                android:textSize="15dip"
-                android:text="状态"
-                android:singleLine="true"
-                android:gravity="center"
-                android:textColor="@color/colorGray"
-                />
-        </LinearLayout>
-
         <LinearLayout
             android:id="@+id/l1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/l2"
-            android:orientation="vertical"
-            android:paddingLeft="8dip" >
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:padding="2dip"
@@ -93,11 +33,10 @@
                     android:layout_alignParentLeft="true"
                     android:layout_weight="1"
                     android:padding="2dip"
-                    android:textSize="18dip"
-                    android:text="姓名"
+                    android:textSize="@dimen/size_18sp"
+                    android:text="收件人"
                     android:singleLine="true"
                     android:gravity="center"
-                    android:textColor="@color/colorBlack"
                     />
 
                 <TextView
@@ -109,9 +48,8 @@
                     android:gravity="center"
                     android:padding="2dip"
                     android:singleLine="true"
-                    android:text="电话"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="18dip" />
+                    android:text="@string/title_tel_code"
+                    android:textSize="18sp" />
 
             </RelativeLayout>
 
@@ -120,14 +58,60 @@
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:padding="2dip"
-                android:textSize="16dip"
+                android:textSize="16sp"
                 android:layout_weight="1"
-                android:text="地址"
+                android:text="@string/title_addr_code"
                 android:singleLine="true"
                 android:layout_alignParentRight="true"
                 android:gravity="center"
                 android:textColor="@color/colorGray"
                 />
+            <View
+                android:layout_height="0.5dip"
+                android:background="@color/bg_gray"
+                android:layout_width="match_parent"/>
+
+            <LinearLayout
+                android:paddingLeft="@dimen/size_14sp"
+                android:paddingRight="@dimen/size_14sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/msg"
+                    android:clickable="true"
+                    android:layout_below="@+id/edtPostCode"
+                    android:layout_marginTop="10dip"
+                    android:background="@color/white"
+                    android:textSize="20sp"
+                    android:textColor="@color/colorPrimaryLight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="发送短信" />
+                <View
+                    android:id="@+id/v1"
+                    android:layout_height="match_parent"
+                    android:background="@color/bg_gray"
+                    android:layout_width="0.5dip"/>
+
+                <TextView
+                    android:id="@+id/phone"
+                    android:clickable="true"
+                    android:layout_marginTop="10dip"
+                    android:layout_below="@+id/edtPostCode"
+                    android:background="@color/white"
+                    android:textSize="20sp"
+                    android:layout_weight="1"
+                    android:textColor="@color/colorPrimaryLight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="拨打电话" />
+
+            </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
 

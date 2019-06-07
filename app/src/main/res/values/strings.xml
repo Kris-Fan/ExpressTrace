@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">啦啦啦快递</string>
-    <string name="tab_bar_home">业务</string>
-    <string name="tab_bar_task">接单</string>
+    <string name="tab_bar_home">首页</string>
+    <string name="tab_bar_task">任务</string>
     <string name="tab_bar_customer">客户</string>
     <string name="tab_bar_me">我</string>
 
@@ -32,7 +32,8 @@
     <string name="title_addr_code">地址：</string>
     <string name="title_post_code">邮编：</string>
     <string name="app_picker_name">应用</string>
-
+    <string name="confirm">确认</string>
+    <string name="cancel">取消</string>
 
     <string name="title_activity_login">登录</string>
     <!-- Strings related to login -->
@@ -132,4 +133,17 @@
     <string name="pref_ringtone_silent">Silent</string>
 
     <string name="pref_title_vibrate">Vibrate</string>
+    <string name="save">保存</string>
+    <string name="hint_enter_customer_name">请输入客户姓名</string>
+    <string name="avatar">头像</string>
+    <string name="express_node">网点</string>
+    <string name="action_logout_account">退出账号</string>
+    <string name="add_coustmer">添加客户</string>
+    <string name="customer_manage">客户管理</string>
+    <string name="express_fee">快递费</string>
+    <string name="express_insurance">保险费</string>
+    <string name="express_weight">物品重量</string>
+    <string name="hint_select_type_of_express">点击选择物品类型</string>
+    <string name="rmb">RMB</string>
+    <string name="kg">kg</string>
 </resources>

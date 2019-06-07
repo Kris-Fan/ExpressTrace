@@ -48,7 +48,7 @@ public class MainOrderFragment extends Fragment {
 
         mFragments.add(new ExpressTaskFragment());
 
-        mFragments.add(new ExpressRevTaskFragment());
+        mFragments.add(new PackageTransTaskFragment());
         mFragments.add(new ExpressTaskFragment());
         //mFragments.add(new ());
 /*        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();

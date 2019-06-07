@@ -5,7 +5,7 @@
     android:background="@color/bg_gray">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <LinearLayout
@@ -133,7 +133,7 @@
                     android:textColor="@color/colorGray"
                     android:background="@drawable/menu_selector"
                     android:textSize="16dip"
-                    android:text="详细地址"/>
+                    android:text="@string/title_addr_detail"/>
 
                 <TextView
                     android:id="@+id/expressRcvAddr"
@@ -145,7 +145,7 @@
                     android:gravity="center_vertical"
                     android:textColor="@color/colorGray"
                     android:textSize="16dip"
-                    android:text="地址"/>
+                    android:text="@string/title_addr_code"/>
 
                 <TextView
                     android:id="@+id/expressRcvRegion"
@@ -157,7 +157,7 @@
                     android:textColor="@color/colorGray"
                     android:background="@drawable/menu_selector"
                     android:textSize="16dip"
-                    android:hint="地区邮编"/>
+                    android:hint="@string/title_post_code"/>
             </LinearLayout>
 
         </LinearLayout>
@@ -236,7 +236,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
                     android:textColor="@color/colorGray"
-                    android:hint="详细地址"
+                    android:hint="@string/title_addr_detail"
                     android:textSize="@dimen/size_16sp" />
 
                 <TextView
@@ -246,7 +246,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
                     android:textColor="@color/colorGray"
-                    android:hint="住址"
+                    android:hint="@string/title_addr_code"
                     android:textSize="@dimen/size_16sp" />
 
                 <TextView
@@ -255,7 +255,7 @@
                     android:layout_height="fill_parent"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
-                    android:hint="地区邮编"
+                    android:hint="@string/title_post_code"
                     android:textColor="@color/colorGray"
                     android:textSize="@dimen/size_16sp" />
             </LinearLayout>
@@ -294,16 +294,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="fill_parent"
                         android:background="@drawable/menu_selector"
-                        android:textColor="@color/colorBlack"
                         android:gravity="center_vertical"
-                        android:hint="点击选择物品类型"
+                        android:hint="@string/hint_select_type_of_express"
                         android:textSize="@dimen/size_14sp" />
 
 
 
                 </LinearLayout>
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -313,35 +312,38 @@
                     android:paddingTop="5dip" >
 
                     <TextView
+                        android:id="@+id/expressWeightTag"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:text="物品重量"
+                        android:text="@string/express_weight"
                         android:textColor="@color/colorGray"
                         android:textStyle="bold"
                         android:textSize="@dimen/size_16sp" />
 
                     <EditText
                         android:id="@+id/expressWeight"
+                        android:layout_toRightOf="@+id/expressWeightTag"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@drawable/menu_selector"
                         android:inputType="numberDecimal"
-                        android:layout_marginLeft="8dp"
+                        android:layout_marginLeft="2dp"
                         android:textColor="@color/colorGray"
                         android:gravity="center_vertical"
 
                         android:textSize="@dimen/size_16sp" />
                     <TextView
-                        android:layout_width="50dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
                         android:gravity="right"
-                        android:text="kg"
+                        android:text="@string/kg"
                         android:textColor="@color/colorGray"
                         android:textStyle="bold"
                         android:textSize="@dimen/size_16sp" />
-                </LinearLayout>
+                </RelativeLayout>
 
             </LinearLayout>
             <LinearLayout
@@ -371,7 +373,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:layout_centerVertical="true"
-                        android:text="快递费"
+                        android:text="@string/express_fee"
                         android:textColor="@color/colorGray"
                         android:textStyle="bold"
                         android:textSize="@dimen/size_16sp" />
@@ -389,12 +391,12 @@
                         android:gravity="center_vertical"
                         android:textSize="@dimen/size_16sp" />
                     <TextView
-                        android:layout_width="50dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="right"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:text="RMB"
+                        android:text="@string/rmb"
                         android:textColor="@color/colorGray"
                         android:textStyle="bold"
                         android:textSize="@dimen/size_16sp" />
@@ -413,7 +415,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
                         android:textColor="@color/colorGray"
-                        android:text="保险费"
+                        android:text="@string/express_insurance"
                         android:textStyle="bold"
                         android:textSize="@dimen/size_16sp" />
 
@@ -429,10 +431,10 @@
                         android:gravity="center_vertical"
                         android:textSize="@dimen/size_16sp" />
                     <TextView
-                        android:layout_width="50dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="right"
-                        android:text="RMB"
+                        android:text="@string/rmb"
                         android:textColor="@color/colorGray"
                         android:textStyle="bold"
                         android:textSize="@dimen/size_16sp" />

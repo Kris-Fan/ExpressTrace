@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- shape的默认形状是rectangle，还有oval(椭圆),line（线）,ring（圆环 ）-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--corners 的更多属性分别设置上下左右角的弧度-->
+    <corners
+        android:topLeftRadius="0dp"
+        android:bottomLeftRadius="0dp"
+        android:topRightRadius="20dp"
+        android:bottomRightRadius="20dp"  />
+    <!--填充色-->
+    <solid android:color="@color/bg_gray_trans"></solid>
+
+    <!-- 矩形的边框的宽度,每段虚线的长度，和两段虚线之间的颜色和颜色 -->
+    <stroke
+        android:width="3dp"
+        android:dashWidth="2dp"
+        android:dashGap="0dp"
+        android:color="@color/colorPrimary"></stroke>
+</shape>

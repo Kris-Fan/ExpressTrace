@@ -33,6 +33,8 @@ import com.extrace.ui.main.MyParcelActivity;
 import com.extrace.ui.main.NodeActivity;
 import com.extrace.ui.main.SendExpressActivity;
 import com.extrace.ui.main.SettingsActivity;
+import com.extrace.ui.service.LoginService;
+import com.extrace.ui.service.MyService;
 import com.extrace.ui.service.RevExpressDialog;
 import com.extrace.util.CustomCaptureActivity;
 import com.extrace.util.EasyCaptureActivity;
@@ -48,6 +50,7 @@ import static com.extrace.ui.main.MainActivity.KEY_TITLE;
 public class MePageFragment extends Fragment implements View.OnClickListener {
 
     private static final int REQUEST_LOGIN = 0X666;
+    private static final int LOGOUT_CODE =0X555;    //退出状态码
     private Button btnSign;
     //
     private LinearLayout menu_1;
@@ -114,9 +117,9 @@ public class MePageFragment extends Fragment implements View.OnClickListener {
         //显示用户此前录入的数据
         SharedPreferences sPreferences = getActivity().getSharedPreferences("USER_INFO", MODE_PRIVATE);
         String username = sPreferences.getString("username", "");
-        boolean keep = sPreferences.getBoolean("keepLoginSta", false);
+        //boolean keep = sPreferences.getBoolean("keepLoginSta", false);
         String password = sPreferences.getString("password", "");
-        if (!keep && username.equals("")) {
+        if (!LoginService.isLogined(getContext())) {
             textView.setText("请先登录");
             ly_login.setVisibility(View.VISIBLE);
             ly_myInfo.setVisibility(View.GONE);
@@ -142,7 +145,7 @@ public class MePageFragment extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.ly_myInfo:
                 intent = new Intent(getContext(), MyInfoActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent,LOGOUT_CODE);
                 break;
             case R.id.ly_login:
             case R.id.button_sign:
@@ -150,23 +153,37 @@ public class MePageFragment extends Fragment implements View.OnClickListener {
                 startActivityForResult(intent, REQUEST_LOGIN);
                 break;
             case R.id.menu_1://startPhotoCode();
-                intent = new Intent(getContext(), MyParcelActivity.class);
-                startActivity(intent);
+                if (LoginService.isLogined(getContext())) {
+                    intent = new Intent(getContext(), MyParcelActivity.class);
+                    startActivity(intent);
+                }else {
+                    Toast.makeText(getContext(), "请先登录", Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.menu_2:   //default
 //                this.cls = CaptureActivity.class;
 //                this.title = ((TextView) v).getText().toString();
 //                startScan(cls, title);
-                intent = new Intent(getContext(), MyMessageActivity.class);
-                startActivity(intent);
+                if (LoginService.isLogined(getContext())) {
+                    intent = new Intent(getContext(), MyMessageActivity.class);
+                    startActivity(intent);
+                }else {
+                    Toast.makeText(getContext(), "请先登录", Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.menu_3:   //连续扫，+自定义高级界面
 //                this.cls = CustomCaptureActivity.class;
 //                this.title = ((TextView) v).getText().toString();
 //                isContinuousScan = true;
 //                startScan(cls, title);
-                intent = new Intent(getContext(), MyLocationActivity.class);
-                startActivity(intent);
+                if (LoginService.isLogined(getContext())) {
+                    Intent startIntent = new Intent(getActivity(), MyService.class);
+                    getActivity().startService(startIntent);
+                    intent = new Intent(getContext(), MyLocationActivity.class);
+                    startActivity(intent);
+                }else {
+                    Toast.makeText(getContext(), "请先登录", Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.menu_4:   //自定义一般界面
 //                this.cls = EasyCaptureActivity.class;
@@ -182,27 +199,33 @@ public class MePageFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == REQUEST_LOGIN && data != null) {
-            permission_Check = data.getIntExtra("permission_check",-1);
-            Log.d("MainActivity_onresume", "initview " + permission_Check);
-            if (permission_Check != -1) {
-                if (permission_Check == 1) {
-                    //Log.d("MainActivity_onresume", "重新加载" + permission_Check);
-                    Toast.makeText(getContext(), "登录成功", Toast.LENGTH_SHORT).show();
-                }else {
-                    Toast.makeText(getContext(), "登录已却认，当前无权限", Toast.LENGTH_SHORT).show();
+        if (resultCode == RESULT_OK ) {
+            if (requestCode == REQUEST_LOGIN && data != null) {
+                permission_Check = data.getIntExtra("permission_check", -1);
+                Log.d("MainActivity_onresume", "initview " + permission_Check);
+                if (permission_Check != -1) {
+                    if (permission_Check == 1) {
+                        //Log.d("MainActivity_onresume", "重新加载" + permission_Check);
+                        Toast.makeText(getContext(), "登录成功", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getContext(), "登录已却认，当前无权限", Toast.LENGTH_SHORT).show();
+                    }
+                    Log.e("lalal", "mePage 登录回显：" + permission_Check);
+                    info = data.getStringExtra("info_username");
+                    textView.setVisibility(View.VISIBLE);
+                    btnSign.setText("重新登录/退出");
+                    textView.setText("欢迎您" + info + "， 登录成功");
+                    tv_name.setText(info);
+                    ly_login.setVisibility(View.GONE);
+                    ly_myInfo.setVisibility(View.VISIBLE);
                 }
-                Log.e("lalal","mePage 登录回显："+permission_Check);
-                info = data.getStringExtra("info_username");
-                textView.setVisibility(View.VISIBLE);
-                btnSign.setText("重新登录/退出");
-                textView.setText("欢迎您" + info + "， 登录成功");
-                tv_name.setText(info);
-                ly_login.setVisibility(View.GONE);
-                ly_myInfo.setVisibility(View.VISIBLE);
             }
-        }else {
-            Toast.makeText(getContext(), "取消", Toast.LENGTH_SHORT).show();
+            if (requestCode == LOGOUT_CODE){
+                Toast.makeText(getContext(), "账号已退出", Toast.LENGTH_SHORT).show();
+                textView.setText("请先登录");
+                ly_login.setVisibility(View.VISIBLE);
+                ly_myInfo.setVisibility(View.GONE);
+            }
         }
     }
 }

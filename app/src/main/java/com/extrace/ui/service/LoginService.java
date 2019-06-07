@@ -5,19 +5,18 @@ import android.content.SharedPreferences;
 
 import com.extrace.ui.entity.UserInfo;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class LoginService {
     /**
      * 保存用户名 密码的业务方法
      * @param context 上下文
      * @param username 用户名
      * @param pas 密码
-     * @return true 保存成功  false 保存失败
      */
     public static void saveUserInfo(Context context, String username, String pas, Boolean ch){
-        /**
-         * SharedPreferences将用户的数据存储到该包下的shared_prefs/config.xml文件中，
-         * 并且设置该文件的读取方式为私有，即只有该软件自身可以访问该文件
-         */
+        //SharedPreferences将用户的数据存储到该包下的shared_prefs/config.xml文件中，
+        // 并且设置该文件的读取方式为私有，即只有该软件自身可以访问该文件
         SharedPreferences sPreferences=context.getSharedPreferences("config", context.MODE_PRIVATE);
         SharedPreferences.Editor editor=sPreferences.edit();
         //当然sharepreference会对一些特殊的字符进行转义，使得读取的时候更加准确
@@ -28,14 +27,10 @@ public class LoginService {
         editor.putBoolean("or", ch);
         //editor.putInt("int", 47);
         //切记最后要使用commit方法将数据写入文件
-        editor.commit();
+        editor.apply();
     }
 
     public static void saveUserInfo(Context context, UserInfo userInfo, Boolean ch,Boolean keepLogin){
-        /**
-         * SharedPreferences将用户的数据存储到该包下的shared_prefs/config.xml文件中，
-         * 并且设置该文件的读取方式为私有，即只有该软件自身可以访问该文件
-         */
         SharedPreferences sPreferences=context.getSharedPreferences("USER_INFO", context.MODE_PRIVATE);
         SharedPreferences.Editor editor=sPreferences.edit();
 
@@ -63,7 +58,22 @@ public class LoginService {
             //editor.putInt("int", 47);
         }
         //切记最后要使用commit方法将数据写入文件
-        editor.commit();
+        editor.apply();
 
+    }
+    public static int getUserId(Context context){
+        SharedPreferences sPreferences=context.getSharedPreferences("USER_INFO", MODE_PRIVATE);
+        return sPreferences.getInt("uid",-1);
+    }
+    public static boolean isLogined(Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences("USER_INFO",MODE_PRIVATE);
+        return sharedPreferences.getBoolean("keepLoginSta",false) && sharedPreferences.getInt("uid",-1)!=-1;
+    }
+    //退出账号
+    public static void logout(Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences("USER_INFO",MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("keepLoginSta",false);
+        editor.commit();
     }
 }

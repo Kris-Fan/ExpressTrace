@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".main.MyInfoActivity">
+    <com.extrace.util.TitleLayout
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></com.extrace.util.TitleLayout>
+    <Button
+        android:id="@+id/btn_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:textColor="@color/white"
+        android:background="@color/transparent"
+        android:text="@string/save"/>
     <RelativeLayout
+        android:layout_below="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <RelativeLayout
@@ -14,6 +26,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/menu_selector"
             android:paddingRight="@dimen/size_18sp"
+            android:paddingLeft="@dimen/size_18sp"
             style="@style/menu_style">
 
             <TextView
@@ -23,13 +36,14 @@
                 android:textSize="@dimen/size_16sp"
                 android:layout_centerVertical="true"
                 android:paddingLeft="0dp"
-                android:text="头像"/>
+                android:text="@string/avatar"/>
             <ImageView
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
-                android:src="@mipmap/anonymous"/>
+                android:src="@mipmap/anonymous"
+                android:contentDescription="@string/avatar"/>
         </RelativeLayout>
 
         <LinearLayout
@@ -46,7 +60,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:paddingLeft="0dp"
-                android:text="姓名"/>
+                android:text="@string/title_name"/>
             <TextView
                 android:id="@+id/name"
                 android:gravity="right"
@@ -70,7 +84,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:paddingLeft="0dp"
-                android:text="手机号"/>
+                android:text="@string/title_tel_code"/>
             <TextView
                 android:gravity="right"
                 android:id="@+id/telCode"
@@ -95,7 +109,7 @@
                 android:layout_width="match_parent"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:text="所在网点"/>
+                android:text="@string/express_node"/>
             <TextView
                 android:id="@+id/tv_site"
                 android:gravity="right"
@@ -106,7 +120,6 @@
                 android:text="@string/title_name"/>
         </LinearLayout>
         <LinearLayout
-            android:layout_marginTop="@dimen/size_16sp"
             android:id="@+id/menu_5"
             android:layout_below="@id/menu_4"
             android:layout_width="match_parent"
@@ -114,13 +127,48 @@
             android:orientation="horizontal"
             android:background="@color/transparent"
             style="@style/menu_style">
-          <Button
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:textColor="@color/white"
-              android:text="修改信息"/>
+          <!--<Button-->
+              <!--android:layout_width="match_parent"-->
+              <!--android:layout_height="wrap_content"-->
+              <!--android:textColor="@color/white"-->
+              <!--android:text="修改信息"/>-->
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/login_out"
+            android:layout_below="@id/menu_5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/menu_selector"
+            android:orientation="horizontal"
+            style="@style/menu_style">
+        <TextView
+            style="@style/menu_style_no_bg"
+            android:paddingLeft="0dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/action_logout_account"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_marginTop="@dimen/size_16sp"
+            android:id="@+id/exist_app"
+            android:layout_below="@id/login_out"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/menu_selector"
+            android:orientation="horizontal"
+            style="@style/menu_style">
+            <TextView
+                android:gravity="center"
+                style="@style/menu_style_no_bg"
+                android:paddingLeft="0dp"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorRed"
+                android:text="@string/action_logout"/>
         </LinearLayout>
     </RelativeLayout>
 
 
-</LinearLayout>
+</RelativeLayout>

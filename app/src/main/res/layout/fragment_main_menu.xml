@@ -3,12 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_below="@+id/appbar"
-    android:orientation="vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/white"
         android:orientation="vertical">
         <LinearLayout
@@ -32,7 +31,8 @@
             android:paddingBottom="5dp"
             android:layout_gravity="center_vertical"
             android:gravity="bottom"
-            android:background="@color/colorPrimary">
+            android:background="@color/colorPrimary"
+            android:baselineAligned="false">
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -42,7 +42,8 @@
                 android:orientation="vertical">
                 <ImageView
                     style="@style/ic_me_page"
-                    android:src="@mipmap/icon_search"/>
+                    android:src="@mipmap/icon_search"
+                    android:contentDescription="@string/action_search"/>
                 <TextView
                     style="@style/my_main_function"
                     android:textColor="@color/white"
@@ -60,7 +61,8 @@
                     style="@style/ic_me_page"
                     android:layout_width="65dp"
                     android:layout_height="65dp"
-                    android:src="@mipmap/icon_scan_bar_white"/>
+                    android:src="@mipmap/icon_scan_bar_white"
+                    android:contentDescription="@string/scan_gun"/>
                 <TextView
                     style="@style/my_main_function"
                     android:textColor="@color/white"
@@ -77,11 +79,12 @@
                 android:orientation="vertical">
                 <ImageView
                     style="@style/ic_me_page"
+                    android:contentDescription="@string/add_coustmer"
                     android:src="@mipmap/icon_add_customer"/>
                 <TextView
                     style="@style/my_main_function"
                     android:textColor="@color/white"
-                    android:text="添加客户" />
+                    android:text="@string/add_coustmer" />
             </LinearLayout>
 
 
@@ -106,7 +109,7 @@
                 <TextView
                     style="@style/my_main_function"
                     android:textColor="@color/colorGray"
-                    android:textSize="12dp"/>
+                    android:textSize="12sp"/>
 
             </LinearLayout>
             <LinearLayout
@@ -125,7 +128,7 @@
                 <TextView
                     style="@style/my_main_function"
                     android:textColor="@color/colorGray"
-                    android:textSize="12dp"/>
+                    android:textSize="12sp"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="0dp"
@@ -143,7 +146,7 @@
                 <TextView
                     style="@style/my_main_function"
                     android:textColor="@color/colorGray"
-                    android:textSize="12dp"/>
+                    android:textSize="12sp"/>
 
             </LinearLayout>
 
@@ -167,7 +170,7 @@
                 <TextView
                     style="@style/my_main_function"
                     android:textColor="@color/colorGray"
-                    android:textSize="12dp"/>
+                    android:textSize="12sp"/>
 
             </LinearLayout>
             <RelativeLayout
@@ -184,22 +187,16 @@
                     android:orientation="vertical">
                     <ImageView
                         style="@style/ic_me_page"
-                        android:src="@mipmap/icon_customer_mg"/>
+                        android:src="@mipmap/icon_customer_mg"
+                        android:contentDescription="@string/customer_manage"/>
                     <TextView
                         style="@style/my_main_function"
-                        android:text="客户管理" />
+                        android:text="@string/customer_manage" />
                     <TextView
                         style="@style/my_main_function"
                         android:textColor="@color/colorGray"
-                        android:textSize="12dp" />
+                        android:textSize="12sp" />
                 </LinearLayout>
-                <TextView
-                    android:layout_width="40dp"
-                    android:layout_height="12dp"
-                    android:layout_marginLeft="46dp"
-                    android:gravity="center"
-                    android:textColor="@color/white"
-                    android:textSize="8sp" />
 
             </RelativeLayout>
             <LinearLayout
@@ -218,14 +215,10 @@
                 <TextView
                     style="@style/my_main_function"
                     android:textColor="@color/colorGray"
-                    android:textSize="12dp" />
+                    android:textSize="12sp" />
             </LinearLayout>
- 
+
         </LinearLayout>
-
-        <include layout="@layout/activity_scan_barcode"></include>
-
-
 
     </LinearLayout>
 

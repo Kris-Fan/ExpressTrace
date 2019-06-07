@@ -16,8 +16,6 @@ import com.extrace.net.OkHttpClientManager;
 import com.extrace.net.json.MyJsonManager;
 import com.extrace.ui.R;
 import com.extrace.ui.adapter.MyHistoryParcelAdapter;
-import com.extrace.ui.adapter.RevTaskRecyclerAdapter;
-import com.extrace.ui.entity.CustomerInfo;
 import com.extrace.ui.entity.ExpressSheet;
 import com.extrace.util.EmptyView;
 import com.squareup.okhttp.Response;
@@ -25,7 +23,6 @@ import com.squareup.okhttp.Response;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static com.extrace.net.OkHttpClientManager.BASE_URL;
 
