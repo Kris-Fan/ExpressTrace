@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private MainMenuFragment fg1;       //首页
     private MainOrderFragment fg2;     // 订单页面
     private MePageFragment fg4;     //"我的"页面
+    private LoginService loginService = new LoginService();
     /**
      * 下边是与首页ViewPager
      */
@@ -141,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
             case R.id.ly_tab_menu_poi:
-                if (LoginService.isLogined(this)) {
+                if (loginService.isLogined(this)) {
                     setSelected();
                     mTextView2.setSelected(true);
                     mTextNum2.setVisibility(View.INVISIBLE);

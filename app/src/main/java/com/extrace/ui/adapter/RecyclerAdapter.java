@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.Layout;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,16 +17,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-/**
- * 派送和揽收任务的适配器
- */
+
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder>{
-    public List<Map<String,Object>> list=new ArrayList<>();
+    public List<Map<String,Object>> list;
     public Context con;
+    public String type;
     public  LayoutInflater inflater;
-    public RecyclerAdapter(List<Map<String,Object>> list, Context con){
+    public RecyclerAdapter(List<Map<String,Object>> list, Context con, String type){
         this.con=con;
         this.list=list;
+        this.type = type;
         inflater=LayoutInflater.from(con);
     }
     @Override
@@ -33,7 +35,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         ViewHolder viewHolder=new ViewHolder(view);
         // view.setOnClickListener(this);
         return viewHolder;
-
     }
 
     @Override
@@ -41,6 +42,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         holder.tv_name.setText(list.get(position).get("name").toString());
         holder.tv_tel.setText(list.get(position).get("telcode").toString());
         holder.tv_addr.setText("地址："+list.get(position).get("address").toString());
+        if(type.equals("paisong")) {
+            holder.tv_expressId.setText("快递单号：" + list.get(position).get("expressId").toString());
+        }
     }
 
     @Override
@@ -49,18 +53,28 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        public TextView tv_name;
-        public TextView tv_tel;
-        public TextView tv_addr;
-        public TextView tv_msg;
-        public TextView tv_phone;
-        public ViewHolder(View itemView) {
+        private TextView tv_name;
+        private TextView tv_tel;
+        private TextView tv_addr;
+        private TextView tv_msg;
+        private TextView tv_phone;
+        private TextView tv_expressId;
+        private ViewHolder(View itemView) {
             super(itemView);
             tv_name= itemView.findViewById(R.id.name);
             tv_tel = itemView.findViewById(R.id.tel);
             tv_addr = itemView.findViewById(R.id.addr);
             tv_msg = itemView.findViewById(R.id.msg);
             tv_phone = itemView.findViewById(R.id.phone);
+            tv_expressId = itemView.findViewById(R.id.expressId);
+            if(type.equals("weilanshou")) {
+                tv_expressId.setText("揽收");
+                tv_expressId.setGravity(Gravity.CENTER);
+                tv_expressId.setOnClickListener(this);
+            }else if(type.equals("yilanshou")){
+                tv_expressId.setHeight(0);
+                tv_expressId.setVisibility(View.INVISIBLE);
+            }
             tv_msg.setOnClickListener(this);
             tv_phone.setOnClickListener(this);
         }

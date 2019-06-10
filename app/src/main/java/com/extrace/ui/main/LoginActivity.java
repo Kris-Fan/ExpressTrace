@@ -387,7 +387,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             UserInfo userInfo = new UserInfo();
                             userInfo.setUid(infoObject.getInt("uid"));
                             userInfo.setName(infoObject.getString("name"));
-                            userInfo.setPwd(infoObject.getString("pwd"));
+                            userInfo.setPwd(mPassword);
                             userInfo.setUrull(infoObject.getInt("urull"));
                             userInfo.setTelcode(infoObject.getString("telcode"));
                             userInfo.setStatus(infoObject.getInt("status"));

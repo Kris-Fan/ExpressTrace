@@ -23,8 +23,10 @@ import com.extrace.ui.service.EditDialog;
 import com.extrace.ui.service.LoginService;
 import com.extrace.util.TitleLayout;
 
+
 public class MyInfoActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private LoginService loginService = new LoginService();
     private RelativeLayout menu_1;
     private LinearLayout menu_2;
     private LinearLayout menu_3;
@@ -73,7 +75,9 @@ public class MyInfoActivity extends AppCompatActivity implements View.OnClickLis
         String username = sPreferences.getString("username", "");
         String tel = sPreferences.getString("telcode", "");
         String dpt = sPreferences.getString("dptid","");
-        name.setText(username);
+        int userRoll = loginService.getUserRoll(this);
+        String userRollName = userRoll == 1 ? "（司机）" : "（快递员）";
+        name.setText(username+userRollName);
         telcode.setText(tel);
         tv_site.setText(dpt);
     }
@@ -93,7 +97,7 @@ public class MyInfoActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.menu_4:   //保存
                 break;
             case R.id.login_out:
-                LoginService.logout(this);
+                loginService.logout(this);
                 Intent intent = new Intent(MyInfoActivity.this, MainActivity.class);
                 setResult(RESULT_OK,intent);
                 finish();

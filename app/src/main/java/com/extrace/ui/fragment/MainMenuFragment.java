@@ -28,11 +28,14 @@ import com.extrace.ui.main.ExpressSearchActivity;
 import com.extrace.ui.main.LoginActivity;
 import com.extrace.ui.main.ScanBarcodeActivity;
 import com.extrace.ui.service.LoginService;
+import com.extrace.util.CustomCaptureActivity;
 import com.extrace.util.UriUtils;
 import com.king.zxing.util.CodeUtils;
 
 import static com.extrace.ui.main.MainActivity.KEY_IS_CONTINUOUS;
 import static com.extrace.ui.main.MainActivity.KEY_TITLE;
+import static com.extrace.ui.main.ScanBarcodeActivity.KEY_CODE;
+import static com.extrace.ui.main.ScanBarcodeActivity.REQUEST_CODE_SCAN_SEND_UPLOAD;
 
 public class MainMenuFragment extends Fragment implements View.OnClickListener {
     public static final int REQUEST_CODE_SCAN = 0X01;
@@ -46,11 +49,11 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
 
     //private ConstraintLayout menuConstraint;
     private LinearLayout ly_scan, ly_add, ly_search;
-    private LinearLayout menu_1,menu_2,menu_3,menu_4;
-    private RelativeLayout menu_5;
-    private LinearLayout menu_6;
-
-
+    private LinearLayout menu_1,menu_2,menu_3,menu_4,driver_menu_1,driver_menu_2,driver_menu_3;
+    private RelativeLayout menu_5,driver_home_menus;
+    private LinearLayout menu_6,home_menus;
+    private LoginService loginService = new LoginService();
+    private static final String TAG = "MainMenuFragment";
 
     public MainMenuFragment() {
         // Required empty public constructor
@@ -61,30 +64,20 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         View view =inflater.inflate(R.layout.fragment_main_menu, container, false);
 
-        ly_scan = view.findViewById(R.id.ly_tab_menu3);
-        ly_add = view.findViewById(R.id.ly_tab_menu2);
-        ly_search = view.findViewById(R.id.ly_tab_menu1);
-        menu_1 = view.findViewById(R.id.ly_function1);
-        menu_2 = view.findViewById(R.id.ly_function2);
-        menu_3 = view.findViewById(R.id.ly_function3);
-        menu_4 = view.findViewById(R.id.ly_function4);
-        menu_5 = view.findViewById(R.id.rl_function5);
-        menu_6 = view.findViewById(R.id.ly_function6);
-
-        initView();
+        initView(view);
         Log.e("MainActivity_oncreat","oncreate调用");
-        bindView();
+        //bindView(view);
         return view;
     }
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        Intent intent = getActivity().getIntent();
-//        initView();
-//        Log.d("MainActivity_onresume","重新加载");
-//    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        Intent intent = getActivity().getIntent();
+        initView(getView());
+        Log.d(TAG, "onResume: ");
+    }
 
-    private void bindView() {
+    private void bindView(View view) {
         menu_1.setOnClickListener(this);
         menu_2.setOnClickListener(this);
         menu_3.setOnClickListener(this);
@@ -97,13 +90,32 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
         ly_search.setOnClickListener(this);
     }
 
-    private void initView() {
-//        //显示用户此前录入的数据
-//        SharedPreferences sPreferences= getActivity().getSharedPreferences("config", MODE_PRIVATE);
-//        String username=sPreferences.getString("username", "");
-//        String password =sPreferences.getString("password", "");
-//
-//        Intent intent = getActivity().getIntent();
+    private void initView(View view) {
+        home_menus = view.findViewById(R.id.home_menu);
+        driver_home_menus = view.findViewById(R.id.driver_home_menu);
+        if (new LoginService().getUserRoll(getContext()) == 0) { //快递员
+            ly_scan = view.findViewById(R.id.ly_tab_menu3);
+            ly_add = view.findViewById(R.id.ly_tab_menu2);
+            ly_search = view.findViewById(R.id.ly_tab_menu1);
+            menu_1 = view.findViewById(R.id.ly_function1);
+            menu_2 = view.findViewById(R.id.ly_function2);
+            menu_3 = view.findViewById(R.id.ly_function3);
+            menu_4 = view.findViewById(R.id.ly_function4);
+            menu_5 = view.findViewById(R.id.rl_function5);
+            menu_6 = view.findViewById(R.id.ly_function6);
+            home_menus.setVisibility(View.VISIBLE);
+            driver_home_menus.setVisibility(View.GONE);
+            bindView(view);
+        }else { //司机
+            home_menus.setVisibility(View.GONE);
+            driver_home_menus.setVisibility(View.VISIBLE);
+            driver_menu_1 = view.findViewById(R.id.driver_tab_menu1);
+            driver_menu_2 = view.findViewById(R.id.driver_tab_menu2);
+            driver_menu_3 = view.findViewById(R.id.driver_tab_menu3);
+            driver_menu_1.setOnClickListener(this);
+            driver_menu_2.setOnClickListener(this);
+            driver_menu_3.setOnClickListener(this);
+        }
 
     }
 
@@ -113,9 +125,10 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         Intent intent;
-        if (LoginService.isLogined(getContext())) {
+        if (loginService.isLogined(getContext())) {
             switch (v.getId()) {
                 case R.id.ly_tab_menu1:
+                case R.id.driver_tab_menu1:
                     intent = new Intent(getContext(), ExpressSearchActivity.class);
                     startActivity(intent);
                     break;
@@ -146,6 +159,7 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
                     startActivity(intent);
                     break;
                 case R.id.ly_function4:
+                case R.id.driver_tab_menu2: //消息
                     break;
                 case R.id.rl_function5:
                     intent = new Intent(getContext(), CustomerManageActivity.class);
@@ -156,6 +170,12 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
 //                this.title = "";//((TextView)v).getText().toString();
 //
 //                startScan(cls,title);
+                    break;
+                case R.id.driver_tab_menu3://装货扫描
+                    this.cls = CustomCaptureActivity.class;
+                    this.title = "装货上车";
+                    isContinuousScan =true;
+                    startScan(cls,title,REQUEST_CODE_SCAN_SEND_UPLOAD);
                     break;
             }
         }else { //未登录状态将不可访问除搜索外的所有功能，并提示
@@ -191,12 +211,13 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
      * @param cls
      * @param title
      */
-    private void startScan(Class<?> cls,String title){
+    private void startScan(Class<?> cls,String title, int code){
         ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeCustomAnimation(getContext(),R.anim.in,R.anim.out);
-        Intent intent = new Intent(getContext(), cls);
+        Intent intent = new Intent(getActivity(), cls);
         intent.putExtra(KEY_TITLE,title);
+        intent.putExtra(KEY_CODE,code);
         intent.putExtra(KEY_IS_CONTINUOUS,isContinuousScan);
-        ActivityCompat.startActivityForResult(getActivity(),intent,REQUEST_CODE_SCAN,optionsCompat.toBundle());
+        ActivityCompat.startActivityForResult(getActivity(),intent,code,optionsCompat.toBundle());
     }
 
 //    @Override

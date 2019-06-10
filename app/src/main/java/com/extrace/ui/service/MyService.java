@@ -32,11 +32,10 @@ import java.util.TimerTask;
 import static com.extrace.net.OkHttpClientManager.BASE_URL;
 import static com.extrace.ui.service.LocationInfoShared.clearLatLng;
 import static com.extrace.ui.service.LocationInfoShared.getLatLngInfo;
-import static com.extrace.ui.service.LoginService.getUserId;
-import static com.extrace.ui.service.LoginService.isLogined;
 
 public class MyService extends Service {
     private static final String TAG = "MyService";
+    private LoginService loginService = new LoginService();
     private Runnable runnable;
     private Handler handler;
     private int Time = 1000*1*60;//周期时间1min
@@ -69,7 +68,7 @@ public class MyService extends Service {
                 if (!"".equals(latStr)){
                     Gson gson = new Gson();
                     List<LatLng> latLngList = gson.fromJson(latStr,new TypeToken<List<LatLng>>(){}.getType());
-                    if (latLngList != null){
+                    if (latLngList!= null && latLngList.size()>=2){
                         points.clear();
                         points.addAll(latLngList);
                         Log.e(TAG, "onCreate: "+points.toString());
@@ -80,10 +79,11 @@ public class MyService extends Service {
 
                 Log.e(TAG, "run: 2min重复执行:distance:"+finalDistance);
 
-                if (isLogined(getApplicationContext()) && finalDistance >=250.0 || points.size() >2000) {
+                if (loginService.isLogined(getApplicationContext()) && finalDistance >=250.0 || points.size() >2000) {
                     Log.d(TAG, "run: 上传坐标："+latStr);
                     Log.e(TAG, "run: 命中条件1-距离disatance"+finalDistance+"\t2-坐标点长度length："+points.size());
-                    OkHttpClientManager.postAsyn(url + getUserId(getApplicationContext()), new OkHttpClientManager.ResultCallback<String>() {
+                    OkHttpClientManager okHttpClientManager = new OkHttpClientManager(new LoginService().userInfoSha256(getApplicationContext()));
+                    okHttpClientManager.postAsyn(url + loginService.getUserId(getApplicationContext()), new OkHttpClientManager.ResultCallback<String>() {
                                 @Override
                                 public void onError(Request request, Exception e) {
                                     Log.d(TAG, "onError: 上传坐标信息失败");

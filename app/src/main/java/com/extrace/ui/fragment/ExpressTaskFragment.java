@@ -41,6 +41,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.extrace.ui.service.LoginService;
 import com.extrace.util.EmptyView;
 import com.squareup.okhttp.Call;
 import com.squareup.okhttp.OkHttpClient;
@@ -52,16 +53,13 @@ import static com.extrace.net.OkHttpClientManager.BASE_URL;
 
 public class ExpressTaskFragment extends Fragment implements View.OnClickListener {
 
-    private final String tag="ExpressTaskFragment_LOG";
+    private static final String TAG = "ExpressTaskFragment";
     private RecyclerView mRecyclerView;
     private RecyclerAdapter mMyAdapter;
     private LinearLayoutManager mLayoutManager;
     private EmptyView emptyView;
-    private Button buttonMsg;
     private String message="";
-    //private ProgressDialog pd;
 
-    public static final int SHOW_RESPONSE = 0;
     private Button button_sendRequest;
     private Button finished;
     private Button unfinished;
@@ -71,14 +69,15 @@ public class ExpressTaskFragment extends Fragment implements View.OnClickListene
     public List<Map<String,Object>> list=new ArrayList<>();
 
     private String url="";
+    private String type="";
     public ExpressTaskFragment() {
         // Required empty public constructor
     }
     public void alert_edit(View view){
         final EditText et = new EditText(getContext());
         et.setText(message);
-        new AlertDialog.Builder(getContext()).setTitle("请输入默认短信内容")
-                .setIcon(android.R.drawable.sym_def_app_icon)
+        new AlertDialog.Builder(getContext()).setTitle("请输入短信模板内容")
+                //.setIcon(android.R.drawable.sym_def_app_icon)
                 .setView(et)
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
@@ -94,7 +93,7 @@ public class ExpressTaskFragment extends Fragment implements View.OnClickListene
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.e("zhn","啦啦啦 ExpressTask");
+        Log.i(TAG, "onCreateView:啦啦啦 ExpressTask");
         View view = inflater.inflate(R.layout.fragment_list_extask,container, false);
         Bundle args=getArguments();
         SharedPreferences sPreferences = getContext().getSharedPreferences("USER_INFO", MODE_PRIVATE);
@@ -104,6 +103,7 @@ public class ExpressTaskFragment extends Fragment implements View.OnClickListene
         }
         if(args!=null){
             url = args.getString("url")+uid;
+            type = args.getString("type");
         }
         button_sendRequest = view.findViewById(R.id.button1);
         emptyView = view.findViewById(R.id.empty);
@@ -113,11 +113,8 @@ public class ExpressTaskFragment extends Fragment implements View.OnClickListene
         unfinished = view.findViewById(R.id.unfinished);
         unfinished.setOnClickListener(this);
         //initData();
-        Log.e("zhn","list!null 啦啦啦 =  "+list);
+        Log.d(TAG, "onCreateView: list!null 啦啦啦 =  "+list);
         mRecyclerView = view.findViewById(R.id.recycler_view);
-
-        //okhttpDate();
-
         loadData(url);
         emptyView.setOnLayoutClickListener(new View.OnClickListener() {
             @Override
@@ -125,12 +122,10 @@ public class ExpressTaskFragment extends Fragment implements View.OnClickListene
                 loadData(url);
             }
         });
-        //mMyAdapter.setItemClickListener(MyItemClickListener);
         return view;
     }
 
 
-    private static final String TAG = "ExpressTaskFragment";
     private void loadData(final String url) {
 
         emptyView.setErrorType(EmptyView.NETWORK_LOADING);
@@ -140,12 +135,13 @@ public class ExpressTaskFragment extends Fragment implements View.OnClickListene
                 //执行网络请求
                 try {
 
+                    OkHttpClientManager okHttpClientManager = new OkHttpClientManager(new LoginService().userInfoSha256(getContext()));
                     Log.e(TAG, "doInBackground: "+ url);
-                    Response response =  OkHttpClientManager.getAsyn(url);
-                    Log.e("paisongcode", "doInBackground: "+ response.code());
+                    Response response =  okHttpClientManager.getAsyn(url);
+                    Log.e(TAG, "doInBackground: "+ response.code());
                     if (response.code() == 200) {
                         date = response.body().string();
-                        Log.e("paisong", "doInBackground: "+ date);
+                        Log.e(TAG, "doInBackground:派送 "+ date);
                     }else {
                         date = "";
                     }
@@ -157,9 +153,14 @@ public class ExpressTaskFragment extends Fragment implements View.OnClickListene
             @Override
             protected void onPostExecute(String s) {
                 list.clear();
+                List<Map<String, Object>> tempList;
                 if (s!=null&&!s.isEmpty()) {
-                    List<Map<String, Object>> tempList = (new MyJsonManager()).PaisongJsonJXData(s);
-                    Log.e("lalala",tempList.toString());
+                    if(type.equals("paisong")) {
+                        tempList = (new MyJsonManager()).PaisongJsonJXData(s);
+                    }else {
+                        tempList = (new MyJsonManager()).LanshouJsonJXData(s);
+                    }
+                    Log.d(TAG, "onPostExecute: "+tempList.toString());
                     if (!tempList.isEmpty()) {
                         emptyView.setErrorType(EmptyView.HIDE_LAYOUT);
                         list.addAll(tempList);
@@ -175,7 +176,43 @@ public class ExpressTaskFragment extends Fragment implements View.OnClickListene
             }
         }.execute();
     }
+    private void lanshou(final String id,final int position) {
+        emptyView.setErrorType(EmptyView.NETWORK_LOADING);
+        new AsyncTask<Void,Void,String>(){
+            @Override
+            protected String doInBackground(Void... params) {
+                //执行网络请求
+                try {
 
+                    Response response =  OkHttpClientManager.getAsyn(BASE_URL+"/ExtraceSystem/onLineLanjian/"+id);
+                    if (response.code() == 200) {
+                        date = response.body().string();
+                    }else {
+                        date = "";
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return date;
+            }
+            @Override
+            protected void onPostExecute(String s) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    String isSucess = jsonObject.getString("msg");
+                    if (isSucess.equals("处理成功!")) {
+                        list.remove(position);
+                        handler.sendEmptyMessage(1);
+                    }else {
+                        Toast.makeText(getContext(), "处理失败！", Toast.LENGTH_SHORT).show();
+                        emptyView.setErrorType(EmptyView.NETWORK_ERROR);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.execute();
+    }
     public Handler handler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -185,7 +222,7 @@ public class ExpressTaskFragment extends Fragment implements View.OnClickListene
                     //添加分割线
 //                    mRecyclerView.addItemDecoration(new DividerItemDecoration(
 //                            getContext(), DividerItemDecoration.VERTICAL));
-                    mMyAdapter=new RecyclerAdapter(list,getContext());
+                    mMyAdapter=new RecyclerAdapter(list,getContext(),type);
                     //设置布局显示格式
                     mLayoutManager = new LinearLayoutManager(getContext());
                     mRecyclerView.setLayoutManager(mLayoutManager);
@@ -199,29 +236,40 @@ public class ExpressTaskFragment extends Fragment implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
-        //testJson();
+        String url1,url2;
         SharedPreferences sPreferences = getContext().getSharedPreferences("USER_INFO", MODE_PRIVATE);
         int uid = sPreferences.getInt("uid", -1);
         if (uid == -1){
             Toast.makeText(getContext(), "未登录或登陆信息失效，请登陆后再进行操作", Toast.LENGTH_SHORT).show();
         }
+        if(type.equals("paisong")) {
+            url1 = BASE_URL+"/ExtraceSystem/weipaisongList/"+uid;
+            url2 = BASE_URL+"/ExtraceSystem/daipaisong/"+13;
+
+        }else{
+            url1 = BASE_URL+"/ExtraceSystem/yilanjian/"+14;
+            url2 = BASE_URL+"/ExtraceSystem/weilanjian/"+14;
+        }
         switch (v.getId()){
             case R.id.finished:
-                url=BASE_URL+"/ExtraceSystem/paisongList/"+uid;
+                url=url1;
+                if(type.equals("weilanshou")){
+                    type="yilanshou";
+                }
                 loadData(url);
                 finished.setBackgroundResource(R.drawable.bg_round_right_green);
                 unfinished.setBackgroundResource(R.drawable.bg_round_left_trans);
                 unfinished.setTextColor(getResources().getColor(R.color.colorPrimary));
                 finished.setTextColor(getResources().getColor(R.color.white));
-                Toast.makeText(getContext(), "express已处理页面", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "express已处理页面", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.unfinished:
-                url=BASE_URL+"/ExtraceSystem/weipaisongList/"+uid;
+                url=url2;
                 finished.setBackgroundResource(R.drawable.bg_round_right_trans);
                 unfinished.setBackgroundResource(R.drawable.bg_round_left_green);
                 unfinished.setTextColor(getResources().getColor(R.color.white));
                 finished.setTextColor(getResources().getColor(R.color.colorPrimary));
-                Toast.makeText(getContext(), "express未处理页面", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "express未处理页面", Toast.LENGTH_SHORT).show();
                 loadData(url);
                 break;
             case R.id.button1:
@@ -248,6 +296,9 @@ public class ExpressTaskFragment extends Fragment implements View.OnClickListene
                     intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+ list.get(position).get("telcode")));
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
+                    break;
+                case R.id.expressId:
+                    lanshou(list.get(position).get("sn").toString(),position);
                     break;
                 default:
                     break;

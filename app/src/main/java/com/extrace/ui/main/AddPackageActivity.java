@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.extrace.net.OkHttpClientManager;
 import com.extrace.ui.R;
+import com.extrace.ui.service.LoginService;
 import com.google.zxing.BarcodeFormat;
 import com.king.zxing.util.CodeUtils;
 import com.squareup.okhttp.Request;
@@ -116,8 +117,8 @@ public class AddPackageActivity extends AppCompatActivity implements View.OnClic
         if (uid == -1){
             Toast.makeText(this, "未登录或登陆信息失效，请登陆后再进行操作", Toast.LENGTH_SHORT).show();
         }else {
-
-            OkHttpClientManager.postAsyn(url, new OkHttpClientManager.ResultCallback<String>() {    //一定要有String 类型 否则抛出异常
+            OkHttpClientManager okHttpClientManager = new OkHttpClientManager(new LoginService().userInfoSha256(this));
+            okHttpClientManager.postAsyn(url, new OkHttpClientManager.ResultCallback<String>() {    //一定要有String 类型 否则抛出异常
                 @Override
                 public void onError(Request request, Exception e) {
                     Log.e("tag_express_edit", "post请求，错误");

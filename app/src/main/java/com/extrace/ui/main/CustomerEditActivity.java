@@ -102,6 +102,7 @@ public class CustomerEditActivity extends AppCompatActivity {
             conn.setRequestMethod("POST");
             conn.setRequestProperty("ser-Agent", "Fiddler");
             conn.setRequestProperty("Content-Type","application/json");
+
             //写输出流，将要转的参数写入流里
             OutputStream os=conn.getOutputStream();
             os.write(content.getBytes()); //字符串写进二进流

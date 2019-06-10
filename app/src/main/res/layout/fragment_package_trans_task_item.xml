@@ -14,23 +14,34 @@
         android:orientation="vertical"
         android:background="@drawable/bg_round_normal">
 
-
-    <TextView
-        android:id="@+id/top"
-        android:layout_width="wrap_content"
-        android:layout_marginLeft="2dp"
-        android:paddingLeft="@dimen/size_10sp"
-        android:paddingRight="@dimen/size_10sp"
-        android:layout_height="25dp"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/bg_round_normal_green"
-        android:gravity="center_vertical"
-        android:text="200个包裹"
-        android:textSize="15dp"
-        android:textColor="@color/white"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/size"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:paddingLeft="@dimen/size_10sp"
+                android:paddingRight="@dimen/size_10sp"
+                android:layout_height="25dp"
+                android:background="@drawable/bg_round_normal_green"
+                android:gravity="center_vertical"
+                android:text="200个快递"
+                android:textSize="15dp"
+                android:textColor="@color/white"/>
+            <TextView
+                android:id="@+id/packageId"
+                android:layout_toRightOf="@+id/size"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:text="包裹编号"
+                android:gravity="center_vertical"
+                android:textColor="@color/colorOrange"
+                android:textSize="15dp" />
+        </RelativeLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
@@ -104,13 +115,13 @@
         </LinearLayout>
 
         <RelativeLayout
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="80dp"
             android:layout_marginBottom="5dp"
             android:background="@color/white">
 
             <TextView
-                android:id="@+id/name"
+                android:id="@+id/former"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -121,7 +132,7 @@
                 android:textSize="18dip" />
 
             <TextView
-                android:id="@+id/addr"
+                android:id="@+id/latter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="55dp"

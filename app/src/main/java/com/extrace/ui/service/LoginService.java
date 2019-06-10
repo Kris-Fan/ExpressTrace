@@ -3,11 +3,15 @@ package com.extrace.ui.service;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.extrace.net.HashCode;
 import com.extrace.ui.entity.UserInfo;
 
 import static android.content.Context.MODE_PRIVATE;
 
 public class LoginService {
+    public LoginService() {
+    }
+
     /**
      * 保存用户名 密码的业务方法
      * @param context 上下文
@@ -61,19 +65,31 @@ public class LoginService {
         editor.apply();
 
     }
-    public static int getUserId(Context context){
+    public int getUserId(Context context){
         SharedPreferences sPreferences=context.getSharedPreferences("USER_INFO", MODE_PRIVATE);
         return sPreferences.getInt("uid",-1);
     }
-    public static boolean isLogined(Context context){
+    public int getUserRoll(Context context){
+        SharedPreferences sPreferences=context.getSharedPreferences("USER_INFO", MODE_PRIVATE);
+        return sPreferences.getInt("urull",-1);
+    }
+    public boolean isLogined(Context context){
         SharedPreferences sharedPreferences = context.getSharedPreferences("USER_INFO",MODE_PRIVATE);
         return sharedPreferences.getBoolean("keepLoginSta",false) && sharedPreferences.getInt("uid",-1)!=-1;
     }
     //退出账号
-    public static void logout(Context context){
+    public void logout(Context context){
         SharedPreferences sharedPreferences = context.getSharedPreferences("USER_INFO",MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean("keepLoginSta",false);
         editor.commit();
+    }
+    //返回加密后的用戶名+密碼值
+    public String userInfoSha256(Context context){
+        SharedPreferences sPreferences=context.getSharedPreferences("USER_INFO", MODE_PRIVATE);
+        String useT = sPreferences.getString("username","");
+        String userPassword = sPreferences.getString("password","");
+        HashCode hashCode = new HashCode();
+        return hashCode.getSHA256(useT+userPassword);
     }
 }

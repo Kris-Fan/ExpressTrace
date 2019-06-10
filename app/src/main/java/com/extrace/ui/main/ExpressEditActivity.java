@@ -20,6 +20,7 @@ import com.extrace.ui.R;
 import com.extrace.ui.adapter.FmPagerAdapter;
 import com.extrace.ui.fragment.ExpressEditAdvanceInfoFragment;
 import com.extrace.ui.fragment.ExpressEditBaseInfoFragment;
+import com.extrace.ui.service.LoginService;
 import com.extrace.util.CustomCaptureActivity;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -149,14 +150,15 @@ public class ExpressEditActivity extends AppCompatActivity{
             map.put("expressAccTime", tv_time.getText().toString());    //接受时间
             map.put("expressStatus", tv_exStatus.getText().toString()); //状态
 
-            map.put("expressType", expressType.getText().toString());   //物品类型
+            map.put("expressType", expressType.getText().toString().substring(0,1));   //物品类型
             map.put("expressWeight", expressWeight.getText().toString());   //重量
             map.put("expressFee", expressFee.getText().toString()); //费用
             map.put("expressInsureFee", expressInsureFee.getText().toString());//保险费用
 
             try {
+                OkHttpClientManager okHttpClientManager = new OkHttpClientManager(new LoginService().userInfoSha256(this));
                 Log.e("tag_express_edit", "post请求" + tv_exId.getText().toString());
-                OkHttpClientManager.postAsyn(url, new OkHttpClientManager.ResultCallback<String>() {    //一定要有String 类型 否则抛出异常
+                okHttpClientManager.postAsyn(url, new OkHttpClientManager.ResultCallback<String>() {    //一定要有String 类型 否则抛出异常
                     @Override
                     public void onError(Request request, Exception e) {
                         Log.e("tag_express_edit", "post请求，错误");

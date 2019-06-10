@@ -16,6 +16,7 @@ import com.extrace.net.json.MyJsonManager;
 import com.extrace.ui.R;
 import com.extrace.ui.entity.CustomerInfo;
 import com.extrace.ui.entity.ExpressSheet;
+import com.extrace.ui.service.LoginService;
 import com.squareup.okhttp.Response;
 
 import java.io.IOException;
@@ -74,7 +75,8 @@ public class MyHistoryParcelAdapter extends RecyclerView.Adapter<MyHistoryParcel
                 super.run();
                 Message msg=new Message();
                 try {
-                    Response response = OkHttpClientManager.getAsyn(BASE_URL+"/ExtraceSystem/customerInfo/"+list.get(index).getRecever());
+                    OkHttpClientManager okHttpClientManager = new OkHttpClientManager(new LoginService().userInfoSha256(con));
+                    Response response = okHttpClientManager.getAsyn(BASE_URL+"/ExtraceSystem/customerInfo/"+list.get(index).getRecever());
                     if (response.code() ==200){
                             Log.e("lalal", "handleMessage: 进入线程");
                             Bundle dab=new Bundle();

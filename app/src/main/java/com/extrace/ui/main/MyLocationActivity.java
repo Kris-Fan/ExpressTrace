@@ -74,7 +74,7 @@ public class MyLocationActivity extends AppCompatActivity implements View.OnClic
         if (!"".equals(latStr)){
             Gson gson = new Gson();
             List<LatLng> latLngList = gson.fromJson(latStr,new TypeToken<List<LatLng>>(){}.getType());
-            if (latLngList != null){
+            if (latLngList!=null && !latLngList.isEmpty()){
                 points.addAll(latLngList);
                 Log.e(TAG, "onCreate: "+points.toString());
             }
@@ -163,7 +163,7 @@ public class MyLocationActivity extends AppCompatActivity implements View.OnClic
                 double gapX = Math.abs(x-p1.latitude);
                 double gapY = Math.abs(y-p1.longitude);
                 double dis = DistanceUtil.getDistance(p1, points.get(len-2));
-                if (gapX < 0.0002 && gapY < 0.0002 || dis<=10.0 || dis >= 180.0){
+                if (gapX < 0.0002 && gapY < 0.0002 || dis<=12.0){
                     Log.d(TAG, "onReceiveLocation: 不格数据 移除原因： gap:"+gapX+"\t"+gapY+"\tdistance="+dis);
                     points.remove(len-1);
                 }
@@ -236,26 +236,6 @@ public class MyLocationActivity extends AppCompatActivity implements View.OnClic
             MapStatus.Builder builder = new MapStatus.Builder();
             builder.target(ll).zoom(17.0f);
             mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
-
-//            if (location.getLocType() == BDLocation.TypeGpsLocation) {
-//                // GPS定位结果
-//                Toast.makeText(MyLocationActivity.this, location.getAddrStr(), Toast.LENGTH_SHORT).show();
-//                showAddr.setText("你的位置："+location.getAddrStr());
-//            } else if (location.getLocType() == BDLocation.TypeNetWorkLocation) {
-//                // 网络定位结果
-//                Toast.makeText(MyLocationActivity.this, location.getAddrStr(), Toast.LENGTH_SHORT).show();
-//                showAddr.setText("你的位置："+location.getAddrStr());
-//            } else if (location.getLocType() == BDLocation.TypeOffLineLocation) {
-//                // 离线定位结果
-//                Toast.makeText(MyLocationActivity.this, "启动离线定位", Toast.LENGTH_SHORT).show();
-//                showAddr.setText("你的位置："+location.getAddrStr());
-//            } else if (location.getLocType() == BDLocation.TypeServerError) {
-//                Toast.makeText(MyLocationActivity.this, "服务器错误，请检查", Toast.LENGTH_SHORT).show();
-//            } else if (location.getLocType() == BDLocation.TypeNetWorkException) {
-//                Toast.makeText(MyLocationActivity.this, "网络错误，请检查", Toast.LENGTH_SHORT).show();
-//            } else if (location.getLocType() == BDLocation.TypeCriteriaException) {
-//                Toast.makeText(MyLocationActivity.this, "手机模式错误，请检查是否飞行", Toast.LENGTH_SHORT).show();
-//            }
         }
         showAddr.setText(currentPosition);
     }

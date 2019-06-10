@@ -48,6 +48,7 @@ import com.extrace.ui.main.NodeActivity;
 import com.extrace.ui.main.PageContentActivity;
 import com.extrace.ui.main.SendExpressActivity;
 import com.extrace.ui.service.EditDialog;
+import com.extrace.ui.service.LoginService;
 import com.extrace.ui.service.RevExpressDialog;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -70,6 +71,7 @@ import static com.extrace.ui.main.ScanBarcodeActivity.REQUEST_CODE_SCAN_RECEIVE;
 import static com.extrace.ui.main.ScanBarcodeActivity.REQUEST_CODE_SCAN_SEND;
 import static com.extrace.ui.main.ScanBarcodeActivity.REQUEST_CODE_SCAN_SEND_UPLOAD;
 import static com.extrace.ui.main.ScanBarcodeActivity.REQUEST_CODE_SCAN_SIGN;
+import static com.extrace.ui.main.SendExpressActivity.REQUEST_CODE_SCAN_EXPRESS;
 
 /**
  * @author Jenly <a href="mailto:jenly1314@gmail.com">Jenly</a>
@@ -81,7 +83,8 @@ public class CustomCaptureActivity extends CaptureActivity implements View.OnCli
     private boolean isContinuousScan;
     private Button skip;
     private ViewfinderView viewfinderView;
-    private int code;
+    private int code,userId;
+    private String packageId;
 
     private int screenWidth;
     private int screenHeight;
@@ -89,6 +92,7 @@ public class CustomCaptureActivity extends CaptureActivity implements View.OnCli
     String url_upload = BASE_URL +"/ExtraceSystem/entrucking/";
     String url_dispatch = BASE_URL +"/ExtraceSystem/paijian/";
     String url_sign = BASE_URL + "/ExtraceSystem/qianshou/";
+    private OkHttpClientManager okHttpClientManager;
     @Override
     public int getLayoutId() {
         return R.layout.custom_capture_activity;
@@ -114,16 +118,25 @@ public class CustomCaptureActivity extends CaptureActivity implements View.OnCli
 
         code = getIntent().getIntExtra(KEY_CODE,-1);
         Log.i("lalal","code是+"+code);
+        okHttpClientManager = new OkHttpClientManager(new LoginService().userInfoSha256(this));
         if (code == REQUEST_CODE_SCAN_RECEIVE){
             this.cls = ExpressEditActivity.class;
             skip.setVisibility(View.VISIBLE);
         }else if (code == REQUEST_CODE_SCAN_SEND){
-            this.cls = SendExpressActivity.class;
+            //this.cls = SendExpressActivity.class;
             skip.setVisibility(View.VISIBLE);
         }else if (code == REQUEST_CODE_SCAN_SEND_UPLOAD || code == REQUEST_CODE_SCAN_DISPATCH || code == REQUEST_CODE_SCAN_ARRIVE || code == REQUEST_CODE_SCAN_SIGN){
             skip.setVisibility(View.VISIBLE);
         }else if (code == REQUEST_CODE_SCAN_ARRIVE){
             this.cls = PageContentActivity.class;
+            skip.setVisibility(View.VISIBLE);
+        }else if (code == REQUEST_CODE_SCAN_EXPRESS){
+            //Toast.makeText(this, "看集合集合缓解缓解", Toast.LENGTH_SHORT).show();
+            userId = getIntent().getIntExtra("userId",-1);
+            packageId = getIntent().getStringExtra("packageId");
+            Toast.makeText(this, "小花"+String.valueOf(userId)+packageId, Toast.LENGTH_SHORT).show();
+
+            //this.cls = SendExpressActivity.class;
             skip.setVisibility(View.VISIBLE);
         }
         getBeepManager().setPlayBeep(true);
@@ -164,6 +177,9 @@ public class CustomCaptureActivity extends CaptureActivity implements View.OnCli
             switch (code){
                 case REQUEST_CODE_SCAN_SEND:
                     break;
+                case REQUEST_CODE_SCAN_EXPRESS:
+                    promptBox(result.getText());
+                    break;
                 case REQUEST_CODE_SCAN_DISPATCH:
                 case REQUEST_CODE_SCAN_SEND_UPLOAD:
                 case REQUEST_CODE_SCAN_SIGN:
@@ -177,8 +193,8 @@ public class CustomCaptureActivity extends CaptureActivity implements View.OnCli
     }
 
     /**
-     * 包裹装货，验证
-     * @param text
+     * 包裹装货，派送，签收验证
+     * @param text 代表快递/包裹单号
      */
     private void uploadExpress(final String text) {
 
@@ -203,34 +219,70 @@ public class CustomCaptureActivity extends CaptureActivity implements View.OnCli
             }
             final String finalMsg = msg;
             Log.d(TAG, "uploadExpress: 发送链接："+myurl);
-            OkHttpClientManager.getAsyn(myurl,
+            //OkHttpClientManager okHttpClientManager = new OkHttpClientManager(new LoginService().userInfoSha256(this));
+            okHttpClientManager.getAsyn(myurl,
                 new OkHttpClientManager.ResultCallback<String>() {
                     @Override
                     public void onError(Request request, Exception e) {
                         AlertDialog.Builder builder  = new AlertDialog.Builder(CustomCaptureActivity.this);
                         builder.setTitle(finalMsg +"扫描" ) ;
                         builder.setMessage("请求错误，网络异常" ) ;
-                        builder.setPositiveButton("是" ,  null );
+                        builder.setPositiveButton("是", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                restartPreviewAndDecode();
+                            }
+                        });
                         builder.show();
-                        restartPreviewAndDecode();
+
                     }
 
                     @Override
                     public void onResponse(String response) {
-                        Log.e("lalal","respnse:"+response);
-                        JsonObject jsonObject = (JsonObject) new JsonParser().parse(response);
-                        if("处理失败!".equals(jsonObject.get("msg").getAsString())){
-                            AlertDialog.Builder builder  = new AlertDialog.Builder(CustomCaptureActivity.this);
-                            builder.setTitle(finalMsg+"扫描" ) ;
-                            builder.setMessage("处理失败，该单号不存在或已"+finalMsg+"！" ) ;
-                            builder.setPositiveButton("是" ,  null );
-                            builder.show();
-                            //Toast.makeText(CustomCaptureActivity.this, "处理失败！", Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, finalMsg+"respnse:" + response);
+                        if (response != null) {
+                            JsonObject jsonObject = (JsonObject) new JsonParser().parse(response);
+                            String myMsg =jsonObject.get("msg").getAsString();
+                            if ("处理失败!".equals(myMsg)) {
+                                Log.e(TAG, "onResponse: 处理失败");
+                                AlertDialog.Builder builder = new AlertDialog.Builder(CustomCaptureActivity.this);
+                                builder.setTitle(finalMsg + "扫描");
+                                builder.setMessage("处理失败，该单号不存在或已" + finalMsg + "！");
+                                builder.setPositiveButton("是", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        restartPreviewAndDecode();
+                                    }
+                                });
+                                builder.show();
+                                //Toast.makeText(CustomCaptureActivity.this, "处理失败！", Toast.LENGTH_SHORT).show();
+                            } else if("处理成功!".equals(myMsg) || "处理成功".equals(myMsg)){
+                                Log.e(TAG, "onResponse: 处理成功");
+                                AlertDialog.Builder builder = new AlertDialog.Builder(CustomCaptureActivity.this);
+                                builder.setTitle(finalMsg + "扫描成功");
+                                builder.setMessage("请选择“是”，继续" + finalMsg + "！");
+                                builder.setPositiveButton("是", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        restartPreviewAndDecode();
+                                    }
+                                });
+                                builder.show();
+                            }
+                            Log.d(TAG, finalMsg+"onResponse: msg:"+jsonObject.get("msg").getAsString());
                         }else {
-                            Toast.makeText(CustomCaptureActivity.this, finalMsg+"成功", Toast.LENGTH_SHORT).show();
-                        }
-                        restartPreviewAndDecode();
+                            AlertDialog.Builder builder  = new AlertDialog.Builder(CustomCaptureActivity.this);
+                            builder.setTitle(finalMsg +"扫描" ) ;
+                            builder.setMessage("处理失败，该单号无效" ) ;
+                            builder.setPositiveButton("是", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    restartPreviewAndDecode();
+                                }
+                            });
+                            builder.show();
 
+                        }
                     }
                 });
         }
@@ -280,7 +332,8 @@ public class CustomCaptureActivity extends CaptureActivity implements View.OnCli
     private Class<?> cls;
     @Override
     public void onClick(View v) {
-        if (code == REQUEST_CODE_SCAN_SEND_UPLOAD || code == REQUEST_CODE_SCAN_DISPATCH ||  code == REQUEST_CODE_SCAN_ARRIVE || code == REQUEST_CODE_SCAN_SIGN){
+        if (code == REQUEST_CODE_SCAN_SEND_UPLOAD || code == REQUEST_CODE_SCAN_DISPATCH ||  code == REQUEST_CODE_SCAN_ARRIVE
+                || code == REQUEST_CODE_SCAN_SIGN || code == REQUEST_CODE_SCAN_EXPRESS || code== REQUEST_CODE_SCAN_SEND){
             showSimpleDialog(1,"请输入单号","仅支持数字");
         }else {
             Intent intent = new Intent(CustomCaptureActivity.this, cls);
@@ -306,7 +359,8 @@ public class CustomCaptureActivity extends CaptureActivity implements View.OnCli
         SharedPreferences sharedPreferences = getSharedPreferences("USER_INFO", MODE_PRIVATE);
         int uid = sharedPreferences.getInt("uid",-1);
         if (uid != -1) {
-            OkHttpClientManager.getAsyn(BASE_URL + "/ExtraceSystem/chaibao/" + string+"/"+uid,
+            //OkHttpClientManager okHttpClientManager = new OkHttpClientManager(new LoginService().userInfoSha256(this));
+            okHttpClientManager.getAsyn(BASE_URL + "/ExtraceSystem/chaibao/" + string+"/"+uid,
                     new OkHttpClientManager.ResultCallback<String>() {
                         @Override
                         public void onError(Request request, Exception e) {
@@ -319,7 +373,7 @@ public class CustomCaptureActivity extends CaptureActivity implements View.OnCli
                             Intent intent = new Intent();
                             intent.setClass(getApplicationContext(), PageContentActivity.class);
                             intent.putExtra("response", response);
-                            Log.e("lalal_CustomCapture", response);
+                            Log.e(TAG, "Onresponse包裹拆包"+response);
                             if ("[]".equals(response)) {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(CustomCaptureActivity.this);
                                 builder.setTitle("扫描失败");
@@ -375,8 +429,8 @@ public class CustomCaptureActivity extends CaptureActivity implements View.OnCli
                     //ToastUtils.showShort(getActivity(), "请输入电话号码");
                 } else {
                     Toast.makeText(CustomCaptureActivity.this, phone+"***"+text, Toast.LENGTH_SHORT).show();
-
-                    OkHttpClientManager.postAsyn(url, new OkHttpClientManager.ResultCallback<String>() {    //一定要有String 类型 否则抛出异常
+                    //OkHttpClientManager okHttpClientManager = new OkHttpClientManager(new LoginService().userInfoSha256(getApplicationContext()));
+                    okHttpClientManager.postAsyn(url, new OkHttpClientManager.ResultCallback<String>() {    //一定要有String 类型 否则抛出异常
                         @Override
                         public void onError(Request request, Exception e) {
                             Log.e("tag_express_edit", "post请求，错误");
@@ -427,7 +481,12 @@ public class CustomCaptureActivity extends CaptureActivity implements View.OnCli
                 } else {
                     if (code == REQUEST_CODE_SCAN_ARRIVE){
                         isVaildResult(phone);
-                    } else {
+                    }else if(code == REQUEST_CODE_SCAN_SEND){
+                        isExist(phone);
+                    }else if(code == REQUEST_CODE_SCAN_EXPRESS){
+                        //addExpress(phone);
+                        promptBox(phone);
+                    }else {
                         uploadExpress(phone);
                     }
                     editDialog.dismiss();
@@ -445,5 +504,93 @@ public class CustomCaptureActivity extends CaptureActivity implements View.OnCli
         });
         editDialog.show();
     }
+    private void promptBox(final String expressId){
+        /* @setIcon 设置对话框图标
+         * @setTitle 设置对话框标题
+         * @setMessage 设置对话框消息提示
+         * setXXX方法返回Dialog对象，因此可以链式设置属性
+         */
+        final android.support.v7.app.AlertDialog.Builder normalDialog =
+                new android.support.v7.app.AlertDialog.Builder(CustomCaptureActivity.this);
+        normalDialog.setIcon(R.mipmap.icon_upload);
+        normalDialog.setTitle("确定添加？");
+        normalDialog.setMessage("快件编号："+expressId);
+        normalDialog.setPositiveButton("确定",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        uploadExpressInfo(expressId);
+                        //Toast.makeText(CustomCaptureActivity.this,"添加成功",Toast.LENGTH_SHORT).show();
+                        restartPreviewAndDecode();
+                    }
+                });
+        normalDialog.setNegativeButton("取消",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        restartPreviewAndDecode();
+                    }
+                });
+        // 显示
+        normalDialog.show();
+    }
+    //包裹打包-添加快件时上传信息
+    private void uploadExpressInfo(String expressId) {
+        if (!new LoginService().isLogined(this)){
+            Toast.makeText(this, "未登录或登陆信息失效，请登陆后再进行操作", Toast.LENGTH_SHORT).show();
+        }else {
 
+            okHttpClientManager.postAsyn(url, new OkHttpClientManager.ResultCallback<String>() {    //一定要有String 类型 否则抛出异常
+                @Override
+                public void onError(Request request, Exception e) {
+                    Log.e("tag_express_edit", "post请求，错误");
+                    e.printStackTrace();
+                    Toast.makeText(CustomCaptureActivity.this, "提交失败：请检查网络", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onResponse(String response) {
+                    Toast.makeText(CustomCaptureActivity.this, "完成——已成功提交", Toast.LENGTH_SHORT).show();
+                    //finish();
+                }
+            }, new OkHttpClientManager.Param[]{
+                    new OkHttpClientManager.Param("userId",new LoginService().getUserId(this)+""),
+                    new OkHttpClientManager.Param("packageId",packageId),
+                    new OkHttpClientManager.Param("expressId",expressId),
+            });
+        }
+    }
+    //包裹打包时验证手动输入的包裹号是否存在
+    private boolean isExist(final String string){
+        //Toast.makeText(getApplicationContext(), string, Toast.LENGTH_SHORT).show();
+        okHttpClientManager.getAsyn(BASE_URL +"/ExtraceSystem/queryPackage/"+string,
+                new OkHttpClientManager.ResultCallback<String>() {
+                    @Override
+                    public void onError(Request request, Exception e) {
+                        Toast.makeText(getApplicationContext(), "出错了", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent();
+                        intent.setClass(getApplicationContext(), SendExpressActivity.class);
+                        intent.putExtra("response", response);
+                        Log.e("lalal_CustomCapture",response);
+                        if ("{}".equals(response)){
+                            AlertDialog.Builder builder  = new AlertDialog.Builder(CustomCaptureActivity.this);
+                            builder.setTitle("扫描失败" ) ;
+                            builder.setMessage("处理失败，该单号不存在！" ) ;
+                            builder.setPositiveButton("是" ,  null );
+                            builder.show();
+                            //restartPreviewAndDecode();
+                        }else {
+                            startActivity(intent);
+                            finish();
+                        }
+                    }
+                });
+
+        return false;
+    }
 }

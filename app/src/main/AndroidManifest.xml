@@ -101,7 +101,9 @@
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".main.MyMessageActivity" />
         <activity android:name=".main.MyLocationActivity" />
-        <activity android:name=".main.ExpressSearchActivity" />
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".main.ExpressSearchActivity" />
         <activity android:name=".main.HistoryScanActivity" />
         <activity
             android:name=".main.ScanBarcodeActivity"

@@ -65,6 +65,7 @@ public class MePageFragment extends Fragment implements View.OnClickListener {
     int permission_Check;
     String info = "-1";
 
+    private LoginService loginService = new LoginService();
     public MePageFragment() {
         // Required empty public constructor
     }
@@ -117,15 +118,12 @@ public class MePageFragment extends Fragment implements View.OnClickListener {
         //显示用户此前录入的数据
         SharedPreferences sPreferences = getActivity().getSharedPreferences("USER_INFO", MODE_PRIVATE);
         String username = sPreferences.getString("username", "");
-        //boolean keep = sPreferences.getBoolean("keepLoginSta", false);
-        String password = sPreferences.getString("password", "");
-        if (!LoginService.isLogined(getContext())) {
+        if (!loginService.isLogined(getContext())) {
             textView.setText("请先登录");
             ly_login.setVisibility(View.VISIBLE);
             ly_myInfo.setVisibility(View.GONE);
         } else {
             textView.setVisibility(View.VISIBLE);
-
             btnSign.setText("重新登录");
             textView.setText("欢迎您" + username + "， 现已登录");
             tv_name.setText(username);
@@ -153,7 +151,7 @@ public class MePageFragment extends Fragment implements View.OnClickListener {
                 startActivityForResult(intent, REQUEST_LOGIN);
                 break;
             case R.id.menu_1://startPhotoCode();
-                if (LoginService.isLogined(getContext())) {
+                if (loginService.isLogined(getContext())) {
                     intent = new Intent(getContext(), MyParcelActivity.class);
                     startActivity(intent);
                 }else {
@@ -164,7 +162,7 @@ public class MePageFragment extends Fragment implements View.OnClickListener {
 //                this.cls = CaptureActivity.class;
 //                this.title = ((TextView) v).getText().toString();
 //                startScan(cls, title);
-                if (LoginService.isLogined(getContext())) {
+                if (loginService.isLogined(getContext())) {
                     intent = new Intent(getContext(), MyMessageActivity.class);
                     startActivity(intent);
                 }else {
@@ -176,7 +174,7 @@ public class MePageFragment extends Fragment implements View.OnClickListener {
 //                this.title = ((TextView) v).getText().toString();
 //                isContinuousScan = true;
 //                startScan(cls, title);
-                if (LoginService.isLogined(getContext())) {
+                if (loginService.isLogined(getContext())) {
                     Intent startIntent = new Intent(getActivity(), MyService.class);
                     getActivity().startService(startIntent);
                     intent = new Intent(getContext(), MyLocationActivity.class);
@@ -201,14 +199,12 @@ public class MePageFragment extends Fragment implements View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK ) {
             if (requestCode == REQUEST_LOGIN && data != null) {
-                permission_Check = data.getIntExtra("permission_check", -1);
-                Log.d("MainActivity_onresume", "initview " + permission_Check);
-                if (permission_Check != -1) {
+                if (loginService.getUserRoll(getContext()) != -1) {
                     if (permission_Check == 1) {
                         //Log.d("MainActivity_onresume", "重新加载" + permission_Check);
-                        Toast.makeText(getContext(), "登录成功", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "登录成功, 欢迎您老司机", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(getContext(), "登录已却认，当前无权限", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "登录成功，欢迎您快递员", Toast.LENGTH_SHORT).show();
                     }
                     Log.e("lalal", "mePage 登录回显：" + permission_Check);
                     info = data.getStringExtra("info_username");

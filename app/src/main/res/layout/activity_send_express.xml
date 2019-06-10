@@ -9,16 +9,15 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:background="@drawable/menu_bg_normal"
-        android:paddingLeft="@dimen/size_18sp"
-        android:paddingRight="@dimen/size_18sp"
-        android:paddingTop="@dimen/size_18sp"
+        android:id="@+id/packageInfo"
+        android:padding="@dimen/size_14sp"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/title1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="快递单号:"
+            android:text="包裹编号:"
             android:textColor="@color/colorGray"
             android:textSize="@dimen/size_18sp" />
         <TextView
@@ -36,38 +35,33 @@
             android:layout_height="30dp"
             android:scaleType="fitCenter"
             android:src="@mipmap/icon_express_receive" />
-
         <TextView
-            android:layout_marginTop="@dimen/size_14sp"
+            android:id="@+id/rev_addr1"
+            android:layout_width="wrap_content"
             android:layout_below="@+id/title"
-            android:id="@+id/rev_addr"
-            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
             android:layout_height="wrap_content"
-            android:text="收件人地址："
+            android:text="运往:"
             android:textColor="@color/colorGray"
             android:textSize="@dimen/size_18sp" />
-        <EditText
-            android:id="@+id/next_node"
-            android:layout_below="@+id/rev_addr"
-            android:layout_width="match_parent"
-            android:layout_marginTop="8dp"
-            android:hint="点击选择网点"
+        <TextView
+            android:layout_toRightOf="@+id/title1"
+            android:id="@+id/rev_addr"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:textColor="@color/colorGray"
-            android:textSize="@dimen/size_18sp"
-            android:layout_height="wrap_content" />
+            android:textSize="@dimen/size_18sp" />
+
         <ImageView
             android:layout_marginTop="10dp"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/rev_addr"
+            android:layout_below="@+id/title"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:scaleType="fitCenter"
             android:src="@mipmap/icon_express_send" />
-        <TextView
-            android:id="@+id/next_node_code"
-            android:layout_width="wrap_content"
-            android:visibility="gone"
-            android:layout_height="wrap_content" />
         <View
             android:layout_below="@+id/rev_addr"
             android:layout_width="match_parent"
@@ -76,26 +70,15 @@
             android:background="#E4E4E4" />
 
     </RelativeLayout>
-    <LinearLayout
-        android:id="@+id/ly_save"
-        android:layout_alignParentBottom="true"
+
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:gravity="center_horizontal"
-        android:background="@drawable/tab_background">
-        <ImageView
-            android:gravity="center_vertical"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginRight="@dimen/size_18sp"
-            android:src="@mipmap/icon_upload"/>
-        <TextView
-            android:gravity="center_vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorPrimaryLight"
-            android:textSize="20dp"
-            android:text="@string/action_ok" />
-    </LinearLayout>
+        android:layout_below="@id/packageInfo"
+        android:dividerHeight="10dp"
+        android:divider="#FFFF0000"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        android:id="@+id/wrap_package"/>
 </RelativeLayout>

@@ -1,9 +1,9 @@
 package com.extrace.net;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.google.gson.Gson;
@@ -39,17 +39,27 @@ import java.util.Set;
  */
 public class OkHttpClientManager
 {
-    public static String BASE_URL="http://zhn.alief.top:53071";//"http://192.168.43.162:8080"; //此处存储基本的url
+    public static String BASE_URL="http://192.168.3.173:8080";//"http://192.168.43.162:8080"; //此处存储基本的url
     private static OkHttpClientManager mInstance;
     private OkHttpClient mOkHttpClient;
     private Handler mDelivery;
     private Gson mGson;
-
+    private static final String USER_AGENT = "Mozilla/4.5";
 
     private static final String TAG = "OkHttpClientManager";
+    private Context context;
+    private static String userIdentify = "";
+    private HashCode hashCode = new HashCode();
 
-    private OkHttpClientManager()
-    {
+    public OkHttpClientManager(String userId) {
+        this.userIdentify = userId;
+        Log.e(TAG, "OkHttpClientManager: 请求头userId："+userIdentify );
+//    }
+//
+//    private OkHttpClientManager()
+//    {
+//
+//        Log.e(TAG, "OkHttpClientManager: 无参构造函数请求头userId："+userIdentify );
         mOkHttpClient = new OkHttpClient();
         //cookie enabled
         mOkHttpClient.setCookieHandler(new CookieManager(null, CookiePolicy.ACCEPT_ORIGINAL_SERVER));
@@ -65,7 +75,8 @@ public class OkHttpClientManager
             {
                 if (mInstance == null)
                 {
-                    mInstance = new OkHttpClientManager();
+                    Log.d(TAG, "getInstance: 请求头"+userIdentify);
+                    mInstance = new OkHttpClientManager(userIdentify);
                 }
             }
         }
@@ -82,6 +93,8 @@ public class OkHttpClientManager
     {
         final Request request = new Request.Builder()
                 .url(url)
+                .addHeader("User-Agent", USER_AGENT)
+                .addHeader("userId",userIdentify)
                 .build();
         Call call = mOkHttpClient.newCall(request);
         Response execute = call.execute();
@@ -103,7 +116,7 @@ public class OkHttpClientManager
 
     /**
      * 异步的get请求
-     *
+     * 2019/6/8 新增请求头 userIdentify特殊标识 此标识经过SHA加密
      * @param url
      * @param callback
      */
@@ -111,6 +124,8 @@ public class OkHttpClientManager
     {
         final Request request = new Request.Builder()
                 .url(url)
+                .addHeader("User-Agent", USER_AGENT)
+                .addHeader("userId",userIdentify)
                 .build();
         deliveryResult(callback, request);
     }
@@ -640,6 +655,8 @@ public class OkHttpClientManager
         RequestBody requestBody = builder.build();
         return new Request.Builder()
                 .url(url)
+                .addHeader("User-Agent", USER_AGENT)
+                .addHeader("userId",userIdentify)
                 .post(requestBody)
                 .build();
     }

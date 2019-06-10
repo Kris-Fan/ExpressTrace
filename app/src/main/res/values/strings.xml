@@ -146,4 +146,5 @@
     <string name="hint_select_type_of_express">点击选择物品类型</string>
     <string name="rmb">RMB</string>
     <string name="kg">kg</string>
+    <string name="hint_enter_express_id_for_search">输入准确快递单号查询</string>
 </resources>

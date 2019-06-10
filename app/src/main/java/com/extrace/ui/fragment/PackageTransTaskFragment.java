@@ -1,6 +1,7 @@
 package com.extrace.ui.fragment;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -22,6 +23,7 @@ import com.extrace.net.json.MyJsonManager;
 import com.extrace.ui.R;
 import com.extrace.ui.adapter.PackageTansRecyclerAdapter;
 import com.extrace.ui.adapter.RecyclerAdapter;
+import com.extrace.ui.service.LoginService;
 import com.extrace.util.EmptyView;
 import com.squareup.okhttp.Response;
 
@@ -37,6 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static android.content.Context.MODE_PRIVATE;
 import static com.extrace.net.OkHttpClientManager.BASE_URL;
 /*
 /转运任务
@@ -55,6 +58,8 @@ public class PackageTransTaskFragment extends Fragment implements View.OnClickLi
     public  String title;
     public List<Map<String,Object>> list;
     public String url=BASE_URL+"/ExtraceSystem/customerInfos";
+    private static final String TAG = "PackageTransTaskFragmen";
+    private int uid;//用户id
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -74,7 +79,22 @@ public class PackageTransTaskFragment extends Fragment implements View.OnClickLi
         //设置适配器
         mAdapter = new PackageTansRecyclerAdapter(list, getActivity());
         mRecyclerView.setAdapter(mAdapter);
+        SharedPreferences sPreferences = getContext().getSharedPreferences("USER_INFO", MODE_PRIVATE);
+        uid = sPreferences.getInt("uid", -1);
+        Bundle args=getArguments();
+        if (uid == -1){
+            Toast.makeText(getContext(), "未登录或登陆信息失效，请登陆后再进行操作", Toast.LENGTH_SHORT).show();
+        }
+        if(args!=null){
+            url = args.getString("url")+uid;
+        }
         loadData(url);
+        emptyView.setOnLayoutClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadData(url);
+            }
+        });
         emptyView.setOnLayoutClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -94,8 +114,9 @@ public class PackageTransTaskFragment extends Fragment implements View.OnClickLi
                 //执行网络请求
                 //String s = HttpUtils
                 // getStringByOkhttp(url);
+                OkHttpClientManager okHttpClientManager = new OkHttpClientManager(new LoginService().userInfoSha256(getContext()));
                 try {
-                    Response response =  OkHttpClientManager.getAsyn(url);
+                    Response response =  okHttpClientManager.getAsyn(url);
                     if (response.code()==200){
                         date=response.body().string();
                     }else {
@@ -111,7 +132,7 @@ public class PackageTransTaskFragment extends Fragment implements View.OnClickLi
 
                 if (s!=null && !s.isEmpty()) {
                     List<Map<String, Object>> tempList = (new MyJsonManager()).CustomerInfoJsonJXData(s);
-                    Log.e("lalala","快递任务RevTask"+tempList.toString());
+                    Log.d(TAG, "onPostExecute:快递任务RevTask"+tempList.toString());
                     if (!tempList.isEmpty()) {
                         list.addAll(tempList);
                         //提示更新数据
@@ -131,21 +152,21 @@ public class PackageTransTaskFragment extends Fragment implements View.OnClickLi
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.finished:
-                url=BASE_URL+"/ExtraceSystem/customerInfos";
+                url=BASE_URL+"/ExtraceSystem/yizhuanyunPackage/"+uid;
                 loadData(url);
                 finished.setBackgroundResource(R.drawable.bg_round_right_green);
                 unfinished.setBackgroundResource(R.drawable.bg_round_left_trans);
                 unfinished.setTextColor(getResources().getColor(R.color.colorPrimary));
                 finished.setTextColor(getResources().getColor(R.color.white));
-                Toast.makeText(getContext(), "package已处理页面", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "package已处理页面", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.unfinished:
-                url=BASE_URL+"/ExtraceSystem/customerInfos";
+                url=BASE_URL+"/ExtraceSystem/weizhuanyunPackage/"+uid;
                 finished.setBackgroundResource(R.drawable.bg_round_right_trans);
                 unfinished.setBackgroundResource(R.drawable.bg_round_left_green);
                 unfinished.setTextColor(getResources().getColor(R.color.white));
                 finished.setTextColor(getResources().getColor(R.color.colorPrimary));
-                Toast.makeText(getContext(), "package未处理页面", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), "package未处理页面", Toast.LENGTH_SHORT).show();
                 loadData(url);
                 break;
         }
@@ -171,12 +192,13 @@ public class PackageTransTaskFragment extends Fragment implements View.OnClickLi
             Intent intent;
             switch (v.getId()){
                 case R.id.callprevious:
-                    intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+ list.get(position).get("telcode")));
+                    intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+ list.get(position).get("上一网点电话")));
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                     break;
                 case R.id.callnext:
-                    intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+ list.get(position).get("telcode").toString()));
+                    intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+ list.get(position).get("下一网点电话").toString()));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                     break;

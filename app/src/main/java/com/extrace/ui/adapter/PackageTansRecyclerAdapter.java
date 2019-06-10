@@ -18,6 +18,7 @@ import java.util.Map;
  * 接受任务的适配器
  */
 public class PackageTansRecyclerAdapter extends RecyclerView.Adapter<PackageTansRecyclerAdapter.ViewHolder> implements View.OnClickListener {
+    private static final String TAG = "PackageTansRecyclerAdap";
     public List<Map<String,Object>> list=new ArrayList<>();
     public Context con;
     public  LayoutInflater inflater;
@@ -37,9 +38,11 @@ public class PackageTansRecyclerAdapter extends RecyclerView.Adapter<PackageTans
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        Log.e("tttt","快递任务RevTask");
-        holder.tv_name.setText("上一网点："+list.get(position).get("name").toString());
-        holder.tv_addr.setText("下一网点："+list.get(position).get("address").toString());
+        Log.d(TAG, "onBindViewHolder: 快递任务RevTask");
+        holder.former.setText("上一网点："+list.get(position).get("上一网点").toString());
+        holder.latter.setText("下一网点："+list.get(position).get("下一网点").toString());
+        holder.packageId.setText("包裹编号："+list.get(position).get("包裹id").toString());
+        holder.size.setText(list.get(position).get("包裹大小").toString());
         holder.previous.setTag(position);
         holder.next.setTag(position);
         holder.itemView.setTag(position);
@@ -67,18 +70,22 @@ public class PackageTansRecyclerAdapter extends RecyclerView.Adapter<PackageTans
         void onItemClick(View v, int position);
     }
     class ViewHolder extends RecyclerView.ViewHolder{
-        public TextView tv_name;
-        public TextView tv_addr;
+        public TextView former;
+        public TextView latter;
         public TextView previous;
         public TextView next;
+        public TextView packageId;
+        public TextView size;
 
 
         public ViewHolder(View itemView) {
             super(itemView);
-            tv_name= itemView.findViewById(R.id.name);
-            tv_addr = itemView.findViewById(R.id.addr);
+            former= itemView.findViewById(R.id.former);
+            latter = itemView.findViewById(R.id.latter);
             previous = itemView.findViewById(R.id.callprevious);
             next = itemView.findViewById(R.id.callnext);
+            packageId = itemView.findViewById(R.id.packageId);
+            size = itemView.findViewById(R.id.size);
         }
     }
 

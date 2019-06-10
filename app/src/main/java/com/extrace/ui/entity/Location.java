@@ -4,7 +4,10 @@ package com.extrace.ui.entity;
  * 位置的 POJO类
  */
 public class Location {
-    public double longitude;//经度
-    public double latitude; //纬度
+    public int sn;
+    public String packageid;
+    public double y;//经度longitude
+    public double x; //纬度latitude
+    public long tm; //时间戳
 
 }

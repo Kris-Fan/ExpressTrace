@@ -18,9 +18,9 @@ import static com.extrace.net.OkHttpClientManager.BASE_URL;
  */
 public class MainAdapter extends FragmentPagerAdapter {
     private List<Fragment> mFragments;
-    private String url0=BASE_URL+"/ExtraceSystem/weipaisongList/";//派送任务
-    private String url1=BASE_URL+"/ExtraceSystem/weipaisongList/";//揽收任务
-    private String url2=BASE_URL+"/ExtraceSystem/customerInfos/";//转运任务
+    private String url0=BASE_URL+"/ExtraceSystem/daipaisong/";//派送任务
+    private String url1=BASE_URL+"/ExtraceSystem/weilanjian/";//揽收任务
+    private String url2=BASE_URL+"/ExtraceSystem/weizhuanyunPackage/";//转运任务
     String[] tabs = {"首页","mmm","mmm","mmm"};
     public MainAdapter(FragmentManager fm, List<Fragment> mFragments, String[] tabs) {
         super(fm);
@@ -43,12 +43,16 @@ public class MainAdapter extends FragmentPagerAdapter {
                 case 1://揽收任务
                     ExpressTaskFragment newInstance1 = new ExpressTaskFragment();
                     Bundle bundle1 = new Bundle();
+                    bundle1.putString("type","weilanshou");
                     bundle1.putString("url",url1);
                     newInstance1.setArguments(bundle1);
                     return newInstance1;
                 case 2://转运任务
-                    PackageTransTaskFragment fragment2 = new PackageTransTaskFragment();
-                    return fragment2;
+                    PackageTransTaskFragment newInstance2 = new PackageTransTaskFragment();
+                    Bundle bundle2 = new Bundle();
+                    bundle2.putString("url",url2);
+                    newInstance2.setArguments(bundle2);
+                    return newInstance2;
             }
             return null;
     }

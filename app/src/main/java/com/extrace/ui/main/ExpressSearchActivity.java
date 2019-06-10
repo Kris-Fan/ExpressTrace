@@ -50,7 +50,9 @@ import com.extrace.net.json.MyJsonManager;
 import com.extrace.ui.R;
 import com.extrace.ui.adapter.TraceListAdapter;
 import com.extrace.ui.entity.ExpressSheet;
+import com.extrace.ui.entity.Location;
 import com.extrace.ui.entity.Trace;
+import com.extrace.ui.service.LoginService;
 import com.extrace.util.EmptyView;
 import com.extrace.util.TitleLayout;
 import com.extrace.util.layout.ClearEditText;
@@ -84,7 +86,8 @@ public class ExpressSearchActivity extends AppCompatActivity implements View.OnK
     private TraceListAdapter adapter;
 
     private TitleLayout titleLayout ; // 标题栏
-
+    private String urlMap = BASE_URL+"/ExtraceSystem/queryMap/";
+    private LoginService loginService = new LoginService();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,10 +98,10 @@ public class ExpressSearchActivity extends AppCompatActivity implements View.OnK
         }
 
         titleLayout = findViewById(R.id.title);
-        titleLayout.setTitle("");
+        titleLayout.setTitle(getResources().getString(R.string.action_search));
         titleLayout.hideTitleEdit();
-        titleLayout.setBackground(getResources().getColor(R.color.transparent));
-        titleLayout.setTitleColor(getResources().getColor(R.color.colorBlack));
+        titleLayout.setBackground(getResources().getColor(R.color.colorPrimaryTrans));
+        titleLayout.setTitleColor(getResources().getColor(R.color.white));
         findView();
         bindEvent();
        // initData();
@@ -121,13 +124,13 @@ public class ExpressSearchActivity extends AppCompatActivity implements View.OnK
 
         rvTrace.setVisibility(View.INVISIBLE);
         //設置地圖高度為屏幕高度
-        DisplayMetrics dm = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(dm);
-        screenWidth= dm.widthPixels;
-        screenHeight= dm.heightPixels;
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)mMapView.getLayoutParams();
-        params.height = screenHeight;
-        mMapView.setLayoutParams(params);
+//        DisplayMetrics dm = new DisplayMetrics();
+//        getWindowManager().getDefaultDisplay().getMetrics(dm);
+//        screenWidth= dm.widthPixels;
+//        screenHeight= dm.heightPixels;
+//        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)mMapView.getLayoutParams();
+//        params.height = screenHeight;
+//        mMapView.setLayoutParams(params);
 
         // 解决地图拖动和ScrollView上下滑动冲突问题
         View v = mMapView.getChildAt(0);
@@ -159,8 +162,17 @@ public class ExpressSearchActivity extends AppCompatActivity implements View.OnK
 
                 int toolbarHeight = clearEditText.getBottom();
                 int rvHeight = rvTrace.getTop();
-                Log.i("lalal_expressSearch","toolbarHeight = " +toolbarHeight +" mDistance"+mDistanceY+ "  rvTravce ="+rvHeight);
+                Log.i(TAG,"toolbarHeight = " +toolbarHeight +" mDistance"+mDistanceY+ "  rvTravce ="+rvHeight);
 
+            }
+        });
+
+        emptyView.setOnLayoutClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!clearEditText.getText().toString().isEmpty()){ //输入框内不为空时
+                    startSearchTrace(clearEditText.getText().toString());
+                }
             }
         });
     }
@@ -248,7 +260,8 @@ public class ExpressSearchActivity extends AppCompatActivity implements View.OnK
         rvTrace.setVisibility(View.VISIBLE);
         emptyView.setErrorType(EmptyView.NETWORK_LOADING);
 
-        OkHttpClientManager.getAsyn(urlEx + id, new OkHttpClientManager.ResultCallback<String>() {
+        OkHttpClientManager okHttpClientManager = new OkHttpClientManager(loginService.userInfoSha256(this));
+        okHttpClientManager.getAsyn(urlEx + id, new OkHttpClientManager.ResultCallback<String>() {
             @Override
             public void onError(Request request, Exception e) {
                 handler.sendEmptyMessage(404);
@@ -256,9 +269,9 @@ public class ExpressSearchActivity extends AppCompatActivity implements View.OnK
 
             @Override
             public void onResponse(String response) {
-                Log.d(TAG, "onResponse: 搜索结果："+response);
                 List<Trace> expressSheet = new MyJsonManager().traceListJsonJX(response);
-                if (expressSheet != null) {
+                Log.d(TAG, "onResponse: 搜索结果："+response);
+                if (expressSheet!= null && expressSheet.size()>0) {
                     findResult(expressSheet);
                     handler.sendEmptyMessage(200);//Message(message);
                 }else {
@@ -267,6 +280,40 @@ public class ExpressSearchActivity extends AppCompatActivity implements View.OnK
             }
         });
 
+        okHttpClientManager.getAsyn(urlMap + id, new OkHttpClientManager.ResultCallback<List<Location>>() {
+            @Override
+            public void onError(Request request, Exception e) {
+                handler.sendEmptyMessage(401);
+            }
+
+            @Override
+            public void onResponse(List<Location> response) {
+                if (response!=null && !response.isEmpty()) {
+                    showTraceOnMap(response);
+                }else {
+                    handler.sendEmptyMessage(401);
+                }
+            }
+        });
+
+    }
+
+    /**
+     * 显示地图上轨迹
+     * @param locationList 获取到的坐标点列表
+     */
+    private void showTraceOnMap(List<Location> locationList) {
+        for (int i = 100; i < locationList.size(); i++) {
+            LatLng latLng = new LatLng(locationList.get(i).x,locationList.get(i).y);
+            points.add(latLng);
+        }
+        Log.e(TAG, "showTraceOnMap: point:" + points.toString());
+        if (points!=null && points.size()>2) {
+            navigateTo();
+        }else {
+
+            handler.sendEmptyMessage(401);
+        }
     }
 
     private void findResult(List<Trace> traces) {
@@ -289,9 +336,14 @@ public class ExpressSearchActivity extends AppCompatActivity implements View.OnK
                     emptyView.setErrorType(EmptyView.HIDE_LAYOUT);
                     adapter.notifyDataSetChanged();
                     break;
+                case 401:
+                    Toast.makeText(ExpressSearchActivity.this, "无当前单号对应的地图轨迹信息", Toast.LENGTH_SHORT).show();
+                    mBaiduMap.clear();
+                    break;
                 case 404:
                     Toast.makeText(getApplicationContext(), "无效单号！", Toast.LENGTH_SHORT).show();
                     //initData();
+                    mMapView.setVisibility(View.GONE);
                     traceList.clear();
                     traceList.add(new Trace("啦啦啦快递提醒您", "无结果，请检查输入是否有误后重试"));
 
@@ -347,29 +399,28 @@ public class ExpressSearchActivity extends AppCompatActivity implements View.OnK
         option.SetIgnoreCacheException(false);//可选，默认false，设置是否收集CRASH信息，默认收集
         option.setEnableSimulateGps(false);//可选，默认false，设置是否需要过滤GPS仿真结果，默认需要
 
-        navigateTo();
+        //navigateTo();
     }
     private void navigateTo() {
         Log.d(TAG, "navigateTo: ");
-        String latStr = getLatLngInfo(getApplicationContext());
-        if (!"".equals(latStr)){
-            Gson gson = new Gson();
-            List<LatLng> latLngList = gson.fromJson(latStr,new TypeToken<List<LatLng>>(){}.getType());
-            if (latLngList != null){
-                points.addAll(latLngList);
-                Log.e(TAG, "navigateTo: "+points.toString() );
-            }
-        }
-        if (points != null) { //坐标点列表-不为空时移动至此
-            int index = points.size()-1;
-            LatLng ll = new LatLng(points.get(index).latitude,
-                    points.get(index).longitude);
-            //设置地图的缩放级别：
-            MapStatus.Builder builder = new MapStatus.Builder();
-            builder.target(ll).zoom(17.0f);
-            mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
-            drawLineOnMap(points);
-        }
+//        String latStr = getLatLngInfo(getApplicationContext());
+//        if (!"".equals(latStr)){
+//            Gson gson = new Gson();
+//            List<LatLng> latLngList = gson.fromJson(latStr,new TypeToken<List<LatLng>>(){}.getType());
+//            if (latLngList != null){
+//                points.addAll(latLngList);
+//                Log.e(TAG, "navigateTo: "+points.toString() );
+//            }
+//        }
+        mMapView.setVisibility(View.VISIBLE);
+        int index = points.size()-1;
+        LatLng ll = new LatLng(points.get(index).latitude,
+                points.get(index).longitude);
+        //设置地图的缩放级别：
+        MapStatus.Builder builder = new MapStatus.Builder();
+        builder.target(ll).zoom(14.0f);
+        mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
+        drawLineOnMap(points);
     }
     /**
      * 在地图上划线，轨迹！

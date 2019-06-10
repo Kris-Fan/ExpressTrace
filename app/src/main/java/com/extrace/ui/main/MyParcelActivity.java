@@ -17,6 +17,7 @@ import com.extrace.net.json.MyJsonManager;
 import com.extrace.ui.R;
 import com.extrace.ui.adapter.MyHistoryParcelAdapter;
 import com.extrace.ui.entity.ExpressSheet;
+import com.extrace.ui.service.LoginService;
 import com.extrace.util.EmptyView;
 import com.squareup.okhttp.Response;
 
@@ -39,6 +40,7 @@ public class MyParcelActivity extends AppCompatActivity {
     public  String title;
     public List<ExpressSheet> list;
     public String url=BASE_URL+"/ExtraceSystem/getExpresseetByAccepter/";
+    private static final String TAG = "MyParcelActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,20 +73,22 @@ public class MyParcelActivity extends AppCompatActivity {
             @Override
             protected String doInBackground(Void... params) {
                 try {
-
-                    SharedPreferences sharedPreferences = getSharedPreferences("USER_INFO", MODE_PRIVATE);
-                    int uid = sharedPreferences.getInt("uid",-1);
-                    if (uid == -1) {
+                    OkHttpClientManager okHttpClientManager = new OkHttpClientManager(new LoginService().userInfoSha256(getApplicationContext()));
+                    if (new LoginService().isLogined(getApplicationContext())) {
                         date = "";
-                        Log.e("lalal","拒绝服务uid="+uid);
+                        Log.e(TAG,"拒绝服务uid=");
                         handler.sendEmptyMessage(500);
                     }else {
-                        Response response = OkHttpClientManager.getAsyn(url + uid);
+                        Response response = okHttpClientManager.getAsyn(url + new LoginService().getUserId(getApplicationContext()));
                         if (response.code() == 200) {
                             date = response.body().string();
-                        } else {
+                        } else if (response.code() == 500){
                             date = "";
-                            Log.e("lalal","请求响应失败：code="+response.code());
+                            Log.e(TAG,"拒绝服务uid=");
+                            handler.sendEmptyMessage(500);
+                        }else {
+                            date = "";
+                            Log.e(TAG,"请求响应失败：code="+response.code());
                         }
                     }
                 } catch (IOException e) {
@@ -99,7 +103,7 @@ public class MyParcelActivity extends AppCompatActivity {
                     List<ExpressSheet> tempList = (new MyJsonManager()).historyPackageJsonJXData(s);
 //                    Log.e("lalala","快递任务RevTask"+tempList.toString());
                     Log.e("lalal","请求响应成功，数据："+s);
-                    if (!tempList.isEmpty()) {
+                    if (tempList!=null && !tempList.isEmpty()) {
                         list.addAll(tempList);
                         handler.sendEmptyMessage(0);
                     }else {
@@ -122,7 +126,7 @@ public class MyParcelActivity extends AppCompatActivity {
                     break;
                 case 500://提示更新数据
                     emptyView.setErrorType(EmptyView.NODATA);
-                    Toast.makeText(MyParcelActivity.this, "拒绝服务，未登录或登录信息失效", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MyParcelActivity.this, "错误码500，拒绝服务，身份验证", Toast.LENGTH_SHORT).show();
                     break;
             }
 

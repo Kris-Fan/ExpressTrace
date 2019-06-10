@@ -129,11 +129,11 @@ public class MyJsonManager {
         String jsonStr = new GetJsonDataUtil().getJson(context, "transnode.json");//获取assets目录下的json文件数据
         List<TransNode> list=new ArrayList<>();
         if (jsonStr != null){
-            Log.e("lalal","网点 == "+jsonStr);
+            Log.d(TAG, "TransNodeJson: 网点 == "+jsonStr);
             Gson gson=new Gson();
             list=gson.fromJson(jsonStr,new TypeToken<List<TransNode>>(){}.getType());
 
-            Log.e("lala","数组："+list.toString());
+            Log.d(TAG, "TransNodeJson: 数组："+list.toString());
 
         }
         return list;
@@ -166,13 +166,14 @@ public class MyJsonManager {
         if (data != null) {
             try {
                 JSONArray jsonArrayInfo = new JSONArray(data);
-
+                Log.d(TAG, "PaisongJsonJXData: "+data);
                 for (int i = 0; i < jsonArrayInfo.length(); i++) {
                     JSONObject object = jsonArrayInfo.getJSONObject(i);
                     Map<String, Object> map = new HashMap<>();
                     map.put("name", object.getString("name"));
                     map.put("telcode", object.getString("telcode"));
                     map.put("address", object.getString("address"));
+                    map.put("expressId", object.getString("expressId"));
                     list.add(map);
                 }
             } catch (JSONException e) {
@@ -183,4 +184,57 @@ public class MyJsonManager {
         }
         return list;
     }
+    public List<Map<String, Object>> LanshouJsonJXData(String data) {
+        List<Map<String, Object>> list = new ArrayList<>();
+        if (data != null) {
+            try {
+                JSONArray jsonArrayInfo = new JSONArray(data);
+                for (int i = 0; i < jsonArrayInfo.length(); i++) {
+                    JSONObject object = jsonArrayInfo.getJSONObject(i);
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("name", object.getString("sendername"));
+                    map.put("telcode", object.getString("sendertelephonenumber"));
+                    map.put("address", object.getString("senderprovince")+object.getString("sendercity")+object.getString("sendertown")+object.getString("senderaddressdetail"));
+                    map.put("sn", object.getInt("sn"));
+                    list.add(map);
+                }
+            } catch (JSONException e) {
+                Log.e("customerinfojson", "异常：jsonJXDate");
+                e.printStackTrace();
+            }
+
+        }
+        return list;
+    }
+    /**
+     * 转运任务 json解析
+     * @param data
+     * @return
+     */
+    public List<Map<String, Object>> TansPackageJXData(String data) {
+        List<Map<String, Object>> list = new ArrayList<>();
+        if (data != null) {
+            try {
+                JSONArray jsonArrayInfo = new JSONArray(data);
+
+                for (int i = 0; i < jsonArrayInfo.length(); i++) {
+                    JSONObject object = jsonArrayInfo.getJSONObject(i);
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("上一网点", object.getString("上一网点"));
+                    map.put("下一网点", object.getString("下一网点"));
+                    map.put("包裹id", object.getString("包裹id"));
+                    map.put("包裹大小", object.getString("包裹大小"));
+                    map.put("上一网点电话", object.getString("上一网点电话"));
+                    map.put("下一网点电话", object.getString("下一网点电话"));
+                    list.add(map);
+                }
+            } catch (JSONException e) {
+                Log.e("customerinfojson", "异常：jsonJXDate");
+                e.printStackTrace();
+            }
+
+        }
+        return list;
+    }
+
 }
