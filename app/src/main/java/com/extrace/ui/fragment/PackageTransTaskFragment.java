@@ -58,6 +58,7 @@ public class PackageTransTaskFragment extends Fragment implements View.OnClickLi
     public  String title;
     public List<Map<String,Object>> list;
     public String url=BASE_URL+"/ExtraceSystem/customerInfos";
+    OkHttpClientManager okHttpClientManager;
     private static final String TAG = "PackageTransTaskFragmen";
     private int uid;//用户id
     @Override
@@ -88,6 +89,7 @@ public class PackageTransTaskFragment extends Fragment implements View.OnClickLi
         if(args!=null){
             url = args.getString("url")+uid;
         }
+        okHttpClientManager = new OkHttpClientManager(new LoginService().userInfoSha256(getContext()));
         loadData(url);
         emptyView.setOnLayoutClickListener(new View.OnClickListener() {
             @Override
@@ -114,7 +116,7 @@ public class PackageTransTaskFragment extends Fragment implements View.OnClickLi
                 //执行网络请求
                 //String s = HttpUtils
                 // getStringByOkhttp(url);
-                OkHttpClientManager okHttpClientManager = new OkHttpClientManager(new LoginService().userInfoSha256(getContext()));
+                okHttpClientManager = new OkHttpClientManager(new LoginService().userInfoSha256(getContext()));
                 try {
                     Response response =  okHttpClientManager.getAsyn(url);
                     if (response.code()==200){

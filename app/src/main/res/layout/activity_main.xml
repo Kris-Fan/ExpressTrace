@@ -129,7 +129,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/ly_tab_menu"
-        android:layout_below="@id/appbar"
         android:layout_marginBottom="1dp"
         android:background="@color/white" >
 

@@ -15,16 +15,21 @@
  */
 package com.extrace.util;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -60,6 +65,8 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.extrace.net.OkHttpClientManager.BASE_URL;
 import static com.extrace.ui.main.ScanBarcodeActivity.KEY_CODE;
@@ -104,10 +111,27 @@ public class CustomCaptureActivity extends CaptureActivity implements View.OnCli
         Toolbar toolbar = findViewById(R.id.toolbar);
         StatusBarUtils.immersiveStatusBar(this,toolbar,0.2f);
         TextView tvTitle = findViewById(R.id.tvTitle);
+        tvTitle.setText(getIntent().getStringExtra(KEY_TITLE));
+        //权限相关
+        List<String> permissionList = new ArrayList<>();
+        if (ContextCompat.checkSelfPermission(CustomCaptureActivity.this, Manifest.permission.CAMERA )
+                != PackageManager.PERMISSION_GRANTED){
+            permissionList.add(Manifest.permission.CAMERA);
+        }
+        if (!permissionList.isEmpty()){
+            String[] permissions = permissionList.toArray(new String[permissionList.size()]);
+            ActivityCompat.requestPermissions(CustomCaptureActivity.this,permissions,520);
+        }else {
+            initCapture();
+        }
+
+    }
+
+    private void initCapture() {
         viewfinderView = findViewById(R.id.viewfinder_view);
         skip = findViewById(R.id.skip);
         skip.setOnClickListener(this);
-        tvTitle.setText(getIntent().getStringExtra(KEY_TITLE));
+
 
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -139,10 +163,33 @@ public class CustomCaptureActivity extends CaptureActivity implements View.OnCli
             //this.cls = SendExpressActivity.class;
             skip.setVisibility(View.VISIBLE);
         }
+
         getBeepManager().setPlayBeep(true);
         getBeepManager().setVibrate(true);
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode){
+            case 520:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED ){
+                    for (int result :grantResults){
+                        if (result != PackageManager.PERMISSION_GRANTED){
+                            Toast.makeText(this, "必须所有权限才能使用本服务", Toast.LENGTH_SHORT).show();
+                            finish();
+                            return;
+                        }
+                        initCapture();
+                    }
+                }else {
+                    Toast.makeText(this, "You Permission Denied", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+                break;
+            default:
+        }
+    }
     /**
      * 关闭闪光灯（手电筒）
      */

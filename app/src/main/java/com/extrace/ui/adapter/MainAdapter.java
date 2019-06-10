@@ -37,6 +37,7 @@ public class MainAdapter extends FragmentPagerAdapter {
                 case 0://派送任务
                     ExpressTaskFragment newInstance = new ExpressTaskFragment();
                     Bundle bundle = new Bundle();
+                    bundle.putString("type","paisong");
                     bundle.putString("url",url0);
                     newInstance.setArguments(bundle);
                     return newInstance;

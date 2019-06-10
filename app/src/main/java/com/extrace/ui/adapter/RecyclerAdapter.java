@@ -1,6 +1,7 @@
 package com.extrace.ui.adapter;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -70,6 +71,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             if(type.equals("weilanshou")) {
                 tv_expressId.setText("揽收");
                 tv_expressId.setGravity(Gravity.CENTER);
+                tv_expressId.setBackground(con.getResources().getDrawable(R.drawable.bg_round_normal_green));
+                tv_expressId.setTextColor(con.getResources().getColor(R.color.white));
                 tv_expressId.setOnClickListener(this);
             }else if(type.equals("yilanshou")){
                 tv_expressId.setHeight(0);

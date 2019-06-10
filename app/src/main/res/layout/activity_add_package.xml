@@ -118,6 +118,6 @@
             android:layout_height="wrap_content"
             android:textColor="@color/colorPrimaryLight"
             android:textSize="20dp"
-            android:text="@string/action_ok" />
+            android:text="创建包裹" />
     </LinearLayout>
 </RelativeLayout>

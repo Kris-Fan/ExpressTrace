@@ -13,10 +13,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_round_normal"
-        android:orientation="horizontal">
+        android:orientation="vertical">
         <TextView
             android:id="@+id/expressId"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:paddingLeft="@dimen/size_5dp"
@@ -26,6 +26,7 @@
             android:background="@drawable/menu_bg_normal"
             android:singleLine="true"
             android:gravity="left"
+
             android:textColor="@color/colorOrange"/>
         <LinearLayout
             android:id="@+id/l1"

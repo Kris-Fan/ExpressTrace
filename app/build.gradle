@@ -44,5 +44,5 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:16.1.0'
     implementation 'com.contrarywind:Android-PickerView:4.1.6'//选择省市区
     implementation 'com.belerweb:pinyin4j:2.5.1'    //客户管理 拼音滑动
-    implementation files('libs/BaiduLbs_Android.jar')
+    implementation files('libs/BaiduLBS_Android.jar')
 }

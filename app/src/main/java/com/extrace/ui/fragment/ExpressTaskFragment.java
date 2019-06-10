@@ -70,6 +70,7 @@ public class ExpressTaskFragment extends Fragment implements View.OnClickListene
 
     private String url="";
     private String type="";
+    OkHttpClientManager okHttpClientManager;
     public ExpressTaskFragment() {
         // Required empty public constructor
     }
@@ -115,6 +116,7 @@ public class ExpressTaskFragment extends Fragment implements View.OnClickListene
         //initData();
         Log.d(TAG, "onCreateView: list!null 啦啦啦 =  "+list);
         mRecyclerView = view.findViewById(R.id.recycler_view);
+        okHttpClientManager = new OkHttpClientManager(new LoginService().userInfoSha256(getContext()));
         loadData(url);
         emptyView.setOnLayoutClickListener(new View.OnClickListener() {
             @Override
@@ -135,7 +137,7 @@ public class ExpressTaskFragment extends Fragment implements View.OnClickListene
                 //执行网络请求
                 try {
 
-                    OkHttpClientManager okHttpClientManager = new OkHttpClientManager(new LoginService().userInfoSha256(getContext()));
+                    okHttpClientManager = new OkHttpClientManager(new LoginService().userInfoSha256(getContext()));
                     Log.e(TAG, "doInBackground: "+ url);
                     Response response =  okHttpClientManager.getAsyn(url);
                     Log.e(TAG, "doInBackground: "+ response.code());
@@ -184,7 +186,7 @@ public class ExpressTaskFragment extends Fragment implements View.OnClickListene
                 //执行网络请求
                 try {
 
-                    Response response =  OkHttpClientManager.getAsyn(BASE_URL+"/ExtraceSystem/onLineLanjian/"+id);
+                    Response response =  okHttpClientManager.getAsyn(BASE_URL+"/ExtraceSystem/onLineLanjian/"+id);
                     if (response.code() == 200) {
                         date = response.body().string();
                     }else {
@@ -244,11 +246,11 @@ public class ExpressTaskFragment extends Fragment implements View.OnClickListene
         }
         if(type.equals("paisong")) {
             url1 = BASE_URL+"/ExtraceSystem/weipaisongList/"+uid;
-            url2 = BASE_URL+"/ExtraceSystem/daipaisong/"+13;
+            url2 = BASE_URL+"/ExtraceSystem/daipaisong/"+uid;
 
         }else{
-            url1 = BASE_URL+"/ExtraceSystem/yilanjian/"+14;
-            url2 = BASE_URL+"/ExtraceSystem/weilanjian/"+14;
+            url1 = BASE_URL+"/ExtraceSystem/yilanjian/"+uid;
+            url2 = BASE_URL+"/ExtraceSystem/weilanjian/"+uid;
         }
         switch (v.getId()){
             case R.id.finished:

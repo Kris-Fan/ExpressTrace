@@ -47,8 +47,9 @@ public class AddPackageActivity extends AppCompatActivity implements View.OnClic
         package_barcode = findViewById(R.id.package_barcode);
 
         SharedPreferences sPreferences = getSharedPreferences("USER_INFO", MODE_PRIVATE);
-        int uid = sPreferences.getInt("uid", -1);
-        userId.setText(String.valueOf(uid));
+        String tel = sPreferences.getString("telcode", "");
+        String name = sPreferences.getString("username", "");
+        userId.setText(name+"("+tel+")");
 
         bindEvent();
     }

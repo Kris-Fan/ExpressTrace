@@ -74,9 +74,9 @@ public class MyParcelActivity extends AppCompatActivity {
             protected String doInBackground(Void... params) {
                 try {
                     OkHttpClientManager okHttpClientManager = new OkHttpClientManager(new LoginService().userInfoSha256(getApplicationContext()));
-                    if (new LoginService().isLogined(getApplicationContext())) {
+                    if (!new LoginService().isLogined(getApplicationContext())) {
                         date = "";
-                        Log.e(TAG,"拒绝服务uid=");
+                        Log.e(TAG,"拒绝服务-未登录");
                         handler.sendEmptyMessage(500);
                     }else {
                         Response response = okHttpClientManager.getAsyn(url + new LoginService().getUserId(getApplicationContext()));
@@ -84,7 +84,7 @@ public class MyParcelActivity extends AppCompatActivity {
                             date = response.body().string();
                         } else if (response.code() == 500){
                             date = "";
-                            Log.e(TAG,"拒绝服务uid=");
+                            Log.e(TAG,"拒绝服务 response="+response.code());
                             handler.sendEmptyMessage(500);
                         }else {
                             date = "";

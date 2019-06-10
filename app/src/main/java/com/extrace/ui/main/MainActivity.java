@@ -29,21 +29,36 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.extrace.net.OkHttpClientManager;
 import com.extrace.ui.R;
 import com.extrace.ui.adapter.MainAdapter;
+import com.extrace.ui.entity.History;
 import com.extrace.ui.fragment.ExpressTaskFragment;
 import com.extrace.ui.fragment.MainHomeFragment;
 import com.extrace.ui.fragment.MainMenuFragment;
 import com.extrace.ui.fragment.MainOrderFragment;
 import com.extrace.ui.fragment.MePageFragment;
 import com.extrace.ui.service.ActivityCollector;
+import com.extrace.ui.service.HistoryOperator;
 import com.extrace.ui.service.LoginService;
 import com.extrace.util.UriUtils;
 import com.king.zxing.Intents;
 import com.king.zxing.util.CodeUtils;
+import com.squareup.okhttp.Request;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import static com.extrace.net.OkHttpClientManager.BASE_URL;
+import static com.extrace.ui.fragment.MainMenuFragment.REQUEST_CODE_PHOTO;
+import static com.extrace.ui.main.ScanBarcodeActivity.REQUEST_CODE_SCAN_ARRIVE;
+import static com.extrace.ui.main.ScanBarcodeActivity.REQUEST_CODE_SCAN_DISPATCH;
+import static com.extrace.ui.main.ScanBarcodeActivity.REQUEST_CODE_SCAN_RECEIVE;
+import static com.extrace.ui.main.ScanBarcodeActivity.REQUEST_CODE_SCAN_SEND;
+import static com.extrace.ui.main.ScanBarcodeActivity.REQUEST_CODE_SCAN_SEND_UPLOAD;
+import static com.extrace.ui.main.ScanBarcodeActivity.REQUEST_CODE_SCAN_SIGN;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -64,9 +79,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView mTextNum1,mTextNum2,mTextNum3,mTextNum4;
     private ImageView mImageView;
     private MainMenuFragment fg1;       //首页
+    private MainHomeFragment fg11; //首页-新
     private MainOrderFragment fg2;     // 订单页面
     private MePageFragment fg4;     //"我的"页面
     private LoginService loginService = new LoginService();
+    private static final String TAG = "MainActivity";
     /**
      * 下边是与首页ViewPager
      */
@@ -84,7 +101,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onNewIntent(Intent intent) { //有一个mainActivity,设置了加载模式为singleTask, 想要在onresume中得到从其他activity传递过来的参数，直接接收的话，发现接收不到，在其他地方，找到了答案，说是在mainActivity中 要重写onNewIntent函数，像这样
         super.onNewIntent(intent);
         setIntent(intent);
+        Log.d(TAG, "onNewIntent: ");
+        ly_two.setVisibility(new LoginService().getUserRoll(this) == 0 ? View.VISIBLE : View.GONE);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: ");
+        ly_two.setVisibility(new LoginService().getUserRoll(this) == 0 ? View.VISIBLE : View.GONE);
+    }
+
     private void bindView() {
 
         ly_one = findViewById(R.id.ly_tab_menu_deal);
@@ -116,6 +143,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(fg1!=null){
             transaction.hide(fg1);
         }
+        if (fg11!=null){
+            transaction.hide(fg11);
+        }
         if(fg2!=null){
             transaction.hide(fg2);
         }
@@ -132,14 +162,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 setSelected();
                 mTextView1.setSelected(true);
                 mTextNum1.setVisibility(View.INVISIBLE);
-                if(fg1==null){
-                    fg1 = new MainMenuFragment();
-                    //fg1 = new HomeSub1Fragment();
-                    transaction.add(R.id.fragment_container,fg1);
+//                if(fg1==null){
+//                    fg1 = new MainMenuFragment();
+//                    //fg1 = new HomeSub1Fragment();
+//                    transaction.add(R.id.fragment_container,fg1);
+//                }else{
+//                    transaction.show(fg1);
+//                }
+                if(fg11==null){
+                    fg11 = new MainHomeFragment();
+                    transaction.add(R.id.fragment_container,fg11);
                 }else{
-                    transaction.show(fg1);
+                    transaction.show(fg11);
                 }
-
                 break;
             case R.id.ly_tab_menu_poi:
                 if (loginService.isLogined(this)) {
@@ -186,24 +221,109 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        String result = "";
+        String msg ="";
+        Intent intent;
         if(resultCode == RESULT_OK && data!=null){
             switch (requestCode){
-                case REQUEST_CODE_SCAN:
-                    String result = data.getStringExtra(Intents.Scan.RESULT);
-                    Toast.makeText(this,"扫描到了："+result,Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(MainActivity.this, ExpressEditActivity.class);
-
+                case REQUEST_CODE_SCAN_RECEIVE: //收件扫描结果
+                    msg = "收件扫描";
+                    result = data.getStringExtra(Intents.Scan.RESULT);
+                    //Toast.makeText(getContext(),"扫描到了："+result,Toast.LENGTH_SHORT).show();
+                    intent = new Intent(MainActivity.this, ExpressEditActivity.class);
                     intent.putExtra("EXPRESS_ID",result);
                     startActivity(intent);
                     break;
+                case REQUEST_CODE_SCAN_SEND:    //发件扫描结果
+                    msg = "包裹打包扫描";
+                    result = data.getStringExtra(Intents.Scan.RESULT);
+                    //Toast.makeText(MainActivity.this,"扫jhhhh描到了："+result+REQUEST_CODE_SCAN_SEND,Toast.LENGTH_SHORT).show();
+                    queryPackage(result);
+                    break;
+                case REQUEST_CODE_SCAN_SEND_UPLOAD:
+                    msg = "装货扫描";
+                    break;
+                case REQUEST_CODE_SCAN_ARRIVE:      //到件扫描结果
+                    msg ="包裹拆包、到件扫描";
+                    result = data.getStringExtra(Intents.Scan.RESULT);
+                    Toast.makeText(MainActivity.this,"扫描到了："+result+REQUEST_CODE_SCAN_ARRIVE,Toast.LENGTH_SHORT).show();
+                    break;
+                case REQUEST_CODE_SCAN_DISPATCH:    //派送扫描结果
+                    msg = "派件扫描";
+                    result = data.getStringExtra(Intents.Scan.RESULT);
+                    Toast.makeText(MainActivity.this,"扫描到了："+result+REQUEST_CODE_SCAN_DISPATCH,Toast.LENGTH_SHORT).show();
+                    break;
+                case REQUEST_CODE_SCAN_SIGN:    //签收扫描
+                    msg = "签收扫描";
+                    break;
                 case REQUEST_CODE_PHOTO:
-                    parsePhoto(data);
+                    //parsePhoto(data);
+                    break;
+                default:
                     break;
             }
 
+            if (new LoginService().getUserRoll(this) == 0) {
+                HistoryOperator historyOperator = new HistoryOperator(MainActivity.this);
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");// HH:mm:ss
+//获取当前时间
+                Date date = new Date(System.currentTimeMillis());
+                History history = new History();
+                history.expressId = result;
+
+                history.context = "扫描方式：" + msg;//String.valueOf(requestCode);
+                history.time = simpleDateFormat.format(date);
+                boolean add = historyOperator.insert(history);
+//            if (add){
+//                Toast.makeText(MainActivity.this, "记录已同步", Toast.LENGTH_SHORT).show();
+//            }else {
+//                Toast.makeText(MainActivity.this, "扫描记录添加失败", Toast.LENGTH_SHORT).show();
+//            }
+            }
         }
     }
 
+    //包裹打包 REQUEST_CODE_SCAN_SEND
+    private boolean queryPackage(final String string){
+        //Toast.makeText(getApplicationContext(), string, Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "queryPackage: "+string);
+        OkHttpClientManager okHttpClientManager = new OkHttpClientManager(new LoginService().userInfoSha256(MainActivity.this));
+        okHttpClientManager.getAsyn(BASE_URL +"/ExtraceSystem/queryPackage/"+string,
+                new OkHttpClientManager.ResultCallback<String>() {
+                    @Override
+                    public void onError(Request request, Exception e) {
+                        //Toast.makeText(getApplicationContext(), "出错了", Toast.LENGTH_SHORT).show();
+                        AlertDialog.Builder builder  = new AlertDialog.Builder(MainActivity.this);
+                        builder.setTitle("扫描失败" ) ;
+                        builder.setMessage("请检查网络环境！" ) ;
+                        builder.setPositiveButton("是" ,  null );
+                        builder.show();
+                    }
+
+                    @Override
+                    public void onResponse(String response) {
+                        //Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent();
+                        intent.setClass(MainActivity.this, SendExpressActivity.class);
+                        intent.putExtra("response", response);
+                        Log.e("lalal_CustomCapture",response);
+                        if ("".equals(response)){
+                            AlertDialog.Builder builder  = new AlertDialog.Builder(MainActivity.this);
+                            builder.setTitle("扫描失败" ) ;
+                            builder.setMessage("处理失败，该单号不存在！" ) ;
+                            builder.setPositiveButton("是" ,  null );
+                            builder.show();
+                            //restartPreviewAndDecode();
+                        }else {
+                            Log.e(TAG, "onResponse: "+response );
+                            startActivity(intent);
+                            //finish();
+                        }
+                    }
+                });
+
+        return false;
+    }
     private void parsePhoto(Intent data){
         final String path = UriUtils.INSTANCE.getImagePath(this,data);
         Log.d("Jenly","path:" + path);

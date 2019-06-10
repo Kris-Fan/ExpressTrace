@@ -79,6 +79,5 @@
         android:dividerHeight="10dp"
         android:divider="#FFFF0000"
         android:layout_marginTop="10dp"
-        android:background="@color/white"
         android:id="@+id/wrap_package"/>
 </RelativeLayout>

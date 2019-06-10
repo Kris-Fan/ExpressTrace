@@ -5,6 +5,7 @@
     android:background="@color/bg_gray"
     android:orientation="vertical">
     <android.support.v4.widget.NestedScrollView
+        android:layout_below="@+id/title"
         android:id="@+id/nestScroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -18,7 +19,7 @@
                 android:visibility="visible"
                 android:id="@+id/bmapView"
                 android:layout_width="match_parent"
-                android:layout_height="400dp"></com.baidu.mapapi.map.MapView>
+                android:layout_height="378dp"></com.baidu.mapapi.map.MapView>
             <!--<View-->
                 <!--android:clickable="false"-->
                 <!--android:layout_width="match_parent"-->
@@ -36,9 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
             <com.extrace.util.layout.ClearEditText
-                android:layout_marginTop="@dimen/title_height"
-                android:layout_marginLeft="@dimen/padding"
-                android:layout_marginRight="@dimen/padding"
+                android:layout_margin="@dimen/padding"
                 android:id="@+id/filter_edit"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"

@@ -55,6 +55,7 @@ public class CustomerManageActivity extends AppCompatActivity {
     private CustomerManageAdapter mAdapter;
     private boolean showRadio;
     private static final int REQUEST_DETAIL = 0X10;
+    private static final String TAG = "CustomerManageActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +71,7 @@ public class CustomerManageActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        Log.e("lalal","客户管理执行");
+        Log.e(TAG,"客户管理执行");
         sendRequestWithHttpClient();
 
         empty.setOnLayoutClickListener(new View.OnClickListener() {
@@ -175,7 +176,7 @@ public class CustomerManageActivity extends AppCompatActivity {
     private void jsonData(String date) {
         if(date!=null) {
             try {
-                Log.e("lala","客户管理json解析数据："+date);
+                Log.e(TAG,"客户管理json解析数据："+date);
                 JSONObject json = new JSONObject(date);
                 JSONObject result = json.getJSONObject("extend");
                 JSONArray data = result.getJSONArray("customerInfos");
@@ -188,7 +189,7 @@ public class CustomerManageActivity extends AppCompatActivity {
                     String  telcode= value.getString("telcode");
                     String addr = value.getString("address");
                     String  dpt= value.getString("department");
-                    int postcode = value.getInt("postcode");
+                    String postcode = value.getString("postcode");
                     map.put("id", id);
                     map.put("name", name);
                     map.put("telcode", telcode);
@@ -334,7 +335,7 @@ public class CustomerManageActivity extends AppCompatActivity {
                 Intent intent;
                 switch (view.getId()){
                     case R.id.rb_selected:
-                        Log.e("lalal","点击radio");
+                        Log.e(TAG,"点击radio");
                         //Toast.makeText(CustomerManageActivity.this, "你点击了lala"+position, Toast.LENGTH_SHORT).show();
                         intent = new Intent();
                         Bundle bundle = new Bundle();

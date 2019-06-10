@@ -1,64 +1,371 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/bg_gray"
     android:orientation="vertical">
-    <include layout="@layout/fragment_main_menu"></include>
-
-    <RelativeLayout
-        android:visibility="gone"
+    <LinearLayout
+        android:paddingTop="@dimen/size_16sp"
+        android:paddingBottom="@dimen/size_10sp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <android.support.design.widget.AppBarLayout
-            android:id="@+id/appbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_scrollFlags="scroll|enterAlways">
-                <TextView
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/size_18sp"
-                    android:text="@string/app_name"/>
-
-            </android.support.v7.widget.Toolbar>
-            <android.support.design.widget.TabLayout
-                android:id="@+id/tab_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:tabMode="scrollable"
-                app:tabTextColor="@android:color/holo_green_dark"
-                app:tabSelectedTextColor="@android:color/white"
-                app:tabGravity="center"
-                app:tabMaxWidth="200dp"
-                app:tabMinWidth="100dp"
-                app:tabPaddingStart="10dp"
-                android:visibility="gone">
-
-            </android.support.design.widget.TabLayout>
-
-        </android.support.design.widget.AppBarLayout>
-
-
-        <android.support.v4.view.ViewPager
-            android:visibility="gone"
-            android:id="@+id/view_pager"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary">
+        <TextView
+            android:id="@+id/app_title"
+            android:gravity="center"
+            android:textAlignment="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/appbar">
+            android:textColor="@color/white"
+            android:textSize="@dimen/size_18sp"
+            android:text="@string/app_name"/>
+    </LinearLayout>
+    <RelativeLayout
+        android:visibility="gone"
+        android:layout_below="@+id/home_menu"
+        android:id="@+id/driver_home_menu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/size_10sp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_round_normal_white"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:padding="@dimen/size_16sp">
+
+            <LinearLayout
+                android:id="@+id/driver_tab_menu1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@+id/driver_tab_menu3"
+                android:orientation="vertical">
+
+                <ImageView
+                    style="@style/ic_me_page"
+                    android:src="@mipmap/ic_search_green" />
+
+                <TextView
+                    style="@style/my_main_function"
+                    android:textColor="@color/colorPrimary"
+                    android:text="@string/action_search" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/driver_tab_menu3"
+                style="@style/menu_function_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/bg_round_normal_green"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/padding"
+                android:paddingRight="@dimen/padding">
+
+                <ImageView
+                    style="@style/ic_me_page"
+                    android:src="@mipmap/icon_scan_bar_white" />
+
+                <TextView
+                    style="@style/my_main_function"
+                    android:text="装货扫描"
+                    android:textColor="@color/white" />
 
 
-    </android.support.v4.view.ViewPager>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/driver_tab_menu2"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/driver_tab_menu3"
+                android:layout_alignParentRight="true"
+                android:layout_toRightOf="@+id/driver_tab_menu3"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <ImageView
+                    style="@style/ic_me_page"
+                    android:src="@mipmap/menu_my_click" />
+
+                <TextView
+                    style="@style/my_main_function"
+                    android:textColor="@color/colorPrimary"
+                    android:text="@string/action_my_message" />
+
+            </LinearLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
 
-</RelativeLayout>
-</FrameLayout>
+    <LinearLayout
+        android:id="@+id/home_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_margin="@dimen/size_10sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="bottom"
+            android:background="@drawable/bg_round_normal_g"
+            android:baselineAligned="false">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                style="@style/menu_tab_style"
+                android:layout_height="wrap_content"
+                android:id="@+id/ly_tab_menu1"
+                android:orientation="vertical">
+                <ImageView
+                    style="@style/ic_me_page"
+                    android:src="@mipmap/icon_search"
+                    android:contentDescription="@string/action_search"/>
+                <TextView
+                    style="@style/my_main_function"
+                    android:textColor="@color/white"
+                    android:text="@string/action_search" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:id="@+id/ly_tab_menu2"
+                style="@style/menu_tab_style"
+                android:orientation="vertical">
+                <ImageView
+                    style="@style/ic_me_page"
+                    android:contentDescription="@string/add_coustmer"
+                    android:src="@mipmap/icon_add_customer"/>
+                <TextView
+                    style="@style/my_main_function"
+                    android:textColor="@color/white"
+                    android:text="@string/customer_manage" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_marginTop="@dimen/size_10sp"
+            android:layout_marginBottom="30dp"
+            android:layout_marginLeft="@dimen/size_10sp"
+            android:layout_marginRight="@dimen/size_10sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_round_normal"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/menu_bg_normal"
+                android:layout_margin="@dimen/size_5dp">
+                <TextView
+                    android:padding="@dimen/size_5dp"
+                    android:drawableLeft="@mipmap/icon_scan_gun"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/scan_gun"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    style="@style/menu_function_style"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ly_function1"
+                    android:orientation="vertical">
+                    <ImageView
+                        style="@style/ic_me_page"
+                        android:src="@mipmap/icon_express_receive"/>
+                    <TextView
+                        style="@style/my_main_function"
+                        android:text="收件扫描" />
+                    <TextView
+                        style="@style/my_main_function"
+                        android:textColor="@color/colorGray"
+                        android:textSize="12dp"
+                        android:text="扫描/填写快递单"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ly_function2"
+                    style="@style/menu_function_style"
+                    android:orientation="vertical">
+                    <ImageView
+                        style="@style/ic_me_page"
+                        android:src="@mipmap/icon_express_send_dabao_green"/>
+                    <TextView
+                        style="@style/my_main_function"
+                        android:text="包裹打包" />
+                    <TextView
+                        style="@style/my_main_function"
+                        android:textColor="@color/colorGray"
+                        android:textSize="12dp"
+                        android:text="快件→包裹"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ly_function3"
+                    style="@style/menu_function_style"
+                    android:orientation="vertical">
+                    <ImageView
+                        style="@style/ic_me_page"
+                        android:src="@mipmap/icon_express_send"/>
+                    <TextView
+                        style="@style/my_main_function"
+                        android:text="装货扫描" />
+                    <TextView
+                        style="@style/my_main_function"
+                        android:textColor="@color/colorGray"
+                        android:textSize="12dp"
+                        android:text="(包裹)发件扫描"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    style="@style/menu_function_style"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:id="@+id/ly_function4">
+                    <ImageView
+                        style="@style/ic_me_page"
+                        android:src="@drawable/menu_dispatch"/>
+                    <TextView
+                        style="@style/my_main_function"
+                        android:text="包裹拆包"/>
+                    <TextView
+                        style="@style/my_main_function"
+                        android:textColor="@color/colorGray"
+                        android:text="到件扫描"
+                        android:textSize="12dp"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    style="@style/menu_function_style"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ly_function5"
+                    android:orientation="vertical">
+                        <ImageView
+                            style="@style/ic_me_page"
+                            android:src="@mipmap/icon_express_arrve"/>
+                        <TextView
+                            style="@style/my_main_function"
+                            android:text="派送扫描" />
+                        <TextView
+                            style="@style/my_main_function"
+                            android:textColor="@color/colorGray"
+                            android:text="快件派送"
+                            android:textSize="12dp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    style="@style/menu_function_style"
+                    android:id="@+id/ly_function6"
+                    android:orientation="vertical">
+                    <ImageView
+                        style="@style/ic_me_page"
+                        android:src="@mipmap/icon_sign"/>
+                    <TextView
+                        style="@style/my_main_function"
+                        android:text="签收扫描" />
+                    <TextView
+                        style="@style/my_main_function"
+                        android:textColor="@color/colorGray"
+                        android:textSize="12dp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    style="@style/menu_function_style"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:id="@+id/ly_function7">
+                    <ImageView
+                        style="@style/ic_me_page"
+                        android:src="@mipmap/icon_express_record"/>
+                    <TextView
+                        style="@style/my_main_function"
+                        android:text="扫描历史" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    style="@style/menu_function_style"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/ly_function8"
+                    android:orientation="vertical">
+                    <ImageView
+                        style="@style/ic_me_page"
+                        android:src="@mipmap/icon_createpackage"/>
+                    <TextView
+                        style="@style/my_main_function"
+                        android:text="创建包裹" />
+                    <TextView
+                        style="@style/my_main_function"
+                        android:textColor="@color/colorGray"
+                        android:text="打包前新建包裹"
+                        android:textSize="12dp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:visibility="invisible"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    style="@style/menu_function_style"
+                    android:id="@+id/ly_function9"
+                    android:orientation="vertical">
+                    <ImageView
+                        style="@style/ic_me_page"
+                        android:src="@mipmap/icon_more"/>
+                    <TextView
+                        style="@style/my_main_function"
+                        android:text="@string/title_section2" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

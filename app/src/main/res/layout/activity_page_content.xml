@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="@dimen/size_14sp"
     tools:context=".main.PageContentActivity">
 
 
@@ -40,10 +39,23 @@
         <!--android:text="收件人地址："-->
         <!--android:textColor="@color/colorGray"-->
         <!--android:textSize="@dimen/size_18sp" />-->
+    <LinearLayout
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/size_10sp"
+        android:padding="@dimen/size_10sp"
+        android:background="@drawable/bg_round_normal">
+        <TextView
+            android:id="@+id/express_num"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="该包裹总共有快递："/>
+    </LinearLayout>
     <android.support.v7.widget.RecyclerView
+        android:layout_below="@+id/title"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:dividerHeight="10dp"
-        android:divider="#FFFF0000"
+        android:padding="@dimen/size_10sp"
         android:id="@+id/package_content_recy"/>
 </RelativeLayout>
