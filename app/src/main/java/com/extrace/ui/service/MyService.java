@@ -32,6 +32,7 @@ import java.util.TimerTask;
 import static com.extrace.net.OkHttpClientManager.BASE_URL;
 import static com.extrace.ui.service.LocationInfoShared.clearLatLng;
 import static com.extrace.ui.service.LocationInfoShared.getLatLngInfo;
+import static com.extrace.ui.service.LocationInfoShared.saveLatLngInfo;
 
 public class MyService extends Service {
     private static final String TAG = "MyService";
@@ -81,6 +82,14 @@ public class MyService extends Service {
 
                 if (loginService.isLogined(getApplicationContext()) && finalDistance >=250.0 || points.size() >2000) {
                     Log.d(TAG, "run: 上传坐标："+latStr);
+                    for (int i = 0; i< 3 && points.size()>4; i++) {//上传坐标前剔除 开始的3个可能的无效值
+                        points.remove(i);
+                    }
+                    Gson gson = new Gson();
+                    String jsonObject = gson.toJson(points);
+                    saveLatLngInfo(getApplicationContext(),jsonObject);
+                    latStr = getLatLngInfo(getApplicationContext());
+
                     Log.e(TAG, "run: 命中条件1-距离disatance"+finalDistance+"\t2-坐标点长度length："+points.size());
                     OkHttpClientManager okHttpClientManager = new OkHttpClientManager(new LoginService().userInfoSha256(getApplicationContext()));
                     okHttpClientManager.postAsyn(url + loginService.getUserId(getApplicationContext()), new OkHttpClientManager.ResultCallback<String>() {
@@ -88,7 +97,7 @@ public class MyService extends Service {
                                 public void onError(Request request, Exception e) {
                                     Log.d(TAG, "onError: 上传坐标信息失败");
                                     Toast.makeText(MyService.this, "啦啦啦快递：坐标上传失败！", Toast.LENGTH_SHORT).show();
-                                    showNotification();
+                                    showNotification("包裹位置信息上传失败","原因：网络环境异常，2min后将重新尝试");
                                     Log.e(TAG, "onError: " + clearLatLng(getApplicationContext()));
                                     Log.d(TAG, "onError: 现在的LatLng值："+getLatLngInfo(getApplicationContext()));
                                 }
@@ -116,6 +125,7 @@ public class MyService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i(TAG, "onStartCommand: ");
+        showNotification("定位服务开启","位置持续定位中，请保持");
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -131,11 +141,11 @@ public class MyService extends Service {
     /**
      * 位置上传失败时 显示提示信息
      */
-    private void showNotification() {
+    private void showNotification(String title,String text) {
         //ActivityCollector.finishAll();
         Log.d(TAG, "onClick: 显示通知");
         String id = "my_channel_01";
-        String name="我是渠道名字";
+        String name=getResources().getString(R.string.app_name);    //渠道名字
         manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         Notification.Builder builder = new Notification.Builder(getApplicationContext());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { NotificationChannel mChannel = new NotificationChannel(id, name, NotificationManager.IMPORTANCE_LOW);
@@ -143,8 +153,8 @@ public class MyService extends Service {
             Log.i(TAG, mChannel.toString());
             manager.createNotificationChannel(mChannel);
             builder.setChannelId(id)
-                    .setContentTitle("包裹位置信息上传失败")
-                    .setContentText("原因：网络环境异常，2min后将重新尝试")
+                    .setContentTitle(title)
+                    .setContentText(text)
                     .setWhen(System.currentTimeMillis())
                     .setSmallIcon(R.mipmap.ic_launcher)
                     .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
@@ -158,8 +168,8 @@ public class MyService extends Service {
             notification = builder.build();
         } else {
 
-            builder.setContentTitle("包裹位置信息上传失败")
-                    .setContentText("原因：网络环境异常，2min后将重新尝试")
+            builder.setContentTitle(title)
+                    .setContentText(text)
                     .setWhen(System.currentTimeMillis())
                     .setSmallIcon(R.mipmap.ic_launcher)
                     .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))

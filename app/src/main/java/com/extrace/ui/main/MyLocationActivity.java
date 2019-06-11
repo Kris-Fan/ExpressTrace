@@ -248,7 +248,6 @@ public class MyLocationActivity extends AppCompatActivity implements View.OnClic
         button.setOnClickListener(this);
         buttons = findViewById(R.id.buttons);
         buttons.setOnClickListener(this);
-
         showAddr = findViewById(R.id.show_addr);
     }
 

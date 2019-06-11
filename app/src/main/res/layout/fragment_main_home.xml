@@ -115,6 +115,8 @@
 
         <LinearLayout
             android:layout_margin="@dimen/size_10sp"
+            android:paddingTop="@dimen/size_10sp"
+            android:paddingBottom="@dimen/size_5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -173,7 +175,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/menu_bg_normal"
-                android:layout_margin="@dimen/size_5dp">
+                android:layout_marginLeft="@dimen/size_5dp"
+                android:layout_marginRight="@dimen/size_5dp"
+                android:layout_marginTop="@dimen/size_5dp">
                 <TextView
                     android:padding="@dimen/size_5dp"
                     android:drawableLeft="@mipmap/icon_scan_gun"
@@ -188,11 +192,11 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     style="@style/menu_function_style"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:id="@+id/ly_function1"
                     android:orientation="vertical">
                     <ImageView
-                        style="@style/ic_me_page"
+                        style="@style/ic_me_page_min_2"
                         android:src="@mipmap/icon_express_receive"/>
                     <TextView
                         style="@style/my_main_function"
@@ -206,12 +210,12 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:id="@+id/ly_function2"
                     style="@style/menu_function_style"
                     android:orientation="vertical">
                     <ImageView
-                        style="@style/ic_me_page"
+                        style="@style/ic_me_page_min_2"
                         android:src="@mipmap/icon_express_send_dabao_green"/>
                     <TextView
                         style="@style/my_main_function"
@@ -225,12 +229,12 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:id="@+id/ly_function3"
                     style="@style/menu_function_style"
                     android:orientation="vertical">
                     <ImageView
-                        style="@style/ic_me_page"
+                        style="@style/ic_me_page_min_1"
                         android:src="@mipmap/icon_express_send"/>
                     <TextView
                         style="@style/my_main_function"
@@ -246,16 +250,16 @@
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     style="@style/menu_function_style"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:id="@+id/ly_function4">
                     <ImageView
-                        style="@style/ic_me_page"
+                        style="@style/ic_me_page_min_1"
                         android:src="@drawable/menu_dispatch"/>
                     <TextView
                         style="@style/my_main_function"
@@ -275,7 +279,7 @@
                     android:id="@+id/ly_function5"
                     android:orientation="vertical">
                         <ImageView
-                            style="@style/ic_me_page"
+                            style="@style/ic_me_page_min_1"
                             android:src="@mipmap/icon_express_arrve"/>
                         <TextView
                             style="@style/my_main_function"
@@ -289,12 +293,12 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     style="@style/menu_function_style"
                     android:id="@+id/ly_function6"
                     android:orientation="vertical">
                     <ImageView
-                        style="@style/ic_me_page"
+                        style="@style/ic_me_page_min_1"
                         android:src="@mipmap/icon_sign"/>
                     <TextView
                         style="@style/my_main_function"
@@ -302,6 +306,7 @@
                     <TextView
                         style="@style/my_main_function"
                         android:textColor="@color/colorGray"
+                        android:text=""
                         android:textSize="12dp" />
                 </LinearLayout>
 
@@ -316,10 +321,11 @@
                     android:layout_weight="1"
                     style="@style/menu_function_style"
                     android:layout_height="match_parent"
+                    android:gravity="center_vertical"
                     android:orientation="vertical"
                     android:id="@+id/ly_function7">
                     <ImageView
-                        style="@style/ic_me_page"
+                        style="@style/ic_me_page_min_1"
                         android:src="@mipmap/icon_express_record"/>
                     <TextView
                         style="@style/my_main_function"
@@ -331,20 +337,15 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     style="@style/menu_function_style"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:id="@+id/ly_function8"
                     android:orientation="vertical">
                     <ImageView
-                        style="@style/ic_me_page"
+                        style="@style/ic_me_page_min_2"
                         android:src="@mipmap/icon_createpackage"/>
                     <TextView
                         style="@style/my_main_function"
                         android:text="创建包裹" />
-                    <TextView
-                        style="@style/my_main_function"
-                        android:textColor="@color/colorGray"
-                        android:text="打包前新建包裹"
-                        android:textSize="12dp" />
                 </LinearLayout>
                 <LinearLayout
                     android:visibility="invisible"

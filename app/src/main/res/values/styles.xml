@@ -49,6 +49,7 @@
 
     <style name="menu_function_style">
         <item name="android:background">@drawable/main_function_bg_selector</item>
+        <item name="android:gravity">center_vertical</item>
         <item name="android:paddingTop">20dp</item>
         <item name="android:paddingBottom">20dp</item>
         <item name="android:paddingRight">10dp</item>
@@ -103,6 +104,20 @@
     <style name="ic_me_page">
         <item name="android:layout_width">36dp</item>
         <item name="android:layout_height">36dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <style name="ic_me_page_min_2">
+        <item name="android:layout_width">30dp</item>
+        <item name="android:layout_height">30dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <style name="ic_me_page_min_1">
+        <item name="android:layout_width">25dp</item>
+        <item name="android:layout_height">25dp</item>
         <item name="android:layout_marginBottom">5dp</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:gravity">center</item>

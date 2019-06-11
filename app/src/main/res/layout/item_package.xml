@@ -4,25 +4,28 @@
     android:layout_height="wrap_content"
     android:background="@color/bg_gray"
     android:padding="@dimen/size_5dp">
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_round_normal"
         android:padding="@dimen/size_5dp">
         <TextView
-            android:gravity="center_vertical"
+            android:drawableLeft="@mipmap/icon_express_receive"
+            android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/size_18sp"
             android:id="@+id/left"
+            android:textColor="@color/colorOrange"
             android:text="快递编号：" />
         <TextView
-            android:gravity="center_vertical"
+            android:layout_centerVertical="true"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:textSize="@dimen/size_18sp"
             android:id="@+id/expressid"
+            android:layout_toRightOf="@+id/left"
             android:text="" />
-    </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>

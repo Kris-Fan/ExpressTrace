@@ -51,6 +51,7 @@
                     android:gravity="center"
                     android:padding="2dip"
                     android:singleLine="true"
+                    android:drawableLeft="@mipmap/ic_receiver"
                     android:text="收件人"
                     android:textSize="@dimen/size_18sp" />
 
@@ -78,6 +79,7 @@
                 android:text="@string/title_addr_code"
                 android:singleLine="true"
                 android:layout_alignParentRight="true"
+                android:drawableLeft="@mipmap/ic_position"
                 android:gravity="center"
                 android:textColor="@color/colorGray"
                 />

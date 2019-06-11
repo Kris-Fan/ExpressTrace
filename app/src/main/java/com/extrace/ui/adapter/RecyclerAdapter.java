@@ -2,6 +2,7 @@ package com.extrace.ui.adapter;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -68,6 +69,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             tv_msg = itemView.findViewById(R.id.msg);
             tv_phone = itemView.findViewById(R.id.phone);
             tv_expressId = itemView.findViewById(R.id.expressId);
+            Drawable drawableLeft = itemView.getResources().getDrawable(R.mipmap.ic_sender);
             if(type.equals("weilanshou")) {
                 tv_expressId.setText("揽收");
                 tv_expressId.setGravity(Gravity.CENTER);
@@ -77,7 +79,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             }else if(type.equals("yilanshou")){
                 tv_expressId.setHeight(0);
                 tv_expressId.setVisibility(View.INVISIBLE);
+            }else {
+                drawableLeft = itemView.getResources().getDrawable(R.mipmap.ic_receiver);
             }
+            tv_name.setCompoundDrawablesWithIntrinsicBounds(drawableLeft,null,null,null);
+
             tv_msg.setOnClickListener(this);
             tv_phone.setOnClickListener(this);
         }

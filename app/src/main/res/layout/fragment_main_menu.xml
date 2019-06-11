@@ -3,23 +3,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <LinearLayout
-        android:paddingTop="@dimen/size_16sp"
+    <RelativeLayout
+        android:paddingTop="@dimen/size_10sp"
         android:paddingBottom="@dimen/size_10sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary">
+        android:background="@color/colorPrimary"
+        android:layout_gravity="center_vertical">
         <TextView
-            android:gravity="center"
+            android:id="@+id/app_title"
+            android:layout_centerHorizontal="true"
             android:textAlignment="center"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
             android:textSize="@dimen/size_18sp"
             android:text="@string/app_name"/>
-    </LinearLayout>
+    </RelativeLayout>
     <LinearLayout
         android:id="@+id/home_menu"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -225,26 +228,52 @@
 
     <RelativeLayout
         android:layout_below="@+id/home_menu"
-        android:visibility="gone"
         android:id="@+id/driver_home_menu"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="@dimen/size_10sp">
+        android:layout_height="match_parent">
+        <com.baidu.mapapi.map.MapView
+            android:layout_below="@+id/title"
+            android:id="@+id/bmapView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true"></com.baidu.mapapi.map.MapView>
+        <TextView
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_round_right_trans"
+            android:layout_alignParentRight="true"
+            android:padding="@dimen/size_5dp"
+            android:layout_marginTop="@dimen/size_5dp"
+            android:layout_marginRight="@dimen/size_5dp"
+            android:text="卫星" />
+
+        <TextView
+            android:id="@+id/buttons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/button"
+            android:background="@drawable/bg_round_left_trans"
+            android:layout_marginTop="@dimen/size_5dp"
+            android:padding="@dimen/size_5dp"
+            android:text="普通" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_round_normal_white"
         android:gravity="center"
-        android:layout_centerInParent="true"
-        android:padding="@dimen/size_16sp">
+        android:padding="@dimen/size_16sp"
+        android:layout_marginLeft="@dimen/size_10sp"
+        android:layout_marginRight="@dimen/size_10sp"
+        android:layout_above="@+id/ll">
 
         <LinearLayout
             android:id="@+id/driver_tab_menu1"
-            style="@style/menu_function_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/driver_tab_menu3"
             android:orientation="vertical">
 
@@ -284,13 +313,12 @@
 
         <LinearLayout
             android:id="@+id/driver_tab_menu2"
-            style="@style/menu_function_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/driver_tab_menu3"
             android:layout_alignParentRight="true"
             android:layout_toRightOf="@+id/driver_tab_menu3"
-            android:gravity="center_vertical"
+            android:layout_centerVertical="true"
             android:orientation="vertical">
 
             <ImageView
@@ -298,11 +326,36 @@
                 android:src="@drawable/menu_dispatch" />
 
             <TextView
+                android:id="@+id/driver_tab_menu2_tag"
                 style="@style/my_main_function"
                 android:textColor="@color/colorPrimary"
-                android:text="@string/action_my_message" />
+                android:text="开启定位" />
 
         </LinearLayout>
     </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/ll"
+            android:padding="@dimen/size_10sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/transparent">
+            <TextView
+                android:layout_marginLeft="@dimen/size_10sp"
+                android:id="@+id/bt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_round_normal_green"
+                android:textColor="@color/white"
+                android:drawableRight="@mipmap/icon_timeliness_unselected"
+                android:textSize="10dp"
+                android:text="定位"/>
+            <TextView
+                android:layout_toRightOf="@+id/bt"
+                android:id="@+id/show_addr"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/action_search"/>
+        </RelativeLayout>
     </RelativeLayout>
 </LinearLayout>

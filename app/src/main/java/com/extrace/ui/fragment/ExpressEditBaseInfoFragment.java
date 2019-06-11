@@ -248,13 +248,14 @@ public class ExpressEditBaseInfoFragment extends Fragment implements View.OnClic
                     public void customLayout(View v) {
                         final TextView tvSubmit = (TextView) v.findViewById(R.id.tv_finish);
                         final TextView tvAdd = (TextView) v.findViewById(R.id.tv_add);
-                        tvAdd.setText("其他物品");
+                        tvSubmit.setText("+自定义类型");
+                        tvAdd.setText("完成");
                         ImageView ivCancel = (ImageView) v.findViewById(R.id.iv_cancel);
                         tvSubmit.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                pvCustomOptions.returnData();
                                 pvCustomOptions.dismiss();
+                                showEditDialog(0,"物品类型-自定义","请输入物品类型");
                             }
                         });
 
@@ -268,8 +269,8 @@ public class ExpressEditBaseInfoFragment extends Fragment implements View.OnClic
                         tvAdd.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
+                                pvCustomOptions.returnData();
                                 pvCustomOptions.dismiss();
-                                showEditDialog(0,"物品类型-自定义","请输入物品类型");
                                 //pvCustomOptions.setPicker(cardItem);
                             }
                         });

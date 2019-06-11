@@ -95,6 +95,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ActivityCollector.addActivity(this);
         bindView();
         ly_one.performClick();
+        if (!new LoginService().isLogined(this)){
+            showAlert("请先登录","点击确认立即登录");
+        }
     }
 
     @Override
@@ -122,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mTextView2 = findViewById(R.id.tab_menu_poi);
         mTextView4 = findViewById(R.id.tab_menu_user);
 
-        mTextNum1 = findViewById(R.id.tab_menu_deal_num);
+       // mTextNum1 = findViewById(R.id.tab_menu_deal_num);
         mTextNum2 = findViewById(R.id.tab_menu_poi_num);
 
         mImageView = findViewById(R.id.tab_menu_setting_partner);
@@ -161,20 +164,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.ly_tab_menu_deal:
                 setSelected();
                 mTextView1.setSelected(true);
-                mTextNum1.setVisibility(View.INVISIBLE);
-//                if(fg1==null){
-//                    fg1 = new MainMenuFragment();
-//                    //fg1 = new HomeSub1Fragment();
-//                    transaction.add(R.id.fragment_container,fg1);
-//                }else{
-//                    transaction.show(fg1);
-//                }
-                if(fg11==null){
-                    fg11 = new MainHomeFragment();
-                    transaction.add(R.id.fragment_container,fg11);
-                }else{
-                    transaction.show(fg11);
+                if (new LoginService().getUserRoll(this) == 0){
+                    if(fg11==null){
+                        fg11 = new MainHomeFragment();
+                        transaction.add(R.id.fragment_container,fg11);
+                    }else{
+                        transaction.show(fg11);
+                    }
+                }else {
+                    if (fg1 == null) {
+                        fg1 = new MainMenuFragment();
+                        //fg1 = new HomeSub1Fragment();
+                        transaction.add(R.id.fragment_container, fg1);
+                    } else {
+                        transaction.show(fg1);
+                    }
                 }
+
                 break;
             case R.id.ly_tab_menu_poi:
                 if (loginService.isLogined(this)) {
@@ -188,18 +194,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         transaction.show(fg2);
                     }
                 }else{
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setTitle("请先登录！");
-                    builder.setMessage("访问受限，点击确认立即登录");
-                    builder.setPositiveButton(getResources().getString(R.string.confirm), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                            startActivityForResult(intent, 666);
-                        }
-                    });
-                    builder.setNegativeButton(getResources().getString(R.string.cancel),null);
-                    builder.show();
+                    showAlert("请先登录！","访问受限，点击确认立即登录");
                 }
                 break;
             case R.id.ly_tab_menu_user:
@@ -215,6 +210,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
         }transaction.commit();
+    }
+
+    private void showAlert(String title, String text) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title);
+        builder.setMessage(text);
+        builder.setPositiveButton(getResources().getString(R.string.confirm), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivityForResult(intent, 666);
+            }
+        });
+        builder.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        builder.show();
     }
 
 
@@ -280,6 +295,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                Toast.makeText(MainActivity.this, "扫描记录添加失败", Toast.LENGTH_SHORT).show();
 //            }
             }
+
+
         }
     }
 

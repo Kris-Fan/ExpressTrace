@@ -57,7 +57,7 @@ public class PackageTransTaskFragment extends Fragment implements View.OnClickLi
     public  String date;
     public  String title;
     public List<Map<String,Object>> list;
-    public String url=BASE_URL+"/ExtraceSystem/customerInfos";
+    public String url;//=BASE_URL+"/ExtraceSystem/customerInfos";
     OkHttpClientManager okHttpClientManager;
     private static final String TAG = "PackageTransTaskFragmen";
     private int uid;//用户id
@@ -131,14 +131,13 @@ public class PackageTransTaskFragment extends Fragment implements View.OnClickLi
             }
             @Override
             protected void onPostExecute(String s) {
-
+                list.clear();
                 if (s!=null && !s.isEmpty()) {
-                    List<Map<String, Object>> tempList = (new MyJsonManager()).CustomerInfoJsonJXData(s);
+                    List<Map<String, Object>> tempList = (new MyJsonManager()).TansPackageJXData(s);
                     Log.d(TAG, "onPostExecute:快递任务RevTask"+tempList.toString());
                     if (!tempList.isEmpty()) {
                         list.addAll(tempList);
                         //提示更新数据
-                        Toast.makeText(getContext(), list.get(0).get("telcode").toString(), Toast.LENGTH_SHORT).show();
                         handler.sendEmptyMessage(0);
                     }else {
                         emptyView.setErrorType(EmptyView.NODATA);//无数据页面
@@ -154,6 +153,7 @@ public class PackageTransTaskFragment extends Fragment implements View.OnClickLi
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.finished:
+                list.clear();
                 url=BASE_URL+"/ExtraceSystem/yizhuanyunPackage/"+uid;
                 loadData(url);
                 finished.setBackgroundResource(R.drawable.bg_round_right_green);
@@ -163,6 +163,7 @@ public class PackageTransTaskFragment extends Fragment implements View.OnClickLi
                 //Toast.makeText(getContext(), "package已处理页面", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.unfinished:
+                list.clear();
                 url=BASE_URL+"/ExtraceSystem/weizhuanyunPackage/"+uid;
                 finished.setBackgroundResource(R.drawable.bg_round_right_trans);
                 unfinished.setBackgroundResource(R.drawable.bg_round_left_green);

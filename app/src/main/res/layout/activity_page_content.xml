@@ -47,6 +47,7 @@
         android:padding="@dimen/size_10sp"
         android:background="@drawable/bg_round_normal">
         <TextView
+            android:drawableLeft="@mipmap/icon_express_send_zhuangche_blue"
             android:id="@+id/express_num"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
