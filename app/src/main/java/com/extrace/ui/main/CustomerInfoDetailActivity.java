@@ -86,6 +86,8 @@ public class CustomerInfoDetailActivity extends AppCompatActivity {
         });
     }
     public void back(View v){
+        Intent intent = new Intent();
+        intent.putExtra("position",-1);
         setResult(RESULT_OK);
         finish();
     }

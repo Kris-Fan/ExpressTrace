@@ -55,6 +55,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
     </com.extrace.util.EmptyView>
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/hint_customer"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/circleRadius"
+        android:layout_marginLeft="@dimen/circleRadius"
+        android:padding="@dimen/size_14sp"
+        android:layout_marginBottom="@dimen/circleRadius"
+        android:background="@drawable/bg_round_normal_trans"
+        android:text="@string/hint_customer_selected"
+        android:drawableLeft="@mipmap/icon_search_orange"
+        android:textColor="@color/colorOrange"/>
     <ImageView
         android:id="@+id/add_customer"
         android:layout_width="40dp"

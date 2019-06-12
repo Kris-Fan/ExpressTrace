@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class CustomerManageAdapter extends RecyclerView.Adapter<CustomerManageAdapter.DataViewHolder> implements View.OnClickListener {
+public class CustomerManageAdapter extends RecyclerView.Adapter<CustomerManageAdapter.DataViewHolder> implements View.OnClickListener, View.OnLongClickListener {
     private Context mContext;
     private RecyclerView recyclerView;
     private LayoutInflater mInflater;
@@ -102,6 +102,23 @@ public class CustomerManageAdapter extends RecyclerView.Adapter<CustomerManageAd
         return mData.size();
     }
 
+    @Override
+    public boolean onLongClick(View view) {
+        int position = (int) view.getTag();
+        //程序执行到此，会去执行具体实现的onItemClick()方法
+        if (mOnItemLongClickListener!=null){
+            switch (view.getId()){
+                case R.id.recy:
+                    mOnItemLongClickListener.onItemLongClick(ViewName.PRACTISE,view,position,mData.get(position));
+                    break;
+                default:
+                    mOnItemLongClickListener.onItemLongClick(ViewName.ITEM,view,position,mData.get(position));
+                    break;
+            }
+        }
+        return false;
+    }
+
     //item里面有多个控件可以点击（item+item内部控件）
     public enum ViewName {
         ITEM,
@@ -140,6 +157,20 @@ public class CustomerManageAdapter extends RecyclerView.Adapter<CustomerManageAd
     //**************************************************************
 
 
+    //**********************itemLongClick************************
+    public interface OnItemLongClickListener {
+        // void onItemLongClick(View view, int position);
+        //void onItemLongClick(ViewName parent,View view, int position, Map<String,Object> data);
+        void onItemLongClick(ViewName parent,View view, int position, SortModel data);
+    }
+
+    private OnItemLongClickListener mOnItemLongClickListener;
+
+    public void setOnItemLongClickListener(OnItemLongClickListener mOnItemLongClickListener) {
+        this.mOnItemLongClickListener = mOnItemLongClickListener;
+    }
+    //**************************************************************
+
     /**
      * 创建ViewHolder
      */
@@ -165,6 +196,7 @@ public class CustomerManageAdapter extends RecyclerView.Adapter<CustomerManageAd
 
             //radioButton.setOnCheckedChangeListener(CustomerManageAdapter.this);
             itemView.setOnClickListener(CustomerManageAdapter.this);
+            itemView.setOnLongClickListener(CustomerManageAdapter.this);
             radioButton.setOnClickListener(CustomerManageAdapter.this);
         }
     }

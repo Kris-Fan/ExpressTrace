@@ -147,4 +147,5 @@
     <string name="rmb">RMB</string>
     <string name="kg">kg</string>
     <string name="hint_enter_express_id_for_search">输入准确快递单号查询</string>
+    <string name="hint_customer_selected">提示：点击即可选中客户;长按可进入编辑页面 \t\t\t\t 【知道啦】</string>
 </resources>

@@ -19,6 +19,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.extrace.net.OkHttpClientManager;
@@ -47,8 +48,10 @@ import java.util.Map;
 import static com.extrace.net.OkHttpClientManager.BASE_URL;
 
 public class CustomerManageActivity extends AppCompatActivity {
-    private   String date;
-    private   String title;
+    private String date;
+    private String title;
+    private TextView hint;
+    private ImageView iv_add;
     private EmptyView empty;
     private RecyclerView recyclerview;
     private List<Map<String,Object>> list=new ArrayList<>();
@@ -63,7 +66,14 @@ public class CustomerManageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_customer_manage);
         empty = findViewById(R.id.empty);
         recyclerview=  findViewById(R.id.recy);
-        ImageView iv_add = findViewById(R.id.add_customer);
+        iv_add = findViewById(R.id.add_customer);
+        hint = findViewById(R.id.hint_customer);
+        hint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hint.setVisibility(View.INVISIBLE);
+            }
+        });
         iv_add.setOnClickListener(new ImageView.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -241,6 +251,7 @@ public class CustomerManageActivity extends AppCompatActivity {
                 list.clear();
 //                mAdapter.notifyItemChanged(num);
 //                mAdapter.notifyDataSetChanged();
+
                 sendRequestWithHttpClient();
             }
         }
@@ -287,7 +298,12 @@ public class CustomerManageActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         showRadio = intent.getBooleanExtra("REQUEST_TYPE",false);
-        mAdapter.changetShowDelImage(showRadio);        //是否显示showradio
+        if (showRadio){
+            Log.d(TAG, "initViews: "+showRadio);
+            hint.setVisibility(View.VISIBLE);
+            iv_add.setVisibility(View.GONE);
+        }
+        mAdapter.changetShowDelImage(showRadio);        //设置是否显示showradio
         mAdapter.setTypeShow(true);
         mAdapter.setOnItemClickListener(new CustomerManageAdapter.OnItemClickListener() {
 //            @Override
@@ -332,37 +348,57 @@ public class CustomerManageActivity extends AppCompatActivity {
 
             @Override
             public void onItemClick(CustomerManageAdapter.ViewName parent, View view, int position, SortModel data) {
-                Intent intent;
+                Intent intent = new Intent();
+                Bundle bundle = new Bundle();
+                bundle.putString("id",data.getId());
+                bundle.putString("name",data.getName());
+                bundle.putString("telcode",data.getTelcode());
+                bundle.putString("addr",data.getAddress());
+                bundle.putString("dpt",data.getDepartment());
+                bundle.putString("postcode",data.getPostcode());
+
                 switch (view.getId()){
                     case R.id.rb_selected:
                         Log.e(TAG,"点击radio");
                         //Toast.makeText(CustomerManageActivity.this, "你点击了lala"+position, Toast.LENGTH_SHORT).show();
-                        intent = new Intent();
-                        Bundle bundle = new Bundle();
-                        bundle.putString("id",data.getId());
-                        bundle.putString("name",data.getName());
-                        bundle.putString("telcode",data.getTelcode());
-                        bundle.putString("addr",data.getAddress());
-                        bundle.putString("dpt",data.getDepartment());
-                        bundle.putString("postcode",data.getPostcode());
                         intent.putExtras(bundle);
                         setResult(RESULT_OK, intent);
                         finish();
                         break;
                     default:
                         //Toast.makeText(CustomerManageActivity.this, "你点击了:"+position, Toast.LENGTH_SHORT).show();
-                        intent = new Intent(CustomerManageActivity.this, CustomerInfoDetailActivity.class);
-                        intent.putExtra("position",position);
-                        intent.putExtra("id",data.getId());
-                        intent.putExtra("name",data.getName());
-                        intent.putExtra("telcode",data.getTelcode());
-                        intent.putExtra("addr",data.getAddress());
-                        intent.putExtra("dpt",data.getDepartment());
-                        intent.putExtra("postcode",data.getPostcode());
+                        if (!showRadio) { //不显示radio时 点击直接跳转到编辑页面
+                            intent = new Intent(CustomerManageActivity.this, CustomerInfoDetailActivity.class);
+                            intent.putExtra("position", position);
+                            intent.putExtra("id", data.getId());
+                            intent.putExtra("name", data.getName());
+                            intent.putExtra("telcode", data.getTelcode());
+                            intent.putExtra("addr", data.getAddress());
+                            intent.putExtra("dpt", data.getDepartment());
+                            intent.putExtra("postcode", data.getPostcode());
 
-                        startActivityForResult(intent, REQUEST_DETAIL);
+                            startActivityForResult(intent, REQUEST_DETAIL);
+                        }else { //显示radio ，点击直接选中！
+                            intent.putExtras(bundle);
+                            setResult(RESULT_OK, intent);
+                            finish();
+                        }
                         break;
                 }
+            }
+        });
+        mAdapter.setOnItemLongClickListener(new CustomerManageAdapter.OnItemLongClickListener() {
+            @Override
+            public void onItemLongClick(CustomerManageAdapter.ViewName parent, View view, int position, SortModel data) {
+                Intent intent = new Intent(CustomerManageActivity.this, CustomerInfoDetailActivity.class);
+                intent.putExtra("position", position);
+                intent.putExtra("id", data.getId());
+                intent.putExtra("name", data.getName());
+                intent.putExtra("telcode", data.getTelcode());
+                intent.putExtra("addr", data.getAddress());
+                intent.putExtra("dpt", data.getDepartment());
+                intent.putExtra("postcode", data.getPostcode());
+                startActivityForResult(intent, REQUEST_DETAIL);
             }
         });
 

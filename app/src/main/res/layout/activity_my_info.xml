@@ -16,11 +16,26 @@
         android:textColor="@color/white"
         android:background="@color/transparent"
         android:text="@string/save"/>
-    <RelativeLayout
+    <ScrollView
         android:layout_below="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <RelativeLayout
+            android:id="@+id/logo"
+            android:layout_margin="@dimen/padding"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/logo_for_web"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_below="@+id/logo"
             android:id="@+id/menu_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -120,8 +135,25 @@
                 android:text="@string/title_name"/>
         </LinearLayout>
         <LinearLayout
-            android:id="@+id/menu_5"
+            android:layout_marginTop="@dimen/size_10sp"
+            android:id="@+id/setting_permission"
             android:layout_below="@id/menu_4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/menu_selector"
+            style="@style/menu_style">
+            <TextView
+                style="@style/menu_style_no_bg"
+                android:paddingLeft="0dp"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="权限设置"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/menu_5"
+            android:layout_below="@id/setting_permission"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -169,6 +201,6 @@
                 android:text="@string/action_logout"/>
         </LinearLayout>
     </RelativeLayout>
-
+    </ScrollView>
 
 </RelativeLayout>
