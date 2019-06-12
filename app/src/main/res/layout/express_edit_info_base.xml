@@ -148,6 +148,7 @@
                     android:text="@string/title_addr_code"/>
 
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/expressRcvRegion"
                     android:layout_width="match_parent"
                     android:layout_height="fill_parent"
@@ -250,6 +251,7 @@
                     android:textSize="@dimen/size_16sp" />
 
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/expressSndRegion"
                     android:layout_width="match_parent"
                     android:layout_height="fill_parent"

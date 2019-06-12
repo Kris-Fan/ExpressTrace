@@ -384,6 +384,9 @@ public class CustomCaptureActivity extends CaptureActivity implements View.OnCli
             showSimpleDialog(1,"请输入单号","仅支持数字");
         }else {
             Intent intent = new Intent(CustomCaptureActivity.this, cls);
+            Bundle bundle = new Bundle();
+            bundle.putInt("sn",-1);
+            intent.putExtras(bundle);
             startActivity(intent);
             finish();
         }

@@ -41,6 +41,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.extrace.ui.main.ExpressEditActivity;
 import com.extrace.ui.service.LoginService;
 import com.extrace.util.EmptyView;
 import com.squareup.okhttp.Call;
@@ -178,36 +179,85 @@ public class ExpressTaskFragment extends Fragment implements View.OnClickListene
             }
         }.execute();
     }
-    private void lanshou(final String id,final int position) {
-        emptyView.setErrorType(EmptyView.NETWORK_LOADING);
+
+    private String data1,senderId,receiverId,expressId,sendername,senderprovince,sendercity,sendertown,senderaddressdetail,
+            sendertelephonenumber, receivername,receiverprovince,receivercity,receivertown,
+            receiveraddressdetail,receivertelephonenumber,packagestate,relateddeliverid;
+    public static final int REQUEST_LANSHOU = 0X700;
+
+    private void lanshou(final String id) {
+        SharedPreferences sPreferences = getContext().getSharedPreferences("USER_INFO", MODE_PRIVATE);
+        final int uid = sPreferences.getInt("uid", -1);
+        if (uid == -1){
+            Toast.makeText(getContext(), "未登录或登陆信息失效，请登陆后再进行操作", Toast.LENGTH_SHORT).show();
+        }
+        Log.d(TAG, "lanshou: 揽收id="+id);
         new AsyncTask<Void,Void,String>(){
             @Override
             protected String doInBackground(Void... params) {
                 //执行网络请求
                 try {
-
+                    okHttpClientManager = new OkHttpClientManager(new LoginService().userInfoSha256(getContext()));
                     Response response =  okHttpClientManager.getAsyn(BASE_URL+"/ExtraceSystem/onLineLanjian/"+id);
                     if (response.code() == 200) {
-                        date = response.body().string();
+                        data1 = response.body().string();
+                        Log.i(TAG, "doInBackground: 请求到的数据："+data1);
                     }else {
-                        date = "";
+                        data1 = "";
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                return date;
+                return data1;
             }
             @Override
             protected void onPostExecute(String s) {
+                Log.e(TAG, "onPostExecute: "+s);
                 try {
-                    JSONObject jsonObject = new JSONObject(s);
-                    String isSucess = jsonObject.getString("msg");
-                    if (isSucess.equals("处理成功!")) {
-                        list.remove(position);
-                        handler.sendEmptyMessage(1);
+                    if (s!=null && !s.equals("{}")) {
+                        JSONObject jsonObject = new JSONObject(s);
+                        senderId = jsonObject.getString("senderId");
+                        receiverId = jsonObject.getString("receiverId");
+                        expressId = jsonObject.getString("快件编码");
+                        JSONObject orderInfo = jsonObject.getJSONObject("订单信息");
+                        int sn = orderInfo.getInt("sn");
+                        sendername = orderInfo.getString("sendername");
+                        senderprovince = orderInfo.getString("senderprovince")
+                                +orderInfo.getString("sendercity")
+                                +orderInfo.getString("sendertown");
+                        senderaddressdetail = orderInfo.getString("senderaddressdetail");
+                        sendertelephonenumber = orderInfo.getString("sendertelephonenumber");
+                        receivername = orderInfo.getString("receivername");
+                        receiverprovince = orderInfo.getString("receiverprovince")
+                                +orderInfo.getString("receivercity")
+                                +orderInfo.getString("receivertown");
+                        receiveraddressdetail = orderInfo.getString("receiveraddressdetail");
+                        receivertelephonenumber = orderInfo.getString("receivertelephonenumber");
+                        packagestate = orderInfo.getInt("packagestate")+"";
+                        relateddeliverid = orderInfo.getString("relateddeliverid");
+
+                        Intent intent = new Intent(getContext(), ExpressEditActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("sn",sn);
+                        bundle.putString("senderId",senderId);
+                        bundle.putString("receiverId",receiverId);
+                        bundle.putString("expressId", expressId);
+
+                        bundle.putString("sendername",sendername);
+                        bundle.putString("senderprovince",senderprovince);
+                        bundle.putString("senderaddressdetail",senderaddressdetail);
+                        bundle.putString("sendertelephonenumber",sendertelephonenumber);
+
+                        bundle.putString("receivername",receivername);
+                        bundle.putString("receiverprovince",receiverprovince);
+                        bundle.putString("receiveraddressdetail",receiveraddressdetail);
+                        bundle.putString("receivertelephonenumber",receivertelephonenumber);
+
+                        intent.putExtras(bundle);
+                        getActivity().startActivityForResult(intent,REQUEST_LANSHOU);
                     }else {
                         Toast.makeText(getContext(), "处理失败！", Toast.LENGTH_SHORT).show();
-                        emptyView.setErrorType(EmptyView.NETWORK_ERROR);
+                        //emptyView.setErrorType(EmptyView.NETWORK_ERROR);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -215,6 +265,7 @@ public class ExpressTaskFragment extends Fragment implements View.OnClickListene
             }
         }.execute();
     }
+
     public Handler handler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -267,6 +318,9 @@ public class ExpressTaskFragment extends Fragment implements View.OnClickListene
                 break;
             case R.id.unfinished:
                 url=url2;
+                if(type.equals("yilanshou")){
+                    type="weilanshou";
+                }
                 finished.setBackgroundResource(R.drawable.bg_round_right_trans);
                 unfinished.setBackgroundResource(R.drawable.bg_round_left_green);
                 unfinished.setTextColor(getResources().getColor(R.color.white));
@@ -300,7 +354,7 @@ public class ExpressTaskFragment extends Fragment implements View.OnClickListene
                     startActivity(intent);
                     break;
                 case R.id.expressId:
-                    lanshou(list.get(position).get("sn").toString(),position);
+                    lanshou(list.get(position).get("sn").toString());
                     break;
                 default:
                     break;

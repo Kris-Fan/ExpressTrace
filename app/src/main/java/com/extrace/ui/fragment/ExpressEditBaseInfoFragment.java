@@ -39,6 +39,7 @@ import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.CLIPBOARD_SERVICE;
+import static com.extrace.ui.fragment.ExpressTaskFragment.REQUEST_LANSHOU;
 
 public class ExpressEditBaseInfoFragment extends Fragment implements View.OnClickListener{
 
@@ -50,6 +51,7 @@ public class ExpressEditBaseInfoFragment extends Fragment implements View.OnClic
     private TextView expressSndName,expressSndTel,expressSndDpt,expressSndAddr,expressSndRegion,expressSndID;
     private TextView expressType,expressWeight,expressFee,expressInsureFee;
 
+    private static final String TAG = "ExpressEditBaseInfoFrag";
     public ExpressEditBaseInfoFragment() {
         // Required empty public constructor
     }
@@ -120,6 +122,30 @@ public class ExpressEditBaseInfoFragment extends Fragment implements View.OnClic
     private void bindView(View view) {
         Intent intent = getActivity().getIntent();
         String mExpressId = intent.getStringExtra("EXPRESS_ID");
+
+
+        Bundle bundle = intent.getExtras();
+        int sn = bundle.getInt("sn",-1);
+        if (sn != -1) {
+            Log.i(TAG, "bindView: 揽件处理！");
+            mExpressId = bundle.getString("expressId");
+            expressId.setText(mExpressId);
+            expressSndID.setText(bundle.getString("senderId"));
+            expressRcvID.setText(bundle.getString("receiverId"));
+            expressSndName.setText(bundle.getString("sendername"));
+            expressRcvName.setText(bundle.getString("receivername"));
+
+            expressSndAddr.setText(bundle.getString("senderprovince"));
+            expressSndDpt.setText(bundle.getString("senderaddressdetail"));
+            expressSndTel.setText(bundle.getString("sendertelephonenumber"));
+
+            expressRcvAddr.setText(bundle.getString("receiverprovince"));
+            expressRcvDpt.setText(bundle.getString("receiveraddressdetail"));
+            expressRcvTel.setText(bundle.getString("receivertelephonenumber"));
+        }else {
+            Log.i(TAG, "bindView: sn未得到 非揽件！");
+        }
+
         //Log.e("lalal","快递编辑show"+mExpressId);
         if (mExpressId != null){
             expressId.setText(mExpressId);
