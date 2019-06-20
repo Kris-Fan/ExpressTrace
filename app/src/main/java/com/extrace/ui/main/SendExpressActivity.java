@@ -177,7 +177,7 @@ public class SendExpressActivity extends AppCompatActivity implements View.OnCli
             switch (requestCode) {
                 case REQUEST_CODE_SCAN_EXPRESS: //快件扫描结果
                     String result = data.getStringExtra(Intents.Scan.RESULT);
-                    Toast.makeText(this,"扫描到了："+result,Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(this,"扫描到了："+result,Toast.LENGTH_SHORT).show();
                     //promptBox(result);
                     break;
             }

@@ -257,6 +257,18 @@
             android:layout_marginTop="@dimen/size_5dp"
             android:padding="@dimen/size_5dp"
             android:text="普通" />
+        <TextView
+            android:layout_marginTop="@dimen/size_14sp"
+            android:layout_marginLeft="@dimen/size_10sp"
+            android:layout_toLeftOf="@+id/buttons"
+            android:id="@+id/bt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_round_normal_green"
+            android:textColor="@color/white"
+            android:drawableRight="@mipmap/icon_timeliness_unselected"
+            android:textSize="10dp"
+            android:text="定位"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -340,18 +352,19 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:background="@color/transparent">
+
             <TextView
                 android:layout_marginLeft="@dimen/size_10sp"
-                android:id="@+id/bt"
+                android:id="@+id/bt_clear"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_round_normal_green"
                 android:textColor="@color/white"
-                android:drawableRight="@mipmap/icon_timeliness_unselected"
+                android:drawableLeft="@mipmap/icon_search_orange"
                 android:textSize="10dp"
-                android:text="定位"/>
+                android:text="清空"/>
             <TextView
-                android:layout_toRightOf="@+id/bt"
+                android:layout_toRightOf="@+id/bt_clear"
                 android:id="@+id/show_addr"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

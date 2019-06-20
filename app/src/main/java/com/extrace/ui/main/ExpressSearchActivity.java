@@ -288,6 +288,7 @@ public class ExpressSearchActivity extends AppCompatActivity implements View.OnK
 
             @Override
             public void onResponse(List<Location> response) {
+                Log.e(TAG, "onResponse: "+response);
                 if (response!=null && !response.isEmpty()) {
                     showTraceOnMap(response);
                 }else {
@@ -303,7 +304,7 @@ public class ExpressSearchActivity extends AppCompatActivity implements View.OnK
      * @param locationList 获取到的坐标点列表
      */
     private void showTraceOnMap(List<Location> locationList) {
-        for (int i = 100; i < locationList.size(); i++) {
+        for (int i = 0; i < locationList.size()-2; i++) {
             LatLng latLng = new LatLng(locationList.get(i).x,locationList.get(i).y);
             points.add(latLng);
         }
@@ -375,7 +376,7 @@ public class ExpressSearchActivity extends AppCompatActivity implements View.OnK
 
         // 开启定位图层
         mBaiduMap.setMyLocationEnabled(true);
-        initLocation();
+        //initLocation();
 
     }
     //配置定位SDK参数

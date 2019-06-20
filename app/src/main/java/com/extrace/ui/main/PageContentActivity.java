@@ -42,7 +42,7 @@ public class PageContentActivity extends AppCompatActivity {
         Intent intent=getIntent();
         String response = intent.getStringExtra("response");
         //String response="[{\"id\":\"1\",\"type\":5,\"sender\":1,\"recever\":2,\"weight\":15.0,\"tranfee\":20.0,\"packagefee\":60.0,\"insufee\":30.0,\"accepter\":\"12\",\"deliver\":\"0\",\"acceptetime\":\"2019-04-03 09:25:50\",\"delivetime\":\"2019-04-23 12:23:28\",\"acc1\":\"52\",\"acc2\":\"52\",\"status\":\"5\"},{\"id\":\"12\",\"type\":3,\"sender\":7,\"recever\":11,\"weight\":23.0,\"tranfee\":25.0,\"packagefee\":85.0,\"insufee\":63.0,\"accepter\":\"12\",\"deliver\":\"0\",\"acceptetime\":\"2019-04-10 12:23:09\",\"delivetime\":\"2019-04-23 12:23:19\",\"acc1\":null,\"acc2\":null,\"status\":\"3\"}]";
-        Toast.makeText(this, "response", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "response", Toast.LENGTH_SHORT).show();
         //ImageView iv_add = findViewById(R.id.scan_express);
 //        iv_add.setOnClickListener(new ImageView.OnClickListener() {
 //            @Override

@@ -15,6 +15,7 @@ import com.bigkoo.pickerview.view.OptionsPickerView;
 import com.extrace.net.json.GetJsonDataUtil;
 import com.extrace.ui.R;
 import com.extrace.ui.entity.Province;
+import com.extrace.ui.service.LoginService;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -149,6 +150,7 @@ public class CustomerInfoDetailActivity extends AppCompatActivity {
             conn.setDoOutput(true);
             conn.setRequestMethod("POST");
             conn.setRequestProperty("ser-Agent", "Fiddler");
+            conn.setRequestProperty("userId",new LoginService().userInfoSha256(this));
             conn.setRequestProperty("Content-Type","application/json");
             //写输出流，将要转的参数写入流里
             OutputStream os=conn.getOutputStream();

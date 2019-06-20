@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.extrace.net.OkHttpClientManager;
 import com.extrace.ui.R;
 import com.extrace.ui.adapter.CustomerManageAdapter;
+import com.extrace.ui.service.LoginService;
 import com.extrace.util.EmptyView;
 import com.extrace.util.layout.ClearEditText;
 import com.extrace.util.layout.PinyinComparator;
@@ -152,7 +153,8 @@ public class CustomerManageActivity extends AppCompatActivity {
 //                执行网络请求
                 //String s = HttpUtils.getStringByOkhttp(url);
                 try {
-                    Response response =  OkHttpClientManager.getAsyn(BASE_URL+"/ExtraceSystem/customerInfos");
+                    OkHttpClientManager okHttpClientManager = new OkHttpClientManager(new LoginService().userInfoSha256(getApplicationContext()));
+                    Response response =  okHttpClientManager.getAsyn(BASE_URL+"/ExtraceSystem/customerInfos");
                     Log.e("lalal","客户管理-请求状态"+response.code());
                     if (response.code() == 200){
                         date = response.body().string();
@@ -245,7 +247,7 @@ public class CustomerManageActivity extends AppCompatActivity {
             if (num == -1){
                 Toast.makeText(this, "refresh all", Toast.LENGTH_SHORT).show();
             }else {
-                Toast.makeText(this, "刷新"+num, Toast.LENGTH_SHORT).show();
+                ///Toast.makeText(this, "刷新"+num, Toast.LENGTH_SHORT).show();
                // mDateList.clear();
                 pp.clear();
                 list.clear();

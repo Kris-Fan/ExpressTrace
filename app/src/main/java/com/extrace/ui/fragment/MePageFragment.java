@@ -202,7 +202,7 @@ public class MePageFragment extends Fragment implements View.OnClickListener {
                 if (loginService.getUserRoll(getContext()) != -1) {
                     if (permission_Check == 1) {
                         //Log.d("MainActivity_onresume", "重新加载" + permission_Check);
-                        Toast.makeText(getContext(), "登录成功, 欢迎您老司机", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "登录成功, 欢迎您司机", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(getContext(), "登录成功，欢迎您快递员", Toast.LENGTH_SHORT).show();
                     }

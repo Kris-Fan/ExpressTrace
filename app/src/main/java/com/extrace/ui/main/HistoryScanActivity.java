@@ -61,7 +61,7 @@ public class HistoryScanActivity extends AppCompatActivity implements View.OnCli
 //                intent.setClass(HistoryScanActivity.this, ScanBarcodeActivity.class);
 //                intent.putExtra("note_id", Integer.parseInt(id));
 //                startActivity(intent);
-                Toast.makeText(HistoryScanActivity.this, "click："+id, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(HistoryScanActivity.this, "click："+id, Toast.LENGTH_SHORT).show();
             }
         });
 

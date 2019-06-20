@@ -84,14 +84,6 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
-    <style name="tab_bar_size">
-        <item name="android:textSize">15dp</item>
-    </style>
-
-    <style name="tab_bar_style">
-        <item name="android:textStyle">bold</item>
-    </style>
-
     <!--首页字体-->
     <style name="my_main_function">
         <item name="android:layout_width">wrap_content</item>
@@ -154,14 +146,5 @@
         <item name="android:paddingBottom">12dp</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
-
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

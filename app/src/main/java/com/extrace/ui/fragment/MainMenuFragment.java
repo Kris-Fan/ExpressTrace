@@ -70,7 +70,7 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
     public static final int RC_READ_PHOTO = 0X02;
 
     private static final int REQUEST_CODE = 111;
-    private TextView appTitle,tvLoc;
+    private TextView appTitle,tvLoc,tvClear;
     private LinearLayout ly_scan, ly_add, ly_search;
     private LinearLayout menu_1,menu_2,menu_3,menu_4,driver_menu_1,driver_menu_2,driver_menu_3;
     private RelativeLayout menu_5,driver_home_menus;
@@ -108,7 +108,7 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
         super.onResume();
         Intent intent = getActivity().getIntent();
         initView(getView());
-        mMapView.onResume();
+        //mMapView.onResume();
         Log.d(TAG, "onResume: ");
     }
 
@@ -129,6 +129,8 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
         appTitle = view.findViewById(R.id.app_title);
         home_menus = view.findViewById(R.id.home_menu);
         driver_home_menus = view.findViewById(R.id.driver_home_menu);
+        bt = view.findViewById(R.id.bt);
+        tvClear = view.findViewById(R.id.bt_clear);
         int role = new LoginService().getUserRoll(getContext()) ;
         if (role == 0) { //快递员
             ly_scan = view.findViewById(R.id.ly_tab_menu3);
@@ -143,7 +145,7 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
 //            home_menus.setVisibility(View.VISIBLE);
 //            driver_home_menus.setVisibility(View.GONE);
             bindView(view);
-        }else { //司机
+        }else if(role == 1){ //司机
             home_menus.setVisibility(View.GONE);
             driver_home_menus.setVisibility(View.VISIBLE);
             driver_menu_1 = view.findViewById(R.id.driver_tab_menu1);
@@ -152,9 +154,24 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
             driver_menu_1.setOnClickListener(this);
             driver_menu_2.setOnClickListener(this);
             driver_menu_3.setOnClickListener(this);
+            bt.setOnClickListener(this);
+            tvClear.setOnClickListener(this);
             if (role == 1) {
                 appTitle.setText(getResources().getText(R.string.app_name) + "-司机版");
             }
+        }else {
+            ly_scan = view.findViewById(R.id.ly_tab_menu3);
+            ly_add = view.findViewById(R.id.ly_tab_menu2);
+            ly_search = view.findViewById(R.id.ly_tab_menu1);
+            menu_1 = view.findViewById(R.id.ly_function1);
+            menu_2 = view.findViewById(R.id.ly_function2);
+            menu_3 = view.findViewById(R.id.ly_function3);
+            menu_4 = view.findViewById(R.id.ly_function4);
+            menu_5 = view.findViewById(R.id.rl_function5);
+            menu_6 = view.findViewById(R.id.ly_function6);
+//            home_menus.setVisibility(View.VISIBLE);
+//            driver_home_menus.setVisibility(View.GONE);
+            bindView(view);
         }
 
     }
@@ -306,7 +323,7 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
                     @Override
                     public void run() {
                         Log.d("Jenly","result:" + result);
-                        Toast.makeText(getContext(),result,Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getContext(),result,Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -356,13 +373,13 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
         mBaiduMap.setMyLocationEnabled(true);
         mLocationClient = new LocationClient(getContext());     //声明LocationClient类
         //配置定位SDK参数
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(getActivity(),
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},521);
-        }else {
-            requesrLocation();
-        }
+//        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+//                != PackageManager.PERMISSION_GRANTED){
+//            ActivityCompat.requestPermissions(getActivity(),
+//                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},521);
+//        }else {
+//            requesrLocation();
+//        }
     }
     private void requesrLocation(){
         initLocation();
@@ -536,7 +553,7 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
         if (hidden) {
             //在activity执行onPause时执行mMapView. onPause ()，实现地图生命周期管理
             Log.d(TAG, "onHiddenChanged: ");
-            mMapView.onPause();
+           // mMapView.onPause();
         }
     }
 

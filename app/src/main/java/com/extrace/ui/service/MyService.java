@@ -39,7 +39,7 @@ public class MyService extends Service {
     private LoginService loginService = new LoginService();
     private Runnable runnable;
     private Handler handler;
-    private int Time = 1000*1*60;//周期时间1min
+    private int Time = 1000*1*20;//周期时间1min，为了演示 降低为10s
     private int anHour =3000;// 毫秒
     private Timer timer = new Timer();
     private String url = BASE_URL +"/ExtraceSystem/collectPoint/";
@@ -70,7 +70,6 @@ public class MyService extends Service {
                     Gson gson = new Gson();
                     List<LatLng> latLngList = gson.fromJson(latStr,new TypeToken<List<LatLng>>(){}.getType());
                     if (latLngList!= null && latLngList.size()>=2){
-                        points.clear();
                         points.addAll(latLngList);
                         Log.e(TAG, "onCreate: "+points.toString());
                         distance = DistanceUtil.getDistance(points.get(0), points.get(points.size()-1));
@@ -78,9 +77,9 @@ public class MyService extends Service {
                 }
                 double finalDistance = distance;
 
-                Log.e(TAG, "run: 2min重复执行:distance:"+finalDistance);
+                Log.e(TAG, "run: 2min重复执行:distance:"+finalDistance+" 点坐标长度："+points.size());
 
-                if (loginService.isLogined(getApplicationContext()) && finalDistance >=250.0 || points.size() >2000) {
+                if (loginService.isLogined(getApplicationContext()) && finalDistance >=180.0 || points.size() >2000) {
                     Log.d(TAG, "run: 上传坐标："+latStr);
                     for (int i = 0; i< 3 && points.size()>4; i++) {//上传坐标前剔除 开始的3个可能的无效值
                         points.remove(i);
@@ -90,7 +89,9 @@ public class MyService extends Service {
                     saveLatLngInfo(getApplicationContext(),jsonObject);
                     latStr = getLatLngInfo(getApplicationContext());
 
+
                     Log.e(TAG, "run: 命中条件1-距离disatance"+finalDistance+"\t2-坐标点长度length："+points.size());
+                    points.clear();
                     OkHttpClientManager okHttpClientManager = new OkHttpClientManager(new LoginService().userInfoSha256(getApplicationContext()));
                     okHttpClientManager.postAsyn(url + loginService.getUserId(getApplicationContext()), new OkHttpClientManager.ResultCallback<String>() {
                                 @Override
@@ -104,6 +105,7 @@ public class MyService extends Service {
 
                                 @Override
                                 public void onResponse(String response) {
+                                    showNotification("定位服务开启中","位置持续定位中，更新成功，请保持");
                                     Log.d(TAG, "onResponse: 上传成功：清空本地坐标"+clearLatLng(getApplicationContext()));
                                     Log.d(TAG, "onResponse: 现在的LatLng值："+getLatLngInfo(getApplicationContext()));
                                 }

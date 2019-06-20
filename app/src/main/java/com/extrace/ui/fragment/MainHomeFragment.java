@@ -114,15 +114,29 @@ public class MainHomeFragment extends Fragment implements View.OnClickListener {
         }else { //司机
             if (role == 1){
                 appTitle.setText(getResources().getText(R.string.app_name)+"-司机版");
+                home_menus.setVisibility(View.GONE);
+                driver_home_menus.setVisibility(View.VISIBLE);
+                driver_menu_1 = view.findViewById(R.id.driver_tab_menu1);
+                driver_menu_2 = view.findViewById(R.id.driver_tab_menu2);
+                driver_menu_3 = view.findViewById(R.id.driver_tab_menu3);
+                driver_menu_1.setOnClickListener(this);
+                driver_menu_2.setOnClickListener(this);
+                driver_menu_3.setOnClickListener(this);
             }
-            home_menus.setVisibility(View.GONE);
-            driver_home_menus.setVisibility(View.VISIBLE);
-            driver_menu_1 = view.findViewById(R.id.driver_tab_menu1);
-            driver_menu_2 = view.findViewById(R.id.driver_tab_menu2);
-            driver_menu_3 = view.findViewById(R.id.driver_tab_menu3);
-            driver_menu_1.setOnClickListener(this);
-            driver_menu_2.setOnClickListener(this);
-            driver_menu_3.setOnClickListener(this);
+            ly_add = view.findViewById(R.id.ly_tab_menu2);  //客户管理
+            ly_search = view.findViewById(R.id.ly_tab_menu1);   //搜索
+            menu_1 = view.findViewById(R.id.ly_function1);
+            menu_2 = view.findViewById(R.id.ly_function2);
+            menu_3 = view.findViewById(R.id.ly_function3);
+            menu_4 = view.findViewById(R.id.ly_function4);
+            menu_5 = view.findViewById(R.id.ly_function5);
+            menu_6 = view.findViewById(R.id.ly_function6);
+            menu_7 = view.findViewById(R.id.ly_function7);
+            menu_8 = view.findViewById(R.id.ly_function8);
+            home_menus.setVisibility(View.VISIBLE);
+            driver_home_menus.setVisibility(View.GONE);
+            appTitle.setText(getResources().getText(R.string.app_name)+"-快递员版");
+            bindView();
         }
     }
     private void bindView() {
@@ -202,14 +216,14 @@ public class MainHomeFragment extends Fragment implements View.OnClickListener {
                     startScan(cls, title, REQUEST_CODE_SCAN_SIGN);
                     break;
                 case R.id.ly_function7:
-                    Toast.makeText(getContext(), "扫描记录~", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getContext(), "扫描记录~", Toast.LENGTH_SHORT).show();
                     intent = new Intent();
                     intent.setClass(getContext(), HistoryScanActivity.class);
                     intent.putExtra("Insert", 1);
                     startActivity(intent);
                     break;
                 case R.id.ly_function8:
-                    Toast.makeText(getContext(), "创建包裹", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getContext(), "创建包裹", Toast.LENGTH_SHORT).show();
                     Intent intent0 = new Intent();
                     intent0.setClass(getContext(), AddPackageActivity.class);
                     startActivity(intent0);

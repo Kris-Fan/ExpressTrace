@@ -8,30 +8,22 @@
 
     <string name="scan_gun">扫描入口</string>
 
-    <string name="title_section1">功能选择</string>
     <string name="title_section2">派送任务</string>
-    <string name="title_section3">揽收任务</string>
-    <string name="title_section4">转运任务</string>
     <string name="action_settings">设置</string>
     <string name="action_search">搜索</string>
     <string name="action_new">新建</string>
-    <string name="action_refresh">刷新</string>
     <string name="action_edit">编辑</string>
-    <string name="action_reset">清除</string>
     <string name="action_ok">完成</string>
-    <string name="action_login">登录</string>
     <string name="action_logout">退出系统</string>
     <string name="action_my_package">我的包裹</string>
     <string name="action_my_message">我的消息</string>
     <string name="action_my_location">我的位置</string>
-    <string name="title_activity_region_list">选择行政区</string>
     <string name="title_activity_customer_list">客户列表</string>
     <string name="title_activity_customer_edit">客户信息</string>
     <string name="title_name">姓名：</string>
     <string name="title_tel_code">电话：</string>
     <string name="title_addr_code">地址：</string>
     <string name="title_post_code">邮编：</string>
-    <string name="app_picker_name">应用</string>
     <string name="confirm">确认</string>
     <string name="cancel">取消</string>
 
@@ -49,15 +41,9 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="permission_camera">App扫码需要用到拍摄权限</string>
-    <string name="permission_external_storage">App需要用到读写权限</string>
     <string name="tips_scan_code">将二维码/条形码放入框内，即可自动扫码</string>
-    <string name="qr_code">二维码</string>
-    <string name="bar_code">条形码</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_customer_search">CustomerSearchActivity</string>
     <string name="title_addr_detail">详细地址</string>
     <string name="title_activity_node_list">网点列表</string>
     <string name="title_activity_settings">Settings</string>
@@ -107,20 +93,6 @@
         <item>360</item>
         <item>-1</item>
     </string-array>
-
-    <string-array name="list_preference_entries">
-        <item>Entry 1</item>
-        <item>Entry 2</item>
-        <item>Entry 3</item>
-    </string-array>
-
-    <string-array name="list_preference_entry_values">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-    </string-array>
-
-    <string-array name="multi_select_list_preference_default_value" />
 
     <string name="pref_title_system_sync_settings">System sync settings</string>
 

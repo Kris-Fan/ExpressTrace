@@ -86,7 +86,7 @@ public class ExpressTaskFragment extends Fragment implements View.OnClickListene
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //按下确定键后的事件
                         message = et.getText().toString();
-                        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
                     }
                 })
                 .setNegativeButton("取消",null).show();

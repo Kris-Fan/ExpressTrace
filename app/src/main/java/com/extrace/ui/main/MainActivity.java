@@ -96,7 +96,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         bindView();
         ly_one.performClick();
         if (!new LoginService().isLogined(this)){
-            showAlert("请先登录","点击确认立即登录");
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivityForResult(intent, 666);
         }
     }
 
@@ -105,14 +106,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onNewIntent(intent);
         setIntent(intent);
         Log.d(TAG, "onNewIntent: ");
-        ly_two.setVisibility(new LoginService().getUserRoll(this) == 0 ? View.VISIBLE : View.GONE);
+        //ly_two.setVisibility(new LoginService().getUserRoll(this) == 0 ? View.VISIBLE : View.GONE);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume: ");
-        ly_two.setVisibility(new LoginService().getUserRoll(this) == 0 ? View.VISIBLE : View.GONE);
+        ly_two.setVisibility(new LoginService().getUserRoll(this) == 1 ? View.GONE : View.VISIBLE);
     }
 
     private void bindView() {
@@ -164,20 +165,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.ly_tab_menu_deal:
                 setSelected();
                 mTextView1.setSelected(true);
-                if (new LoginService().getUserRoll(this) == 0){
-                    if(fg11==null){
-                        fg11 = new MainHomeFragment();
-                        transaction.add(R.id.fragment_container,fg11);
-                    }else{
-                        transaction.show(fg11);
-                    }
-                }else {
+                if (new LoginService().getUserRoll(this) == 1){
                     if (fg1 == null) {
                         fg1 = new MainMenuFragment();
                         //fg1 = new HomeSub1Fragment();
                         transaction.add(R.id.fragment_container, fg1);
                     } else {
                         transaction.show(fg1);
+                    }
+                }else {
+                    if(fg11==null){
+                        fg11 = new MainHomeFragment();
+                        transaction.add(R.id.fragment_container,fg11);
+                    }else{
+                        transaction.show(fg11);
                     }
                 }
 
@@ -356,7 +357,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void run() {
                         Log.d("Jenly","result:" + result);
-                        Toast.makeText(MainActivity.this,result,Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(MainActivity.this,result,Toast.LENGTH_SHORT).show();
                     }
                 });
 
